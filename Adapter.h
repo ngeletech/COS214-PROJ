@@ -48,4 +48,34 @@ class RestApiAdapter: public ExternalServiceConnector {
         string queryStatus(string reference);
 };
 
+class LegacySystemApi {
+    public:
+        string submitRecord(string record);
+        string lookup(string code);
+};
+
+class LegacySystemAdapter: public ExternalServiceConnector {
+    private:
+        LegacySystemApi* api;
+
+    public:
+        ServiceResponse sendRequest(const ServiceRequest& req);
+        string queryStatus(string reference);
+};
+
+class MessageQueueClient {
+    public:
+        void publish(string subject, string message);
+        string poll(string correlationId);
+};
+
+class MessagingAdapter: public ExternalServiceConnector {
+    private:
+        MessageQueueClient queue;
+
+    public:
+        ServiceResponse sendRequest(const ServiceRequest& req);
+        string queryStatus(string reference);
+};
+
 #endif //ADAPTER
