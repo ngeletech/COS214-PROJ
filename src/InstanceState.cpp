@@ -1,21 +1,17 @@
 #include "InstanceState.h"
 
 //InstanceState
-void InstanceState::handle(const std::string& request){
+InstanceState::InstanceState(WorkflowInstance& i) : instance(&i) {
 
 }
-
-bool InstanceState::canCancel() const {
-
-}
-    
+        
 void InstanceState::start(){
 
 }
     
 void InstanceState::suspend(){
 
-}
+} 
     
 void InstanceState::resume(){
 
@@ -28,65 +24,113 @@ void InstanceState::complete(){
 void InstanceState::cancel(){
 
 }
-    
+
 void InstanceState::fail(const Issue& issue){
 
 }
+
+bool InstanceState::canCancel() const {
+
+}
     
-std::string InstanceState::getName(){
+std::string InstanceState::getName() const {
 
 }
 
 //CreatedState  
-void CreatedState::handle(const std::string& request){
+CreatedState::CreatedState(WorkflowInstance& i) : InstanceState(i) {
+
+}
+    
+void CreatedState::start() {
+
+}
+    
+void CreatedState::cancel() {
 
 }
     
 bool CreatedState::canCancel() const {
 
 }
+    
+std::string CreatedState::getName() const {
+
+}
 
 //RunningState
-void RunningState::handle(const std::string& request){
+RunningState::RunningState(WorkflowInstance& i) : InstanceState(i) {
+
+}
+    
+void RunningState::suspend() {
+
+}
+    
+void RunningState::complete() {
+
+}
+    
+void RunningState::cancel() {
+
+} 
+    
+void RunningState::fail(const Issue& issue) {
 
 }
     
 bool RunningState::canCancel() const {
 
 }
+    
+std::string RunningState::getName() const {
+
+}
 
 //SuspendedState
-void SuspendedState::handle(const std::string& request){
+SuspendedState::SuspendedState(WorkflowInstance& i) : InstanceState(i) {
+
+}
+    
+void SuspendedState::resume() {
+
+}
+    
+void SuspendedState::cancel() {
 
 }
     
 bool SuspendedState::canCancel() const {
 
+}
+    
+std::string SuspendedState::getName() const {
+
 } 
 
 //CompletedState
-void CompletedState::handle(const std::string& request){
+CompletedState::CompletedState(WorkflowInstance& i) : InstanceState(i) {
 
 }
     
-bool CompletedState::canCancel() const {
+std::string CompletedState::getName() const {
 
-}
+} 
 
 //CancelledState
-void CancelledState::handle(const std::string& request){
+CancelledState::CancelledState(WorkflowInstance& i) : InstanceState(i) {
 
 }
     
-bool CancelledState::canCancel() const {
+std::string CancelledState::getName() const {
 
-}
+} 
 
 //FailedState
-void FailedState::handle(const std::string& request){
+FailedState::FailedState(WorkflowInstance& i) : InstanceState(i) {
 
 }
+    
+std::string FailedState::getName() const {
 
-bool FailedState::canCancel() const {
-
-}
+}  

@@ -9,52 +9,65 @@ class InstanceState {
 protected:
     WorkflowInstance* instance;
 public:
-    InstanceState();
-    virtual void handle(const std::string& request) = 0;
-    virtual bool canCancel() const = 0;
-    void start();
-    void suspend();
-    void resume();
-    void complete();
-    void cancel();
-    void fail(const Issue& issue);
-    std::string getName();
+    InstanceState(WorkflowInstance& i);
+    virtual ~InstanceState() {}
+    virtual void start();
+    virtual void suspend();
+    virtual void resume();
+    virtual void complete();
+    virtual void cancel();
+    virtual void fail(const Issue& issue);
+
+    virtual bool canCancel() const;
+    virtual std::string getName() const = 0;
 };
 
 class CreatedState : public InstanceState {
 public:
-    void handle(const std::string& request) override;
-    bool canCancel() const override; 
+    CreatedState(WorkflowInstance& i);
+    void start() override;
+    void cancel() override; 
+    bool canCancel() const override;
+    std::string getName() const override;
 };
 
 class RunningState : public InstanceState {
+
 public:
-    void handle(const std::string& request) override;
-    bool canCancel() const override;  
+    RunningState(WorkflowInstance& i);
+    void suspend() override;
+    void complete() override;
+    void cancel() override; 
+    void fail(const Issue& issue) override;
+    bool canCancel() const override;
+    std::string getName() const override; 
 };
 
 class SuspendedState : public InstanceState {
 public:
-    void handle(const std::string& request) override;
-    bool canCancel() const override;  
+    SuspendedState(WorkflowInstance& i);
+    void resume() override;
+    void cancel() override; 
+    bool canCancel() const override;
+    std::string getName() const override; 
 };
 
 class CompletedState : public InstanceState {
 public:
-    void handle(const std::string& request) override;
-    bool canCancel() const override;  
+    CompletedState(WorkflowInstance& i);
+    std::string getName() const override;  
 };
 
 class CancelledState : public InstanceState {
 public:
-    void handle(const std::string& request) override;
-    bool canCancel() const override;  
+    CancelledState(WorkflowInstance& i);
+    std::string getName() const override;  
 };
 
 class FailedState : public InstanceState {
 public:
-    void handle(const std::string& request) override;
-    bool canCancel() const override;  
+    FailedState(WorkflowInstance& i);
+    std::string getName() const override;  
 };
 
 #endif
