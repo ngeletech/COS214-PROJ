@@ -2,6 +2,7 @@
 #define WORKFLOWINSTANCE_H
 
 #include <string>
+#include<vector>
 #include "WorkData.h"
 class WorkflowDefinition;
 class InstanceState;
@@ -19,6 +20,7 @@ private:
     const WorkflowDefinition* definition;
     WorkGroup* root;
     WorkflowEngine* engine;
+    std::vector<WorkflowListener*> listeners;
 public:
     WorkflowInstance(int id, const WorkflowDefinition*, WorkflowEngine* engine, WorkData data);
     ~WorkflowInstance();
