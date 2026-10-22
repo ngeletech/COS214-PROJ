@@ -1,5 +1,5 @@
-#ifndef ESCALATIONSYSTEM_H
-#define ESCALATIONSYSTEM_H
+#ifndef CHAINOFRESPONSIBILITY_H
+#define CHAINOFRESPONSIBILITY_H
 
 class Participant;
 class Issue;
