@@ -11,8 +11,13 @@ class WorkflowInstance;
 
 /**
  * @brief Memento. Only WorkflowInstance (the Originator) can create it or read its contents;
+ * RollbackManager can only store and return it.
  */
 class InstanceSnapshot {
+    friend class WorkflowInstance;
+
+    private:
+        InstanceSnapshot() {}
     private:
         WorkData data;
         std::string stateName;
@@ -22,16 +27,17 @@ class InstanceSnapshot {
 };
 
 /**
- * @brief Caretaker. Stores the snapshots per instance
+ * @brief Caretaker. Stores the snapshots per instance without looking inside them
  */
 
 class RollbackManager {
     public:
-        void save(WorkflowInstance* instance);
-        void rollback(WorkflowInstance* instance);
+        void saveRestorePoint(WorkflowInstance* instance);
+        void rollback(WorkflowInstance& instance);
+        bool canRollback(int instanceId);
 
     private:
-        std::vector<InstanceSnapshot> snapshots;
+        std::map<int, std::vector<InstanceSnapshot>> snapshots;//save snapshots per instance
 };
 
 #endif
