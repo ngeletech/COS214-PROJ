@@ -1,6 +1,7 @@
 #ifndef DECORATOR_H
 #define DECORATOR_H
 
+#include "composite.h"
 #include <string>
 using namespace std;
 
