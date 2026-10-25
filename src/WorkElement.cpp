@@ -19,12 +19,12 @@ WorkItemStatus WorkElement::getStatus() const {
     return status;
 } 
 
-WorkElement::getInstance(WorkFlowInstance* instance) const {
+WorkflowInstance* WorkElement::getInstance() const {
     return instance;
 }
 
 void WorkElement::setStatus(WorkItemStatus status) {
-    this->status = WorkItemStatus::status;
+    this->status = status;
 }
 
 void WorkElement::setInstance(WorkflowInstance* instance){
@@ -37,7 +37,7 @@ void WorkElement::setParent(WorkGroup* parent){
 
 // no op, I typecast it to void to supress warnings
 void WorkElement::assignTo(Participant* participant){
-    void(participant);
+    (void)participant;
 }
 
 WorkGroup* WorkElement::asGroup(){
@@ -54,4 +54,32 @@ bool WorkElement::requiresAssignee() const {
 
 int WorkElement::getPriority() const{
     return 0;
+}
+
+bool WorkElement::isAvailable() const {
+    if(this->getStatus() != WorkItemStatus::CREATED) return false;
+
+
+    const WorkElement* current = this;
+    bool canStartChild = false;
+    while(current->parent != nullptr){
+        canStartChild = current->parent->canStartChild(current->getName());
+        if(canStartChild){
+            current = current->parent;
+        }else{
+            return false;
+        }
+    }
+
+
+    return true;
+}
+
+
+WorkData WorkElement::getPayload() const {
+    if(instance == nullptr){
+        return WorkData();
+    }else{
+        return instance->getData();;
+    }
 }
