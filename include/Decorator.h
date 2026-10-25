@@ -6,7 +6,7 @@
 using namespace std;
 
 class WorkElementDecorator: public WorkElement {
-    private:
+    protected:
         WorkElement* wrapped;
     
     public:
@@ -49,6 +49,7 @@ class PriorityDecorator: WorkElementDecorator {
 
     public:
         PriorityDecorator(WorkElement* element, int priority);
+        void execute();
         int getPriority();
         void setPriority(int priority);
 };
