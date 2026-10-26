@@ -38,3 +38,40 @@ bool WorkGroup::isComplete() const {
     }
     return true;
 }
+
+void WorkGroup::execute(){
+    int size = items.size();
+    for(int i = 0; i < size; i++){
+        if(canStartChild(items[i]->getName())){
+            items[i]->execute();
+        }
+    }
+}
+
+
+void WorkGroup::complete(){
+    if(!isComplete() || getStatus() == WorkItemStatus::COMPLETED){
+        return;
+    }
+    setStatus(WorkItemStatus::COMPLETED);
+    if(parent != nullptr){
+        parent->complete();
+    }
+}
+
+bool WorkGroup::isAvailable() const {
+    return false;
+}
+
+//no op, we dont assign groups
+void WorkGroup::assignTo(Participant* participant){
+    (void)participant;
+}
+
+WorkGroup* WorkGroup::asGroup(){
+    return this;
+}
+
+WorkIterator<WorkElement>* WorkGroup::createIterator(){
+    return new DepthFirstIterator(this);
+}
