@@ -14,9 +14,9 @@ RestApiAdapter::~RestApiAdapter() {
 ServiceResponse RestApiAdapter::sendRequest(const ServiceRequest& req) {
     string body = "";
     const map<string, string> data = req.getPayload().getData();
-    for (auto const& [key, val] : data) {
+    for (auto const& pair : data) {
         if (!body.empty()) body += "&";
-        body += key + "=" + val;
+        body += pair.first + "=" + pair.second;
     }
 
     string refId = client->post("/requests", body);

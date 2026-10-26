@@ -13,9 +13,9 @@ LegacySystemAdapter::~LegacySystemAdapter() {
 
 ServiceResponse LegacySystemAdapter::sendRequest(const ServiceRequest& req) {
     string record = "";
-    for (auto const& [key, val] : req.getPayload().getData()) {
-        string k = key; k.resize(15, ' ');
-        string v = val; v.resize(15, ' ');
+    for (auto const& pair : req.getPayload().getData()) {
+        string k = pair.first; k.resize(15, ' ');
+        string v = pair.second; v.resize(15, ' ');
         record += k + v;
     }
 
