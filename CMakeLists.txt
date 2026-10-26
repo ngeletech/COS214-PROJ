@@ -12,7 +12,8 @@ set(ENGINE_SRC
     # Builder + Factory Method
 
     # Composite + Iterator
-
+    src/composite.cpp
+    
     # State + Memento
 
     # Strategy + Chain of Responsibility
@@ -27,6 +28,10 @@ set(ENGINE_SRC
     src/MessageQueueClient.cpp
     src/ServiceRequest.cpp
     src/ServiceResponse.cpp
+    src/WorkElementDecorator.cpp
+    src/AuditedDecorator.cpp
+    src/PriorityDecorator.cpp
+    src/PayloadDecorator.cpp
 
     # Observer + Template Method
 
@@ -51,6 +56,7 @@ add_executable(unit_tests
 
     # Adapter + Decorator
     tests/test_adapter.cpp
+    tests/test_decorator.cpp
 
     # Observer + Template Method
 
