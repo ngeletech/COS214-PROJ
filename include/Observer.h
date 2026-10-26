@@ -11,25 +11,56 @@ class WorkflowEvent;
 class WorkflowEngine;
 class AuditHistory;
 
-// ===============================
-// WorkflowListener
-// ===============================
+/**
+ * @brief Abstract observer interface for workflow event notifications.
+ *
+ * All classes interested in receiving workflow events must inherit
+ * from WorkflowListener and implement the update() operation.
+ */
 class WorkflowListener {
 public:
+    /**
+     * @brief Receives and processes a workflow event.
+     *
+     * @param event The workflow event being published.
+     */
     virtual void update(const WorkflowEvent& event) = 0;
+    /**
+     * @brief Virtual destructor.
+     */
     virtual ~WorkflowListener() {}
 };
 
-// ===============================
-// WorkflowEventPublisher
-// ===============================
+/**
+ * @brief Publishes workflow events to registered listeners.
+ *
+ * Implements the Subject role in the Observer pattern.
+ * Maintains a collection of observers and notifies them
+ * whenever an event occurs.
+ */
 class WorkflowEventPublisher {
 private:
+    /**
+     * @brief Collection of subscribed listeners.
+     */
     vector<WorkflowListener*> listeners;
 
 public:
+    /**
+     * @brief Registers a listener for event notifications.
+     *
+     * @param listener Observer to subscribe.
+     */
     void subscribe(WorkflowListener* listener);
+    /**
+     * @brief Publishes an event to all subscribed listeners.
+     *
+     * @param event Event information to be distributed.
+     */
     void publish(const string& event);
+    /**
+     * @brief Destructor.
+     */
     ~WorkflowEventPublisher();
 };
 
