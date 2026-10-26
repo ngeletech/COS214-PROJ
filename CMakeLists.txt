@@ -12,10 +12,23 @@ set(ENGINE_SRC
     # Builder + Factory Method
 
     # Composite + Iterator
+    src/WorkElement.cpp
+    src/Task.cpp
+    src/WorkGroup.cpp
+    src/ParallelGroup.cpp
+    src/SequentialGroup.cpp
+    src/DepthFirstIterator.cpp
+    src/AvailableItemIterator.cpp
+    src/AuditEntry.cpp
+    src/AuditEntryIterator.cpp
+    src/AuditHistory.cpp
+    src/ReportGenerator.cpp
 
     # State + Memento
+    src/WorkflowInstance.cpp
 
     # Strategy + Chain of Responsibility
+    src/Participant.cpp
 
     # Adapter + Decorator
     src/WorkData.cpp 
@@ -29,6 +42,7 @@ set(ENGINE_SRC
     src/ServiceResponse.cpp
 
     # Observer + Template Method
+    src/TemplateMethod.cpp
 
     # Facade + Command
 )
@@ -44,6 +58,8 @@ add_executable(unit_tests
     # Builder + Factory Method
 
     # Composite + Iterator
+    tests/test_composite.cpp
+    tests/test_iterator.cpp
 
     # State + Memento
 
