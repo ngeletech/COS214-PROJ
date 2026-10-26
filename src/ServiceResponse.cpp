@@ -2,20 +2,17 @@
 #include <string>
 using namespace std;
 
-ServiceResponse::ServiceResponse(string reference, string status, bool ok) {
-    this->reference = reference;
-    this->status = status;
-    this->ok = ok;
-}
+ServiceResponse::ServiceResponse(string reference, string status, bool ok) : reference(reference), status(status), ok(ok) {}
 
-string ServiceResponse::getReference() {
+
+string ServiceResponse::getReference() const {
     return reference;
 }
 
-string ServiceResponse::getStatus() {
+string ServiceResponse::getStatus() const {
     return status;
 }
 
-bool ServiceResponse::isOk() {
+bool ServiceResponse::isOk() const {
     return ok;
 }

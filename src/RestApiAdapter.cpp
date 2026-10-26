@@ -4,14 +4,17 @@
 using namespace std;
 
 RestApiAdapter::RestApiAdapter(RestApiClient* client) {
-    this->client = client;
+    this->client = client ? client : new RestApiClient();
 }
 
-RestApiAdapter::~RestApiAdapter() {}
+RestApiAdapter::~RestApiAdapter() {
+    delete client;
+}
 
 ServiceResponse RestApiAdapter::sendRequest(const ServiceRequest& req) {
     string body = "";
-    for (auto const& [key, val] : req.getPayload()) {
+    const map<string, string> data = req.getPayload().getData();
+    for (auto const& [key, val] : data) {
         if (!body.empty()) body += "&";
         body += key + "=" + val;
     }

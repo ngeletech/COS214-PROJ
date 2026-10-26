@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 
-class WorkData;
+#include "WorkData.h"
 
 using namespace std;
 
@@ -25,14 +25,14 @@ class ServiceResponse {
 
     public:
         ServiceResponse(string reference, string status, bool ok);
-        string getReference();
-        string getStatus();
-        bool isOk();
+        string getReference() const;
+        string getStatus() const;
+        bool isOk() const;
 };
 
 class ExternalServiceConnector {
     public:
-        virtual ~ExternalServiceConnector();
+        virtual ~ExternalServiceConnector() {};
         virtual ServiceResponse sendRequest(const ServiceRequest& req) = 0;
         virtual string queryStatus(string reference) = 0;
 
@@ -46,7 +46,7 @@ class RestApiClient {
         static bool isFailingId(int id) {
             return id % 10 == 0;    
         }
-        
+
     public:
         string post(string url, string body);
         string get(string url);
@@ -57,13 +57,17 @@ class RestApiAdapter: public ExternalServiceConnector {
         RestApiClient* client;
 
     public:
-        RestApiAdapter(RestApiClient* client);
+        RestApiAdapter(RestApiClient* client = nullptr);
         ~RestApiAdapter();
         ServiceResponse sendRequest(const ServiceRequest& req);
         string queryStatus(string reference);
 };
 
 class LegacySystemApi {
+    private:
+        static int counter;
+        std::map<std::string, int> lookups;
+
     public:
         string submitRecord(string record);
         string lookup(string code);
@@ -74,11 +78,16 @@ class LegacySystemAdapter: public ExternalServiceConnector {
         LegacySystemApi* api;
 
     public:
+        LegacySystemAdapter(LegacySystemApi* api = nullptr);
+        ~LegacySystemAdapter();
         ServiceResponse sendRequest(const ServiceRequest& req);
         string queryStatus(string reference);
 };
 
 class MessageQueueClient {
+    private:
+        std::map<std::string, std::string> messages;
+
     public:
         void publish(string subject, string message);
         string poll(string correlationId);
@@ -87,6 +96,7 @@ class MessageQueueClient {
 class MessagingAdapter: public ExternalServiceConnector {
     private:
         MessageQueueClient queue;
+        static int counter;
 
     public:
         ServiceResponse sendRequest(const ServiceRequest& req);
