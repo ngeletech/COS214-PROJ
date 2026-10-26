@@ -1,5 +1,5 @@
 //Director
-#include "WorkflowDesigner.h"
+#include "../include/Builder.h"
 
 WorkflowDesigner::WorkflowDesigner(WorkflowDefinitionBuilder* builder) {
     this->builder = builder;
