@@ -7,7 +7,8 @@ EscalationHandler::EscalationHandler(Participant* responsible, int maxSeverity)
 {
 }
 
-EscalationHandler::~EscalationHandler(){
+EscalationHandler::~EscalationHandler()
+{
 }
 
 void EscalationHandler::setNext(EscalationHandler* handler)
