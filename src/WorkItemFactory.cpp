@@ -2,6 +2,8 @@
 #include "WorkElement.h"
 #include "WorkflowInstance.h"
 #include "WorkItemStatus.h"
+#include "WorkItemSpec.h"
+#include "WorkData.h"
 #include "UserTask.h"
 #include "ServiceTask.h"
 #include "ApprovalTask.h"
@@ -42,7 +44,7 @@ WorkElement* UserTaskFactory::makeElement(const WorkItemSpec& spec){
  * @brief Creates a ServiceTask
  */
 WorkElement* ServiceTaskFactory::makeElement(const WorkItemSpec& spec){
-    return ServiceTask(spec.getName());
+    return new ServiceTask(spec.getName());
 }
 
 /**
@@ -54,7 +56,7 @@ WorkElement* ApprovalTaskFactory::makeElement(const WorkItemSpec& spec){
 
 
 /**
- * @brief Creates a ScripTask that writes spec.key = spec.value into the data
+ * @brief Creates a ScriptTask that writes spec.key = spec.value into the data
  */
 WorkElement* ScriptTaskFactory::makeElement(const WorkItemSpec& spec){
     auto config = spec.getConfig().getData();
@@ -63,7 +65,7 @@ WorkElement* ScriptTaskFactory::makeElement(const WorkItemSpec& spec){
     if(key == config.end() || value == config.end()){
         throw TividyError();
     }
-    return new ScriptTask(spec.getName(), key->second, spec.value);
+    return new ScriptTask(spec.getName(), key->second, value->second);
 }
 
 /**
@@ -80,51 +82,3 @@ WorkElement* SequentialGroupFactory::makeElement(const WorkItemSpec& spec){
     return new SequentialGroup(spec.getName());
 }
 
-//WorkItemFactoryRegistry
-
-/**
- * @brief Creates an empty registry
- */
-WorkItemFactoryRegistry::WorkItemFactoryRegistry(){
-}
-
-/**
- * @brief Deletes every factory the registry owns
- */
-WorkItemFactoryRegistry::~WorkItemFactoryRegistry(){
-    for (auto&  factory : factories){
-        delete factory.second;
-    }
-    
-}
-
-/**
- * @brief Registers a factory for a spec type. Takes ownership.
- *        Replaces (and deletes) any factory already registered for that type.
- */
-void WorkItemFactoryRegistry::registerFactory(const std::string type, WorkItemFactory* factory) {
-    auto it = factories.find(type);
-    if(it != factories.end()){
-        if (it->second != factory) {
-            delete it->second;
-            it->second = factory;
-        }
-    } else {
-        factories[type] = factory;
-    }
-}
-
-/**
- * @brief Finds the factory for a spec type.
- * @return the factory, or nullptr if none is registered 
- */
-
-WorkItemFactory* WorkItemFactoryRegistry::getFactory(const std::string& type) {
-    auto it = factories.find(type);
-    if (it == factories.end()){
-        return nullptr;
-    }
-
-    return it->second
-    
-}
