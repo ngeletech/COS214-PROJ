@@ -1,4 +1,5 @@
 #include "../include/Decorator.h"
+#include "../include/WorkData.h"
 #include <string>
 using namespace std;
 
@@ -12,7 +13,6 @@ void PayloadDecorator::execute() {
     wrapped->execute();
 }
 
-WorkData PayloadDecorator::getPayload() {
-    if(!wrapped) return;
+WorkData PayloadDecorator::getPayload() const{
     return wrapped->getPayload();
 }

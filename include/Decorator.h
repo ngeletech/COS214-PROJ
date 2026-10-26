@@ -33,7 +33,7 @@ class PayloadDecorator: public WorkElementDecorator {
     public:
         PayloadDecorator(WorkElement* element, string key, string value);
         void execute();
-        WorkData getPayload();
+        WorkData getPayload() const;
 };
 
 class AuditedDecorator: public WorkElementDecorator {
@@ -50,7 +50,7 @@ class PriorityDecorator: public WorkElementDecorator {
     public:
         PriorityDecorator(WorkElement* element, int priority);
         void execute();
-        int getPriority();
+        int getPriority() const;
         void setPriority(int priority);
 };
 

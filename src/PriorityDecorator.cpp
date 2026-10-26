@@ -11,7 +11,7 @@ void PriorityDecorator::execute() {
     wrapped->execute();
 }
 
-int PriorityDecorator::getPriority() {
+int PriorityDecorator::getPriority() const {
     return priority;
 }
 

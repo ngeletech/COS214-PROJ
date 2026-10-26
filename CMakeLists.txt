@@ -13,7 +13,7 @@ set(ENGINE_SRC
 
     # Composite + Iterator
     src/composite.cpp
-    
+
     # State + Memento
 
     # Strategy + Chain of Responsibility
@@ -34,7 +34,7 @@ set(ENGINE_SRC
     src/PayloadDecorator.cpp
 
     # Observer + Template Method
-
+    src/TemplateMethod.cpp
     # Facade + Command
 )
 
