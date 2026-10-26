@@ -2,6 +2,9 @@
 #define ADAPTER
 
 #include <string>
+#include <map>
+
+class WorkData;
 
 using namespace std;
 
@@ -10,19 +13,21 @@ class ServiceRequest {
         WorkData payload;
     
     public:
-        ServiceRequest(Workdata payload);
-        Workdata getPayload();
+        ServiceRequest(WorkData payload);
+        const WorkData& getPayload() const;
 };
 
 class ServiceResponse {
     private:
         string reference;
         string status;
+        bool ok;
 
     public:
-        ServiceResponse(string reference, string status);
+        ServiceResponse(string reference, string status, bool ok);
         string getReference();
         string getStatus();
+        bool isOk();
 };
 
 class ExternalServiceConnector {
@@ -34,6 +39,14 @@ class ExternalServiceConnector {
 };
 
 class RestApiClient {
+    private:
+        static int counter;
+        std::map<string, string> statuses;
+
+        static bool isFailingId(int id) {
+            return id % 10 == 0;    
+        }
+        
     public:
         string post(string url, string body);
         string get(string url);
@@ -44,6 +57,8 @@ class RestApiAdapter: public ExternalServiceConnector {
         RestApiClient* client;
 
     public:
+        RestApiAdapter(RestApiClient* client);
+        ~RestApiAdapter();
         ServiceResponse sendRequest(const ServiceRequest& req);
         string queryStatus(string reference);
 };
