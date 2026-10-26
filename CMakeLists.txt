@@ -22,6 +22,7 @@ set(ENGINE_SRC
     # State + Memento
 
     # Strategy + Chain of Responsibility
+    src/Participant.cpp
 
     # Adapter + Decorator
     src/WorkData.cpp 
@@ -42,7 +43,7 @@ set(ENGINE_SRC
     src/Task.cpp
     src/TemplateMethod.cpp
     src/WorkflowInstance.cpp
-    
+
     # Facade + Command
 )
 

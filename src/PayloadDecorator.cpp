@@ -13,6 +13,8 @@ void PayloadDecorator::execute() {
     wrapped->execute();
 }
 
-WorkData PayloadDecorator::getPayload() const{
-    return wrapped->getPayload();
+WorkData PayloadDecorator::getPayload() const {
+    WorkData data = wrapped->getPayload();
+    data.addData(key, value);
+    return data;
 }
