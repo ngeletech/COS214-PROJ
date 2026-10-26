@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -25,6 +26,7 @@ public:
      * @param event The workflow event being published.
      */
     virtual void update(const WorkflowEvent& event) = 0;
+
     /**
      * @brief Virtual destructor.
      */
@@ -52,70 +54,148 @@ public:
      * @param listener Observer to subscribe.
      */
     void subscribe(WorkflowListener* listener);
+
     /**
      * @brief Publishes an event to all subscribed listeners.
      *
      * @param event Event information to be distributed.
      */
     void publish(const string& event);
+
     /**
      * @brief Destructor.
      */
     ~WorkflowEventPublisher();
 };
 
-// ===============================
-// AuditLogger
-// ===============================
+/**
+ * @brief Records workflow events for auditing purposes.
+ *
+ * AuditLogger receives workflow events and stores them
+ * in the system audit history.
+ */
 class AuditLogger : public WorkflowListener {
 private:
+    /**
+     * @brief Audit history used to store event records.
+     */
     AuditHistory* history;
 
 public:
+    /**
+     * @brief Constructs an AuditLogger.
+     *
+     * @param history Audit history to update.
+     */
     AuditLogger(AuditHistory* history);
+
+    /**
+     * @brief Records a workflow event in the audit history.
+     *
+     * @param event Event to record.
+     */
     void update(const WorkflowEvent& event) override;
 };
 
-// ===============================
-// NextItemActivator
-// ===============================
+/**
+ * @brief Activates the next workflow item when required.
+ *
+ * Responds to workflow events by enabling subsequent
+ * tasks or workflow stages.
+ */
 class NextItemActivator : public WorkflowListener {
 private:
+    /**
+     * @brief Workflow engine responsible for managing workflow progression.
+     */
     WorkflowEngine* engine;
 
 public:
+    /**
+     * @brief Constructs a NextItemActivator.
+     *
+     * @param engine Workflow engine to control.
+     */
     NextItemActivator(WorkflowEngine* engine);
+
+    /**
+     * @brief Activates the next workflow item when appropriate.
+     *
+     * @param event Triggering workflow event.
+     */
     void update(const WorkflowEvent& event) override;
 };
 
-// ===============================
-// NotificationListener
-// ===============================
+/**
+ * @brief Sends notifications when selected workflow events occur.
+ *
+ * NotificationListener distributes messages to recipients
+ * in response to workflow events.
+ */
 class NotificationListener : public WorkflowListener {
 private:
+    /**
+     * @brief Event type that triggers a notification.
+     */
     string eventType;
+    /**
+     * @brief List of notification recipients.
+     */
     vector<string> recipients;
+    /**
+     * @brief Notification message.
+     */
     string message;
 
 public:
+    /**
+     * @brief Constructs a NotificationListener.
+     *
+     * @param type Event type to monitor.
+     * @param recipients List of recipients.
+     * @param message Message to send.
+     */
     NotificationListener(
         string type,
         vector<string> recipients,
         string message
     );
 
+    /**
+     * @brief Sends notifications in response to a workflow event.
+     *
+     * @param event Received workflow event.
+     */
     void update(const WorkflowEvent& event) override;
 };
 
-// ===============================
-// DashboardListener
-// ===============================
+/**
+ * @brief Maintains a dashboard view of workflow status.
+ *
+ * Updates workflow progress information whenever
+ * relevant workflow events are received.
+ */
 class DashboardListener : public WorkflowListener {
 private:
+    /**
+     * @brief Stores workflow instance status information.
+     */
     map<int, string> statusView;
 
 public:
+    /**
+     * @brief Updates dashboard information based on an event.
+     *
+     * @param event Workflow event received from the publisher.
+     */
     void update(const WorkflowEvent& event) override;
+
+    /**
+     * @brief Retrieves the status of a workflow instance.
+     *
+     * @param instanceId Unique workflow instance identifier.
+     * @return Current status of the specified instance.
+     */
     string getStatus(int instanceId) const;
 };
 
