@@ -1,4 +1,7 @@
 #include "../include/composite.h"
+#include "../include/WorkData.h"
+#include "../include/WorkflowInstance.h"
+
 
 #include <string>
 

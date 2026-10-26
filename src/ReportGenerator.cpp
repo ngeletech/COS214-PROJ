@@ -1,15 +1,45 @@
 #include "../include/Iterator.h"
 #include "../include/composite.h"
+#include "../include/WorkflowInstance.h"
 
+#include <sstream>
 #include <string>
 
 ReportGenerator::ReportGenerator(AuditHistory* history){
     this->history = history;
 }
 
-// to be implemented later once dependencies are met
+
+//summary for a running instance
 std::string ReportGenerator::progressReport(const WorkflowInstance& instance){
-    return "";
+    int total = 0;
+    int done = 0;
+
+    // walk every element under the root by depth
+    WorkGroup* root = instance.getRoot();
+    if(root != nullptr){
+        WorkIterator<WorkElement>* it = root->createIterator();
+        for(it->first(); !it->isDone(); it->next()){
+            WorkElement* element = it->current();
+
+            // only tasks are counted thegroups are just containers
+            if(element->asGroup() == nullptr){
+                total++;
+                if(element->isComplete()){
+                    done++;
+                }
+            }
+        }
+
+        // createIterator owns the iterator so we delete it
+        delete it;
+    }
+
+    // build the summary line
+    std::ostringstream report;
+    report << "Instance " << instance.getId() << ": " << instance.getStateName()
+           << ", " << done << "/" << total << " tasks complete";
+    return report.str();
 }
 
 // one line per entry for this instance 
