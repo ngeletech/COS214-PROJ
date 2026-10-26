@@ -2,6 +2,7 @@
 #include "../include/Participant.h"
 #include "../include/WorkflowInstance.h"
 
+#include <iostream>
 #include <string>
 
 Task::Task(const std::string& name) : WorkElement(name) {
@@ -47,12 +48,40 @@ bool Task::requiresAssignee() const {
 // Template Method functions below
 
 void Task::execute(){
+    if (!checkReady()) {
+        std::cout << "[Task]: Task '" << getName() << "' is not ready to execute." << std::endl;
+        return;
+    }
+
+    setStatus(WorkItemStatus::STARTED);
+    std::cout << "[Task]: Executing task '" << getName() << "'." << std::endl;
+
+    doWork();
+
+    Task::notifyListeners();
+
+    complete();
 }
 
 bool Task::checkReady() const {
-    return false;
+    WorkItemStatus status = getStatus();
+
+    if (requiresAssignee()) {
+        return (status == WorkItemStatus::ASSIGNED) && (assignee != nullptr);
+    }
+
+    return (status == WorkItemStatus::AVAILABLE || status == WorkItemStatus::CREATED);
 }
 
 void Task::notifyListeners(){
-}
+    WorkflowInstance* instance = getInstance();
+    
+    if (instance != nullptr) {
+        std::cout << "[Task]: Task '" << getName() << "' has been executed. Notifying listeners." << std::endl;
 
+        instance->publish("ElementExecuted");
+
+    } else {
+        std::cout << "[Task]: Task '" << getName() << "' has been executed, but no WorkflowInstance is associated." << std::endl;
+    }
+}
