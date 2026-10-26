@@ -1,4 +1,13 @@
-#include "FactoryMethod.h"
+#include "WorkItemFactory.h"
+#include "WorkElement.h"
+#include "WorkflowInstance.h"
+#include "WorkItemStatus.h"
+#include "UserTask.h"
+#include "ServiceTask.h"
+#include "ApprovalTask.h"
+#include "ScriptTask.h"
+#include "ParallelGroup.h"
+#include "SequentialGroup.h"
 
 /**
  * @brief Virtual destructor so concrete factories are deleted correctly through a WorkItemFactory pointer.
@@ -26,21 +35,21 @@ WorkElement* WorkItemFactory::create(const WorkItemSpec& spec, WorkflowInstance*
  * @brief Creates a UserTask
  */
 WorkElement* UserTaskFactory::makeElement(const WorkItemSpec& spec){
-    return new UserTask(spec.name);
+    return new UserTask(spec.getName());
 }
 
 /**
  * @brief Creates a ServiceTask
  */
 WorkElement* ServiceTaskFactory::makeElement(const WorkItemSpec& spec){
-    return ServiceTask(spec.name);
+    return ServiceTask(spec.getName());
 }
 
 /**
  * @brief Creates an ApprovalTask
  */
 WorkElement* ApprovalTaskFactory::makeElement(const WorkItemSpec& spec){
-    return new ApprovalTask(spec.name);
+    return new ApprovalTask(spec.getName());
 }
 
 
@@ -48,21 +57,27 @@ WorkElement* ApprovalTaskFactory::makeElement(const WorkItemSpec& spec){
  * @brief Creates a ScripTask that writes spec.key = spec.value into the data
  */
 WorkElement* ScriptTaskFactory::makeElement(const WorkItemSpec& spec){
-    return new ScriptTask(spec.name, spec.key, spec.value);
+    auto config = spec.getConfig().getData();
+    auto key = config.find("key");
+    auto value = config.find("value");
+    if(key == config.end() || value == config.end()){
+        throw TividyError();
+    }
+    return new ScriptTask(spec.getName(), key->second, spec.value);
 }
 
 /**
  * @brief Creates a ParallelGroup
  */
 WorkElement* ParallelGroupFactory::makeElement(const WorkItemSpec& spec){
-    return new ParallelGroup(spec.name);
+    return new ParallelGroup(spec.getName());
 }
 
 /**
  * @brief
  */
 WorkElement* SequentialGroupFactory::makeElement(const WorkItemSpec& spec){
-    return new SequentialGroup(spec.name);
+    return new SequentialGroup(spec.getName());
 }
 
 //WorkItemFactoryRegistry

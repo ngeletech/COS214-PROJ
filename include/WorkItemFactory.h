@@ -1,5 +1,5 @@
-#ifndef FACTORYMETHOD_H
-#define FACTORYMETHOD_H
+#ifndef WORKITEMFACTORY_H
+#define WORKITEMFACTORY_H
 
 #include<map>
 #include <string>
@@ -15,9 +15,11 @@ class WorkItemSpec;
 class WorkItemFactory {
     public:
         virtual ~WorkItemFactory();
-
         WorkElement* create(const WorkItemSpec& spec, WorkflowInstance* instance);
-        /**@brief */
+    
+    protected:
+        /**
+         * @brief Factory Method: concrete factories decide which WorkElement to build*/
         virtual WorkElement* makeElement(const WorkItemSpec& spec) = 0;
 };
 
