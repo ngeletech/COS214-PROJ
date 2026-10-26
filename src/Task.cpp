@@ -1,4 +1,6 @@
 #include "../include/composite.h"
+#include "../include/Participant.h"
+#include "../include/WorkflowInstance.h"
 
 #include <string>
 
@@ -10,16 +12,23 @@ bool Task::isComplete() const {
     return getStatus() == WorkItemStatus::COMPLETED;
 }
 
-// This will be completed once the dependencies are met 
+// marks the task finished it then tells the assignee its group and the instance
 void Task::complete(){
-
     setStatus(WorkItemStatus::COMPLETED);
 
+    if(assignee != nullptr){
+        assignee->decrementWorkload();
+    }
 
+    // lets the group check whether all of its items are done
     if(parent != nullptr){
         parent->complete();
     }
 
+    // listeners react to this event
+    if(getInstance() != nullptr){
+        getInstance()->publish("ElementCompleted");
+    }
 }
 
 // this func only stores who is doing the task, the engine changes the status
