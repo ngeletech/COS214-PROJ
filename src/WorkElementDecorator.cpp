@@ -1,4 +1,5 @@
 #include "../include/Decorator.h"
+#include "../include/WorkData.h"
 #include <string>
 using namespace std;
 
@@ -7,7 +8,7 @@ WorkElementDecorator::WorkElementDecorator(WorkElement* element) : WorkElement(e
 }
 
 WorkElementDecorator::~WorkElementDecorator() {
-    if(!wrapped) return;
+    if (!wrapped) return;
     delete wrapped; 
 }
 
@@ -21,28 +22,27 @@ void WorkElementDecorator::complete() {
     wrapped->complete();
 }
 
-bool WorkElementDecorator::isComplete() {
-    if(!wrapped) return;
+bool WorkElementDecorator::isComplete() const {
+    if(!wrapped) return false;
     return wrapped->isComplete();
 }
 
 bool WorkElementDecorator::isAvailable() {
-    if(!wrapped) return;
+    if(!wrapped) return false;
     return wrapped->isAvailable();
 }
 
-WorkData WorkElementDecorator::getPayload() {
-    if(!wrapped) return;
+WorkData WorkElementDecorator::getPayload() const {
     return wrapped->getPayload();
 }
 
 string WorkElementDecorator::getName() {
-    if(!wrapped) return;
+    if(!wrapped) return "";
     return wrapped->getName();
 }
 
-WorkItemStatus WorkElementDecorator::getstatus() {
-    if(!wrapped) return;
+WorkItemStatus WorkElementDecorator::getStatus() {
+    if(!wrapped) return WorkItemStatus::CREATED;
     return wrapped->getStatus();
 }
 
@@ -52,7 +52,7 @@ void WorkElementDecorator::setStatus(WorkItemStatus status) {
 }
 
 WorkflowInstance* WorkElementDecorator::getInstance() {
-    if(!wrapped) return;
+    if(!wrapped) return nullptr;
     return wrapped->getInstance();
 }
 

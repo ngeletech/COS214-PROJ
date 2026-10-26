@@ -14,18 +14,18 @@ class WorkElementDecorator: public WorkElement {
         ~WorkElementDecorator();
         void execute();
         void complete();
-        bool isComplete();
+        bool isComplete() const;
         bool isAvailable();
-        WorkData getPayload();
+        WorkData getPayload() const;
         string getName();
-        WorkItemStatus getstatus();
+        WorkItemStatus getStatus();
         void setStatus(WorkItemStatus status);
         WorkflowInstance* getInstance();
         void setInstance(WorkflowInstance* instance);
         void assignTo(Participant* participant);
 };
 
-class PayloadDecorator: WorkElementDecorator {
+class PayloadDecorator: public WorkElementDecorator {
     private:
         string key;
         string value;
@@ -43,7 +43,7 @@ class AuditedDecorator: public WorkElementDecorator {
         void execute();
 };
 
-class PriorityDecorator: WorkElementDecorator {
+class PriorityDecorator: public WorkElementDecorator {
     private:
         int priority;
 
