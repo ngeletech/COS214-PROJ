@@ -3,13 +3,9 @@
 #include <string>
 using namespace std;
 
-RestApiAdapter::RestApiAdapter(RestApiClient* client) {
-    this->client = client ? client : new RestApiClient();
-}
+RestApiAdapter::RestApiAdapter(RestApiClient* client) : client(client) {}
 
-RestApiAdapter::~RestApiAdapter() {
-    delete client;
-}
+RestApiAdapter::~RestApiAdapter() {}
 
 ServiceResponse RestApiAdapter::sendRequest(const ServiceRequest& req) {
     string body = "";

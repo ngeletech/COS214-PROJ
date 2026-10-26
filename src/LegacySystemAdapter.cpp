@@ -3,13 +3,9 @@
 #include <string>
 using namespace std;
 
-LegacySystemAdapter::LegacySystemAdapter(LegacySystemApi* api) {
-    this->api = api ? api : new LegacySystemApi();
-}
+LegacySystemAdapter::LegacySystemAdapter(LegacySystemApi* api) : api(api) {}
 
-LegacySystemAdapter::~LegacySystemAdapter() {
-    delete api;
-}
+LegacySystemAdapter::~LegacySystemAdapter() {}
 
 ServiceResponse LegacySystemAdapter::sendRequest(const ServiceRequest& req) {
     string record = "";
