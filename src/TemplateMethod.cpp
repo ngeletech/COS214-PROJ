@@ -6,7 +6,7 @@
 UserTask::UserTask(const std::string& name) : Task(name) {}
 
 void UserTask::doWork() {
-    std::cout << "[UserTask]: Executing manual step '" << name << "' assigned to human participant" << std::endl;
+    std::cout << "[UserTask]: Executing manual step '" << getName() << "' assigned to human participant" << std::endl;
 }
 
 
@@ -14,7 +14,7 @@ void UserTask::doWork() {
 ServiceTask::ServiceTask(const std::string& name) : Task(name) {}
 
 void ServiceTask::doWork() {
-    std::cout << "[ServiceTask]: Invoking external service endpoint '" << name << "'." << std::endl;
+    std::cout << "[ServiceTask]: Invoking external service endpoint '" << getName()  << "'." << std::endl;
 }
 
 // 3. ApprovalTask Implementation
@@ -36,9 +36,9 @@ void ApprovalTask::doWork() {
 }
 
 // 4. ScriptTask Implementation
-ScriptTask::ScriptTask(const std::string& name, const std::string& key) : Task(name, key) {}
+ScriptTask::ScriptTask(const std::string& name, const std::string& key, const std::string& value) : Task(name), key(key), value(value) {}
 
 void ScriptTask::doWork() {
-    std::cout << "[ScriptTask]: Executing script '" << name << "' with key '" << key << "'." << std::endl;
+    std::cout << "[ScriptTask]: Executing script '" << getName() << "' -> Setting key [" << this->key << "] = " << this->value << std::endl;
 }
 

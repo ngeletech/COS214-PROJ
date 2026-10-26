@@ -2,7 +2,7 @@
 #define TEMPLATE_METHOD_H
 
 #include <string>
-#include "Task.h"
+#include "composite.h"
 
 /**
  * @class UserTask
