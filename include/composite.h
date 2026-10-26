@@ -6,6 +6,7 @@
 #include "Iterator.h"
 
 // Forward declarations
+class Issue;
 class Participant;
 class WorkData;
 class WorkflowInstance;
@@ -67,6 +68,33 @@ public:
     virtual Participant* getAssignee() const;
     virtual bool requiresAssignee() const;
     virtual int getPriority() const;
+};
+
+/** @brief Leaf: a single task. execute() is the Template Method. */
+class Task : public WorkElement {
+protected:
+    Participant* assignee;
+
+    /** @brief True if Assigned, or Available when no assignee is needed. */
+    bool checkReady() const;
+
+    /** @brief The one step each kind of task fills in. */
+    virtual void doWork() = 0;
+
+    /** @brief Publishes an ElementExecuted event. */
+    void notifyListeners();
+
+public:
+    Task(const std::string& name);
+
+    void execute() override;
+    void complete() override;
+    bool isComplete() const override;
+    void assignTo(Participant* participant) override;
+    Participant* getAssignee() const override;
+    bool requiresAssignee() const override;
+
+    void reportIssue(Issue issue);
 };
 
 /** @brief Composite: a group of work elements. */
