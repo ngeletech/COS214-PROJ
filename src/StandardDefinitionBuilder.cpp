@@ -10,7 +10,8 @@ StandardDefinitionBuilder::StandardDefinitionBuilder() {
 StandardDefinitionBuilder::~StandardDefinitionBuilder() {
     if (this->product != nullptr) {
         delete this->product;
-    
+    }
+
 
 }
 
