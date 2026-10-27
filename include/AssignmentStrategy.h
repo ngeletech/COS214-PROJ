@@ -12,6 +12,7 @@ class WorkElement;
 class AssignmentStrategy {
     public:
         virtual Participant* select(WorkElement& element, const WorkData& data, std::vector<Participant*> candidates) = 0;
+        virtual ~AssignmentStrategy() {}
 };
 
 class RoleMatchingStrategy : public AssignmentStrategy {
