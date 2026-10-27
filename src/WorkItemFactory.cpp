@@ -1,6 +1,7 @@
 #include "WorkItemFactory.h"
 #include "WorkElement.h"
 #include "WorkflowInstance.h"
+//#include "composite.h"
 #include "WorkItemStatus.h"
 #include "WorkItemSpec.h"
 #include "WorkData.h"
@@ -10,6 +11,7 @@
 #include "ScriptTask.h"
 #include "ParallelGroup.h"
 #include "SequentialGroup.h"
+//#include "TemplateMethod.h"
 #include <stdexcept>
 
 /**
