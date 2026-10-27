@@ -10,6 +10,7 @@
 #include "ScriptTask.h"
 #include "ParallelGroup.h"
 #include "SequentialGroup.h"
+#include <stdexcept>
 
 /**
  * @brief Virtual destructor so concrete factories are deleted correctly through a WorkItemFactory pointer.
@@ -63,7 +64,7 @@ WorkElement* ScriptTaskFactory::makeElement(const WorkItemSpec& spec){
     auto key = config.find("key");
     auto value = config.find("value");
     if(key == config.end() || value == config.end()){
-        throw TividyError();
+        throw std::invalid_argument("ScriptTask needs \"key\" and \"value\" in its config");
     }
     return new ScriptTask(spec.getName(), key->second, value->second);
 }
