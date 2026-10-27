@@ -3,8 +3,6 @@
 #include "Issue.h"
 #include <iostream>
 
-using namespace std;
-
 FrontlineHandler::FrontlineHandler(Participant* responsible, int maxSeverity)
     : EscalationHandler(responsible, maxSeverity)
 {
@@ -12,6 +10,6 @@ FrontlineHandler::FrontlineHandler(Participant* responsible, int maxSeverity)
 
 void FrontlineHandler::resolve(const Issue& issue)
 {
-    cout << "Frontline Handler resolved issue: "
-         << issue.getDescription() << endl;
+    std::cout << "Frontline Handler resolved issue: "
+         << issue.getDescription() << std::endl;
 }

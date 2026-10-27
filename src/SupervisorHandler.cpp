@@ -3,8 +3,6 @@
 #include "Issue.h"
 #include <iostream>
 
-using namespace std;
-
 SupervisorHandler::SupervisorHandler(Participant* responsible, int maxSeverity)
     : EscalationHandler(responsible, maxSeverity)
 {
@@ -12,6 +10,6 @@ SupervisorHandler::SupervisorHandler(Participant* responsible, int maxSeverity)
 
 void SupervisorHandler::resolve(const Issue& issue)
 {
-    cout << "Supervisor Handler resolved issue: "
-         << issue.getDescription() << endl;
+    std::cout << "Supervisor Handler resolved issue: "
+         << issue.getDescription() << std::endl;
 }
