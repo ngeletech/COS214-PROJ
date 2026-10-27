@@ -45,6 +45,7 @@ add_executable(unit_tests
     tests/test_main.cpp
     tests/test_smoke.cpp
     # Builder + Factory Method
+    tests/test_builder.cpp
 
     # Composite + Iterator
 
