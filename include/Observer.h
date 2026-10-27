@@ -1,6 +1,7 @@
 #ifndef OBSERVER_H
 #define OBSERVER_H
 
+#include <iostream>
 #include <string>
 #include <vector>
 #include <map>

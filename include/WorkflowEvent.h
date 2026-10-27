@@ -1,6 +1,7 @@
 #ifndef WORKFLOWEVENT_H
 #define WORKFLOWEVENT_H
 
+#include <iostream>
 #include <string>
 
 /**
