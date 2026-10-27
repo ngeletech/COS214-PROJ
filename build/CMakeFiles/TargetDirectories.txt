@@ -1,4 +1,0 @@
-/home/ngele_103_/COS214 Practicals/Project/COS214-PROJ/build/CMakeFiles/unit_tests.dir
-/home/ngele_103_/COS214 Practicals/Project/COS214-PROJ/build/CMakeFiles/test.dir
-/home/ngele_103_/COS214 Practicals/Project/COS214-PROJ/build/CMakeFiles/edit_cache.dir
-/home/ngele_103_/COS214 Practicals/Project/COS214-PROJ/build/CMakeFiles/rebuild_cache.dir

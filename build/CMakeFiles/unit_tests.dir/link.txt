@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/unit_tests.dir/tests/test_main.cpp.o CMakeFiles/unit_tests.dir/tests/test_smoke.cpp.o -o unit_tests 
