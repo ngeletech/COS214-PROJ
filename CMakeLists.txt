@@ -25,7 +25,6 @@ set(ENGINE_SRC
     src/ReportGenerator.cpp
 
     # State + Memento
-    src/WorkflowInstance.cpp
 
     # Strategy + Chain of Responsibility
     src/Participant.cpp
