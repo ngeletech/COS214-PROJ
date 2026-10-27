@@ -1,5 +1,4 @@
 #include "State.h"
-#include "WorkItemStatus.h"
 #include "InstanceSnapshot.h"
 #include "Iterator.h"
 #include "composite.h"
