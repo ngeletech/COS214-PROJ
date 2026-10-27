@@ -10,6 +10,9 @@
 #include <vector>
 #include <stdexcept>
 
+#include "AssignmentStrategy.h"
+#include "Chain-Of-Responsibility.h"
+
 // Forward declarations
 class WorkflowDefinitionBuilder;
 class WorkflowDefinition;
