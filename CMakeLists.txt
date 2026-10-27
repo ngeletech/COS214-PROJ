@@ -14,6 +14,13 @@ set(ENGINE_SRC
     # Composite + Iterator
 
     # State + Memento
+    src/InstanceState.cpp
+    src/CreatedState.cpp
+    src/RunningState.cpp
+    src/SuspendedState.cpp
+    src/CompletedState.cpp
+    src/FailedState.cpp
+    src/CancelledState.cpp
 
     # Strategy + Chain of Responsibility
 
@@ -46,7 +53,7 @@ add_executable(unit_tests
     # Composite + Iterator
 
     # State + Memento
-
+    tests/test_state.cpp
     # Strategy + Chain of Responsibility
 
     # Adapter + Decorator

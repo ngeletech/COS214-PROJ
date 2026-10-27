@@ -1,14 +1,16 @@
-#include "WorkflowInstance.h"
-#include "InstanceState.h"
+#include "State.h"
+#include "WorkItemStatus.h"
 #include "InstanceSnapshot.h"
 #include "Iterator.h"
 #include "composite.h"
 #include "Participant.h"
+#include "WorkflowListener.h"
+#include "WorkflowEngine.h"
 #include <map>
 
-WorkflowInstance::WorkflowInstance(int id, const WorkflowDefinition* definition , WorkflowEngine* engine, WorkData data) 
-    : id(id), definition(definition), engine(engine), data(data), state(nullptr), root(nullptr) {
-        state = new CreatedState(*this);
+WorkflowInstance::WorkflowInstance(int id, const WorkflowDefinition* definition, WorkData data, WorkflowEngine* engine)
+    : id(id), data(data), state(nullptr), definition(definition), root(nullptr), engine(engine) {
+    state = new CreatedState(*this);
 }
     
 WorkflowInstance::~WorkflowInstance() {
@@ -20,7 +22,7 @@ int WorkflowInstance::getId() const {
     return id;
 }
     
-const WorkflowInstance::WorkflowDefinition* getDefinition() const{
+const WorkflowDefinition* WorkflowInstance::getDefinition() const{
     return definition;
 }
    
@@ -105,11 +107,11 @@ InstanceSnapshot WorkflowInstance::saveSnapshot() {
         if (who != nullptr) {
             snap.assignments[element->getName()] = who->getId();
         }
-    
+    }
     return snap;
 }
     
-void WorkflowInstance::restore(const InstanceSnapshot& snapshot) {
+void WorkflowInstance::restore(const InstanceSnapshot& snap) {
     data = snap.data;
 
     for (DepthFirstIterator it(root); !it.isDone(); it.next()) {

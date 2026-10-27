@@ -1,5 +1,4 @@
-#include "InstanceState.h"
-#include "WorkflowInstance.h"
+#include "State.h"
 #include <stdexcept>
 
 //InstanceState - every action is refused unless a concrete state overrides it
@@ -25,10 +24,20 @@ void InstanceState::cancel(){
     throw std::logic_error("Cannot cancel while " + getName());
 }
 
-void InstanceState::fail(const Issue& issue){
+void InstanceState::fail(const Issue&){
     throw std::logic_error("Cannot fail while " + getName());
 }
 
 bool InstanceState::canCancel() const {
     return false;
 }  
+
+InstanceState* InstanceState::create(const std::string& name, WorkflowInstance& inst) {
+    if (name == "Created")   return new CreatedState(inst);
+    if (name == "Running")   return new RunningState(inst);
+    if (name == "Suspended") return new SuspendedState(inst);
+    if (name == "Completed") return new CompletedState(inst);
+    if (name == "Failed")    return new FailedState(inst);
+    if (name == "Cancelled") return new CancelledState(inst);
+    throw std::invalid_argument("Unknown state: " + name);
+}

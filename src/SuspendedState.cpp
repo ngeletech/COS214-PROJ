@@ -1,5 +1,4 @@
-#include "InstanceState.h"
-#include "WorkflowInstance.h"
+#include "State.h"
 #include <stdexcept>
 
 SuspendedState::SuspendedState(WorkflowInstance& i) : InstanceState(i) {}

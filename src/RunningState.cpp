@@ -1,5 +1,4 @@
-#include "InstanceState.h"
-#include "WorkflowInstance.h"
+#include "State.h"
 #include <stdexcept>
 
 RunningState::RunningState(WorkflowInstance& i) : InstanceState(i) {}
@@ -22,7 +21,7 @@ void RunningState::cancel() {
     i->publish("InstanceCancelled");
 } 
     
-void RunningState::fail(const Issue& issue) {
+void RunningState::fail(const Issue&) {
     WorkflowInstance* i = instance;
     i->setState(new FailedState(*i));
     i->publish("InstanceFailed");
