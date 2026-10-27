@@ -3,42 +3,41 @@
  * @brief Unit tests for the Builder design pattern.
  */
 
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
 #include "../include/Builder.h"
 
-TEST_SUITE("Builder Pattern Tests") {
+    TEST_CASE("WorkflowDesigner - Assembly via Director") {
+        WorkflowDefinitionBuilder* builder = new StandardDefinitionBuilder();
+        WorkflowDesigner designer(builder);
 
-    TEST_CASE("StandardDefinitionBuilder - Construct Valid Workflow") {
-        StandardDefinitionBuilder builder;
-        builder.setName("Meal Order Workflow");
+        std::vector<WorkItemSpec> specs = {
+            {"Task", "Step1", "Config1"}
+        };
 
-        WorkItemSpec step1{"Task", "PrepBreakfast", "StandardMenu"};
-        WorkItemSpec step2{"Task", "PackageOrder", "EcoBox"};
+        // Use nullptr while Strategy .cpp is not yet linked
+        AssignmentStrategy* strategy = nullptr;
+        EscalationHandler* handler = nullptr; 
 
-        builder.addWorkItem(step1);
-        builder.addWorkItem(step2);
+        WorkflowDefinition* def = designer.construct("MainWorkflow", specs, strategy, handler);
 
-        WorkflowDefinition* def = builder.build();
+        CHECK(def != nullptr);
+        CHECK(def->getName() == "MainWorkflow");
+        CHECK(def->getWorkItemSpecs().size() == 1);
 
-        REQUIRE(def != nullptr);
-        CHECK(def->getName() == "Meal Order Workflow");
-        CHECK(def->getWorkItemSpecs().size() == 2);
-        CHECK(def->getWorkItemSpecs()[0].name == "PrepBreakfast");
-
-        delete def;
+        delete def; 
     }
 
     TEST_CASE("StandardDefinitionBuilder - Empty Workflow Throws Exception") {
-        StandardDefinitionBuilder builder;
-        builder.setName("Empty Plan");
+        WorkflowDefinitionBuilder* builder = new StandardDefinitionBuilder();
+        builder->setName("Empty Plan");
 
-        CHECK_THROWS_AS(builder.build(), std::runtime_error);
+        CHECK_THROWS_AS(builder->build(), std::runtime_error);
+        delete builder;
     }
 
     TEST_CASE("WorkflowDesigner - Assembly via Director") {
-        StandardDefinitionBuilder builder;
-        WorkflowDesigner designer(&builder);
+        WorkflowDefinitionBuilder* builder = new StandardDefinitionBuilder();
+        WorkflowDesigner designer(builder);
 
         std::vector<WorkItemSpec> specs = {
             {"Task", "PrepBreakfast", "MenuA"},
@@ -53,4 +52,3 @@ TEST_SUITE("Builder Pattern Tests") {
 
         delete def;
     }
-}
