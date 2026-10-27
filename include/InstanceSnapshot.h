@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include "WorkData.h"
-#include "WorkItemStatus.h"
+#include "composite.h"
 
 class WorkflowInstance;
 
