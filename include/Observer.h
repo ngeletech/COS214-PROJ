@@ -60,7 +60,7 @@ public:
      *
      * @param event Event information to be distributed.
      */
-    void publish(const string& event);
+    void publish(const WorkflowEvent& event);
 
     /**
      * @brief Destructor.
@@ -156,7 +156,7 @@ public:
      * @param message Message to send.
      */
     NotificationListener(
-        string type,
+        string eventType,
         vector<string> recipients,
         string message
     );
