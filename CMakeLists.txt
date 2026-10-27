@@ -25,6 +25,13 @@ set(ENGINE_SRC
     src/ReportGenerator.cpp
 
     # State + Memento
+    src/InstanceState.cpp
+    src/CreatedState.cpp
+    src/RunningState.cpp
+    src/SuspendedState.cpp
+    src/CompletedState.cpp
+    src/FailedState.cpp
+    src/CancelledState.cpp
 
     # Strategy + Chain of Responsibility
     src/Participant.cpp
@@ -61,7 +68,7 @@ add_executable(unit_tests
     tests/test_iterator.cpp
 
     # State + Memento
-
+    tests/test_state.cpp
     # Strategy + Chain of Responsibility
 
     # Adapter + Decorator
