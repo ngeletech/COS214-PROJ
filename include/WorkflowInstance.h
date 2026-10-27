@@ -27,6 +27,7 @@ public:
 
     int getId() const;
     const WorkflowDefinition* getDefinition() const;
+    void setRoot(WorkGroup* newRoot);
     WorkGroup* getRoot() const;
     std::string getStateName() const;
 
