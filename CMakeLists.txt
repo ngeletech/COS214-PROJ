@@ -10,6 +10,9 @@ include_directories(include tests)
 # ---------- engine sources: each pair adds their own files in their own block ----------
 set(ENGINE_SRC
     # Builder + Factory Method
+    src/WorkflowDesigner.cpp
+    src/WorkflowDefinition.cpp
+    src/StandardDefinitionBuilder.cpp
 
     # Composite + Iterator
 
