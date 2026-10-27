@@ -1,6 +1,5 @@
 #include "Observer.h"
-#include "AuditHistory.h"
-#include "AuditEntry.h"
+#include "Iterator.h"
 #include "WorkflowEvent.h"
 
 // ===============================
