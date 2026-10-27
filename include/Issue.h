@@ -1,6 +1,7 @@
 #ifndef ISSUE_H
 #define ISSUE_H
 
+#include <iostream>
 #include <string>
 
 /**
