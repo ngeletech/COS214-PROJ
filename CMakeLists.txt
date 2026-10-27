@@ -18,6 +18,15 @@ set(ENGINE_SRC
     # Strategy + Chain of Responsibility
 
     # Adapter + Decorator
+    src/WorkData.cpp 
+    src/RestApiAdapter.cpp
+    src/RestApiClient.cpp
+    src/LegacySystemAdapter.cpp
+    src/LegacySystemApi.cpp
+    src/MessagingAdapter.cpp
+    src/MessageQueueClient.cpp
+    src/ServiceRequest.cpp
+    src/ServiceResponse.cpp
 
     # Observer + Template Method
 
@@ -41,6 +50,7 @@ add_executable(unit_tests
     # Strategy + Chain of Responsibility
 
     # Adapter + Decorator
+    tests/test_adapter.cpp
 
     # Observer + Template Method
 
