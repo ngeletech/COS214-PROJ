@@ -29,6 +29,8 @@ set(ENGINE_SRC
     src/ServiceResponse.cpp
 
     # Observer + Template Method
+    src/Task.cpp
+    src/TemplateMethod.cpp
 
     # Facade + Command
 )

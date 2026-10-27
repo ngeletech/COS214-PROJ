@@ -1,6 +1,8 @@
 #include "../include/composite.h"
+#include "../include/State.h"
 
 #include <string>
+#include <iostream>
 
 Task::Task(const std::string& name) : WorkElement(name) {
     assignee = nullptr;
@@ -69,7 +71,7 @@ void Task::notifyListeners(){
     if (instance != nullptr) {
         std::cout << "[Task]: Task '" << getName() << "' has been executed. Notifying listeners." << std::endl;
 
-        instance->notifyElementExecuted(this);
+        instance->publish("ElementExecuted: " + getName());
 
     } else {
         std::cout << "[Task]: Task '" << getName() << "' has been executed, but no WorkflowInstance is associated." << std::endl;

@@ -3,6 +3,7 @@
 
 #include <string>
 #include "composite.h"
+#include "State.h"
 
 /**
  * @class UserTask
