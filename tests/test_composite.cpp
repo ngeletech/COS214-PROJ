@@ -3,7 +3,7 @@
 #include "Participant.h"
 #include "TemplateMethod.h"
 #include "WorkData.h"
-#include "WorkflowInstance.h"
+#include "State.h"
 
 #include <string>
 #include <vector>
@@ -141,7 +141,7 @@ TEST_CASE("canStartChild() with a name that isn't a child") {
 }
 
 TEST_CASE("add() passes the group's instance down to the child") {
-    WorkflowInstance instance(1, nullptr, nullptr, WorkData());
+    WorkflowInstance instance(1, nullptr, WorkData(), nullptr);
     SequentialGroup group("Marlene");
     group.setInstance(&instance);
 

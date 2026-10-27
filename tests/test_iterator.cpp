@@ -3,7 +3,7 @@
 #include "Iterator.h"
 #include "TemplateMethod.h"
 #include "WorkData.h"
-#include "WorkflowInstance.h"
+#include "State.h"
 
 #include <string>
 #include <vector>
@@ -224,7 +224,7 @@ TEST_CASE("auditReport() with no audit log is empty") {
 
 // skipped until WorkflowInstance's constructor creates the state and the root group
 TEST_CASE("progressReport() counts the finished tasks" * doctest::skip()) {
-    WorkflowInstance instance(3, nullptr, nullptr, WorkData());
+    WorkflowInstance instance(3, nullptr, WorkData(), nullptr);
     WorkGroup* root = instance.getRoot();
     REQUIRE(root != nullptr);
 

@@ -1,6 +1,6 @@
 #include "../include/Iterator.h"
 #include "../include/composite.h"
-#include "../include/WorkflowInstance.h"
+#include "../include/State.h"
 
 #include <sstream>
 #include <string>

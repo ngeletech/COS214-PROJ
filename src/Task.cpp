@@ -1,6 +1,6 @@
 #include "../include/composite.h"
 #include "../include/Participant.h"
-#include "../include/WorkflowInstance.h"
+#include "../include/State.h"
 
 #include <iostream>
 #include <string>
