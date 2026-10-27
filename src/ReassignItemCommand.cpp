@@ -1,5 +1,4 @@
 #include "WorkflowCommand.h"
-#include "WorkflowInstance.h"
 
 ReassignItemCommand::ReassignItemCommand(WorkflowInstance* target, std::string elementName, Participant* newAssignee) : WorkflowCommand(target), elementName(elementName), newAssignee(newAssignee) {}
 void ReassignItemCommand::execute() {

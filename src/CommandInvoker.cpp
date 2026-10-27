@@ -1,4 +1,4 @@
-#include "WWorkflowCommand.h"
+#include "WorkflowCommand.h"
 #include "RollbackManager.h"
 
 CommandInvoker::CommandInvoker(RollbackManager* rollback) : rollback(rollback) {}

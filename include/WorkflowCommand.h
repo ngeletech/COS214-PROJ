@@ -4,12 +4,9 @@
 #include <iostream>
 #include <queue>
 #include <vector>
+#include "WorkflowEngine.h"
 
-
-class WorkflowInstance;
-class WorkflowEngine;
 class WorkData;
-class Participant;
 class RollbackManager;
 
 class WorkflowCommand {
