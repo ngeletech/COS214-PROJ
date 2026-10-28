@@ -1,9 +1,10 @@
 #include "State.h"
+#include "composite.h"
 #include "InstanceSnapshot.h"
 #include "Iterator.h"
-#include "composite.h"
 #include "Participant.h"
-#include "WorkflowListener.h"
+#include "Observer.h"
+#include "WorkflowEvent.h"
 #include "WorkflowEngine.h"
 #include <map>
 
@@ -87,8 +88,9 @@ void WorkflowInstance::subscribe(WorkflowListener* listener) {
 }
     
 void WorkflowInstance::publish(const std::string& event) {
+    WorkflowEvent ev(event, id, "", "");
     for (std::size_t k = 0; k < listeners.size(); ++k) {
-        listeners[k]->update(event);
+        listeners[k]->update(ev);
     }
 }
 
@@ -98,13 +100,15 @@ InstanceSnapshot WorkflowInstance::saveSnapshot() {
     snap.data = data;
     snap.stateName = state->getName();
 
-    for (DepthFirstIterator it(root); !it.isDone(); it.next()) {
-        WorkElement* element = it.current();
-        snap.elementStatuses[element->getName()] = element->getStatus();
+    if (root != nullptr) {
+        for (DepthFirstIterator it(root); !it.isDone(); it.next()) {
+            WorkElement* element = it.current();
+            snap.elementStatuses[element->getName()] = element->getStatus();
 
-        Participant* who = element->getAssignee();
-        if (who != nullptr) {
-            snap.assignments[element->getName()] = who->getId();
+            Participant* who = element->getAssignee();
+            if (who != nullptr) {
+                snap.assignments[element->getName()] = who->getId();
+            }
         }
     }
     return snap;
