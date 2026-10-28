@@ -53,6 +53,11 @@ set(ENGINE_SRC
 
     # Observer + Template Method
     src/TemplateMethod.cpp
+    src/WorkflowEvent.cpp
+    src/WorkflowEventPublisher.cpp
+    src/AuditLogger.cpp
+    src/NotificationListener.cpp
+    src/DashboardListener.cpp
 
     # Facade + Command
 )
@@ -65,6 +70,7 @@ endif()
 add_executable(unit_tests
     tests/test_main.cpp
     tests/test_smoke.cpp
+    tests/test_observer.cpp
     # Builder + Factory Method
     tests/test_builder.cpp
 
