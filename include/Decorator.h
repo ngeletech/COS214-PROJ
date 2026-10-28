@@ -1,8 +1,10 @@
 #ifndef DECORATOR_H
 #define DECORATOR_H
 
-#include "composite.h"
 #include <string>
+#include "WorkData.h"
+#include "composite.h"
+
 using namespace std;
 
 class WorkElementDecorator: public WorkElement {
@@ -15,12 +17,12 @@ class WorkElementDecorator: public WorkElement {
         void execute();
         void complete();
         bool isComplete() const;
-        bool isAvailable();
+        bool isAvailable() const;
         WorkData getPayload() const;
-        string getName();
-        WorkItemStatus getStatus();
+        string getName() const;
+        WorkItemStatus getStatus() const;
         void setStatus(WorkItemStatus status);
-        WorkflowInstance* getInstance();
+        WorkflowInstance* getInstance() const;
         void setInstance(WorkflowInstance* instance);
         void assignTo(Participant* participant);
 };

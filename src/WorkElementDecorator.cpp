@@ -27,7 +27,7 @@ bool WorkElementDecorator::isComplete() const {
     return wrapped->isComplete();
 }
 
-bool WorkElementDecorator::isAvailable() {
+bool WorkElementDecorator::isAvailable() const {
     if(!wrapped) return false;
     return wrapped->isAvailable();
 }
@@ -36,12 +36,12 @@ WorkData WorkElementDecorator::getPayload() const {
     return wrapped->getPayload();
 }
 
-string WorkElementDecorator::getName() {
+string WorkElementDecorator::getName() const{
     if(!wrapped) return "";
     return wrapped->getName();
 }
 
-WorkItemStatus WorkElementDecorator::getStatus() {
+WorkItemStatus WorkElementDecorator::getStatus() const {
     if(!wrapped) return WorkItemStatus::CREATED;
     return wrapped->getStatus();
 }
@@ -51,7 +51,7 @@ void WorkElementDecorator::setStatus(WorkItemStatus status) {
     wrapped->setStatus(status);
 }
 
-WorkflowInstance* WorkElementDecorator::getInstance() {
+WorkflowInstance* WorkElementDecorator::getInstance() const {
     if(!wrapped) return nullptr;
     return wrapped->getInstance();
 }
