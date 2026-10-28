@@ -1,5 +1,5 @@
-#ifndef MEMENTO_H
-#define MEMENTO_H
+#ifndef INSTANCESNAPSHOT_H
+#define INSTANCESNAPSHOT_H
 
 #include <map>
 #include <string>
@@ -30,8 +30,8 @@ class InstanceSnapshot {
 /**
  * @class RollbackManager
  * @brief Caretaker. Stores the snapshots per instance without looking inside them
- * Snapshots are kept separatly for each instance id, so rolling back one order
- * can never restore another rder's state
+ * Snapshots are kept separately for each instance id, so rolling back one order
+ * can never restore another order's state
  */
 
 class RollbackManager {
