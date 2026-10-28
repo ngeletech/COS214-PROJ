@@ -15,6 +15,17 @@ set(ENGINE_SRC
     src/StandardDefinitionBuilder.cpp
 
     # Composite + Iterator
+    src/WorkElement.cpp
+    src/Task.cpp
+    src/WorkGroup.cpp
+    src/ParallelGroup.cpp
+    src/SequentialGroup.cpp
+    src/DepthFirstIterator.cpp
+    src/AvailableItemIterator.cpp
+    src/AuditEntry.cpp
+    src/AuditEntryIterator.cpp
+    src/AuditHistory.cpp
+    src/ReportGenerator.cpp
 
     # State + Memento
     # src/WorkflowInstance.cpp
@@ -27,6 +38,7 @@ set(ENGINE_SRC
     src/CancelledState.cpp
 
     # Strategy + Chain of Responsibility
+    src/Participant.cpp
 
     # Adapter + Decorator
     src/WorkData.cpp 
@@ -40,7 +52,6 @@ set(ENGINE_SRC
     src/ServiceResponse.cpp
 
     # Observer + Template Method
-    src/Task.cpp
     src/TemplateMethod.cpp
 
     # Facade + Command
@@ -58,6 +69,10 @@ add_executable(unit_tests
     tests/test_builder.cpp
 
     # Composite + Iterator
+    # tests/test_composite.cpp   
+    # tests/test_iterator.cpp
+    
+    #ill uncomment this once workflowinstance builds
 
     # State + Memento
     # tests/test_state.cpp
