@@ -6,7 +6,7 @@
 
 class WorkElement;
 class WorkflowInstance;
-class WorkItemSpec;
+struct WorkItemSpec;
 
 /**
  * @brief Creator in the Factory Method pattern.
@@ -85,10 +85,10 @@ class ApprovalTaskFactory : public WorkItemFactory {
 class ScriptTaskFactory : public WorkItemFactory {
     protected:
         /**
-         * @brief Creates a ScriptTask that writes config "key" = config "value" into the data
+         * @brief Creates a ScriptTask that writes key = value into the workflow data
          * @param spec the work item description; its config must contain "key" and "value"
          * @return a new ScriptTask
-         * @throws TividyError if "key" or "value" is missing from the config
+         * @throws std::invalid_argument if "key" or "value" is missing from the config
          */
         WorkElement* makeElement(const WorkItemSpec& spec) override;
 };

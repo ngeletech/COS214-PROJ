@@ -2,21 +2,18 @@
 #include <stdexcept>
 #include <string>
 #include "WorkItemFactory.h"
-#include "WorkElement.h"
-#include "WorkItemSpec.h"
+#include "Builder.h"
 #include "WorkData.h"
-#include "UserTask.h"
-#include "ServiceTask.h"
-#include "ApprovalTask.h"
-#include "ScriptTask.h"
-#include "ParallelGroup.h"
-#include "SequentialGroup.h"
-//#include "composite.h"
-//#include "TemplateMethod.h"
+#include "composite.h"
+#include "TemplateMethod.h"
 
 namespace {
-    WorkItemSpec makeSpec (const std::string& type, const std::string& name ){
-        return WorkItemSpec(type, name, WorkData());
+    WorkItemSpec makeSpec (const std::string& type, const std::string& name, const std::string& config = ""){
+        WorkItemSpec spec;
+        spec.type = type;
+        spec.name = name;
+        spec.config = config;
+        return spec;
     }
 }
 
@@ -63,7 +60,7 @@ TEST_CASE("create() keeps the spec name and sets the CREATED status") {
     WorkElement* e = factory.create(makeSpec("UserTask", "review form"), nullptr);
     REQUIRE(e != nullptr);
     CHECK(e->getName() == "review form");
-    CHECK(e->getStatus() == CREATED);
+    CHECK(e->getStatus() == WorkItemStatus::CREATED);
     delete e;
 }
 
@@ -71,21 +68,22 @@ TEST_CASE("ScriptTaskFactory reads key and value from the config") {
     ScriptTaskFactory factory;
 
     SUBCASE("builds a ScriptTask when both are present") {
-        WorkData config;
-        config.addData("key", "approved");
-        config.addData("value", "yes");
-        WorkElement* e = factory.create(WorkItemSpec("ScriptTask", "set flag", config), nullptr);
+        WorkElement* e = factory.create(makeSpec("ScriptTask", "UpdateOrderStatus", "OrderStatus, IN_PROGRESS"), nullptr);
         REQUIRE(e != nullptr);
+        CHECK(dynamic_cast<ScriptTask*>(e) != nullptr);
+        CHECK(e->getName() == "UpdateOrderStatus");
+        delete e;
+    }
+    SUBCASE("also accepts no space after the comma") {
+        WorkElement* e = factory.create(makeSpec("ScriptTask", "UpdateOrderStatus", "OrderStatus,IN_PROGRESS"), nullptr);
         CHECK(dynamic_cast<ScriptTask*>(e) != nullptr);
         delete e;
     }
     SUBCASE("throws when key and value are missing") {
         CHECK_THROWS_AS(factory.create(makeSpec("ScriptTask", "bad"), nullptr), std::invalid_argument);
     }
-    SUBCASE("throws when only the key is given") {
-        WorkData config;
-        config.addData("key", "approved");
-        CHECK_THROWS_AS(factory.create(WorkItemSpec("ScriptTask", "half", config), nullptr), std::invalid_argument);
+    SUBCASE("throws when the key is empty") {
+        CHECK_THROWS_AS(factory.create(makeSpec("ScriptTask", "nokey", ",IN_PROGRESS"), nullptr), std::invalid_argument);
     }
 }
 
@@ -130,7 +128,7 @@ TEST_CASE("Looking a factory up by spec type builds the right element") {
     WorkItemFactoryRegistry registry;
     WorkItemSpec spec = makeSpec("SequentialGroup", "stage 1");
 
-    WorkItemFactory* factory = registry.getFactory(spec.getType());
+    WorkItemFactory* factory = registry.getFactory(spec.type);
     REQUIRE(factory != nullptr);
 
     WorkElement* e = factory->create(spec, nullptr);
