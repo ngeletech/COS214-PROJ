@@ -15,18 +15,7 @@ set(ENGINE_SRC
     src/StandardDefinitionBuilder.cpp
 
     # Composite + Iterator
-    src/WorkElement.cpp
-    src/Task.cpp
-    src/WorkGroup.cpp
-    src/ParallelGroup.cpp
-    src/SequentialGroup.cpp
-    src/DepthFirstIterator.cpp
-    src/AvailableItemIterator.cpp
-    src/AuditEntry.cpp
-    src/AuditEntryIterator.cpp
-    src/AuditHistory.cpp
-    src/ReportGenerator.cpp
-
+    
     # State + Memento
     src/InstanceState.cpp
     src/CreatedState.cpp
@@ -40,18 +29,14 @@ set(ENGINE_SRC
     src/Participant.cpp
 
     # Adapter + Decorator
-    src/WorkData.cpp 
-    src/RestApiAdapter.cpp
-    src/RestApiClient.cpp
-    src/LegacySystemAdapter.cpp
-    src/LegacySystemApi.cpp
-    src/MessagingAdapter.cpp
-    src/MessageQueueClient.cpp
-    src/ServiceRequest.cpp
-    src/ServiceResponse.cpp
+    src/WorkElementDecorator.cpp
+    src/AuditedDecorator.cpp
+    src/PriorityDecorator.cpp
+    src/PayloadDecorator.cpp
 
     # Observer + Template Method
     src/TemplateMethod.cpp
+
 
     # Facade + Command
 )
@@ -79,6 +64,7 @@ add_executable(unit_tests
 
     # Adapter + Decorator
     tests/test_adapter.cpp
+    tests/test_decorator.cpp
 
     # Observer + Template Method
 
