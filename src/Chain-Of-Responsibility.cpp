@@ -1,4 +1,6 @@
 #include "Chain-Of-Responsibility.h"
+#include "Issue.h"
+#include "Participant.h"
 
 EscalationHandler::EscalationHandler(Participant* responsible, int maxSeverity)
     : next(nullptr),

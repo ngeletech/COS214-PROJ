@@ -16,6 +16,11 @@ set(ENGINE_SRC
     # State + Memento
 
     # Strategy + Chain of Responsibility
+    src/Issue.cpp
+    src/Chain-Of-Responsibility.cpp
+    src/FrontlineHandler.cpp
+    src/SupervisorHandler.cpp
+    src/ManagerHandler.cpp
 
     # Adapter + Decorator
 
@@ -32,6 +37,7 @@ endif()
 add_executable(unit_tests
     tests/test_main.cpp
     tests/test_smoke.cpp
+    tests/test_chain_of_responsibility.cpp
     # Builder + Factory Method
 
     # Composite + Iterator
