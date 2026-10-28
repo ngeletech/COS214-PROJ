@@ -5,7 +5,6 @@
 #include <vector>
 #include "Iterator.h"
 
-
 // Forward declarations
 class Issue;
 class Participant;
