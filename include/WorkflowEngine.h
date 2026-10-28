@@ -8,6 +8,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include "Builder.h"
 #include "WorkData.h"
 
 class WorkflowDefinition;
