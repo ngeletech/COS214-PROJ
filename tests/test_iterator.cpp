@@ -222,11 +222,10 @@ TEST_CASE("auditReport() with no audit log is empty") {
     CHECK(reports.auditReport(1) == "");
 }
 
-// skipped until WorkflowInstance's constructor creates the state and the root group
-TEST_CASE("progressReport() counts the finished tasks" * doctest::skip()) {
+TEST_CASE("progressReport() counts the finished tasks") {
     WorkflowInstance instance(3, nullptr, WorkData(), nullptr);
-    WorkGroup* root = instance.getRoot();
-    REQUIRE(root != nullptr);
+    SequentialGroup* root = new SequentialGroup("root");
+    instance.setRoot(root);
 
     UserTask* joel = new UserTask("Joel");
     ParallelGroup* group = new ParallelGroup("Tommy");
