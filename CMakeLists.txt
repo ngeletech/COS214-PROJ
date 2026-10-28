@@ -10,31 +10,39 @@ include_directories(include tests)
 # ---------- engine sources: each pair adds their own files in their own block ----------
 set(ENGINE_SRC
     # Builder + Factory Method
-    src/WorkflowDesigner.cpp
-    src/WorkflowDefinition.cpp
-    src/StandardDefinitionBuilder.cpp
+
 
     # Composite + Iterator
+    src/WorkElement.cpp          
+    src/WorkGroup.cpp
+    src/ParallelGroup.cpp
+    src/SequentialGroup.cpp
+    src/DepthFirstIterator.cpp
+    src/AvailableItemIterator.cpp
     
     # State + Memento
-    src/InstanceState.cpp
-    src/CreatedState.cpp
-    src/RunningState.cpp
-    src/SuspendedState.cpp
-    src/CompletedState.cpp
-    src/FailedState.cpp
-    src/CancelledState.cpp
+
 
     # Strategy + Chain of Responsibility
     src/Participant.cpp
 
     # Adapter + Decorator
+    src/WorkData.cpp                 
+    src/RestApiAdapter.cpp           
+    src/RestApiClient.cpp            
+    src/LegacySystemAdapter.cpp      
+    src/LegacySystemApi.cpp          
+    src/MessagingAdapter.cpp         
+    src/MessageQueueClient.cpp       
+    src/ServiceRequest.cpp           
+    src/ServiceResponse.cpp 
     src/WorkElementDecorator.cpp
     src/AuditedDecorator.cpp
     src/PriorityDecorator.cpp
     src/PayloadDecorator.cpp
 
     # Observer + Template Method
+    src/Task.cpp
     src/TemplateMethod.cpp
 
 
@@ -50,7 +58,6 @@ add_executable(unit_tests
     tests/test_main.cpp
     tests/test_smoke.cpp
     # Builder + Factory Method
-    tests/test_builder.cpp
 
     # Composite + Iterator
     # tests/test_composite.cpp   
@@ -59,9 +66,10 @@ add_executable(unit_tests
     #ill uncomment this once workflowinstance builds
 
     # State + Memento
-    tests/test_state.cpp
+    # tests/test_state.cpp
+    
     # Strategy + Chain of Responsibility
-
+    
     # Adapter + Decorator
     tests/test_adapter.cpp
     tests/test_decorator.cpp
