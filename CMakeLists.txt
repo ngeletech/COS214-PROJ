@@ -10,6 +10,9 @@ include_directories(include tests)
 # ---------- engine sources: each pair adds their own files in their own block ----------
 set(ENGINE_SRC
     # Builder + Factory Method
+    src/WorkflowDesigner.cpp
+    src/WorkflowDefinition.cpp
+    src/StandardDefinitionBuilder.cpp
 
     # Composite + Iterator
 
@@ -29,6 +32,8 @@ set(ENGINE_SRC
     src/ServiceResponse.cpp
 
     # Observer + Template Method
+    src/Task.cpp
+    src/TemplateMethod.cpp
 
     # Facade + Command
 )
@@ -42,6 +47,7 @@ add_executable(unit_tests
     tests/test_main.cpp
     tests/test_smoke.cpp
     # Builder + Factory Method
+    tests/test_builder.cpp
 
     # Composite + Iterator
 
