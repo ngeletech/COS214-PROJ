@@ -245,7 +245,7 @@ void WorkflowEngine::addParticipant(Participant *participant)
     }
     participants.push_back(participant);
 }
-Participant *WorkflowEngine::findParticipant(int id)
+Participant *WorkflowEngine::findParticipant(int id) const
 {
     for (std::vector<Participant *>::iterator it = participants.begin(); it != participants.end(); ++it)
     {
