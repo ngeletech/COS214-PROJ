@@ -10,9 +10,7 @@ include_directories(include tests)
 # ---------- engine sources: each pair adds their own files in their own block ----------
 set(ENGINE_SRC
     # Builder + Factory Method
-    src/WorkflowDesigner.cpp
-    src/WorkflowDefinition.cpp
-    src/StandardDefinitionBuilder.cpp
+
 
     # Composite + Iterator
     src/WorkElement.cpp
@@ -23,14 +21,6 @@ set(ENGINE_SRC
     src/AvailableItemIterator.cpp
     
     # State + Memento
-    # src/WorkflowInstance.cpp
-    src/InstanceState.cpp
-    src/CreatedState.cpp
-    src/RunningState.cpp
-    src/SuspendedState.cpp
-    src/CompletedState.cpp
-    src/FailedState.cpp
-    src/CancelledState.cpp
 
     # Strategy + Chain of Responsibility
     src/Participant.cpp
@@ -67,7 +57,6 @@ add_executable(unit_tests
     tests/test_main.cpp
     tests/test_smoke.cpp
     # Builder + Factory Method
-    tests/test_builder.cpp
 
     # Composite + Iterator
     # tests/test_composite.cpp   
@@ -79,7 +68,6 @@ add_executable(unit_tests
     # tests/test_state.cpp
     
     # Strategy + Chain of Responsibility
-    src/Issue.cpp
     
     # Adapter + Decorator
     tests/test_adapter.cpp
