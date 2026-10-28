@@ -1,5 +1,5 @@
 #include "WorkflowCommand.h"
-#include "RollbackManager.h"
+#include "InstanceSnapshot.h"
 
 CommandInvoker::CommandInvoker(RollbackManager* rollback) : rollback(rollback) {}
 void CommandInvoker::submit(WorkflowCommand* command) {
