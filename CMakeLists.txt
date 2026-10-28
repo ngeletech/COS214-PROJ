@@ -78,7 +78,8 @@ add_executable(unit_tests
     # tests/test_state.cpp
     
     # Strategy + Chain of Responsibility
-
+    src/Issue.cpp
+    
     # Adapter + Decorator
     tests/test_adapter.cpp
 

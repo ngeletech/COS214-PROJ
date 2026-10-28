@@ -26,6 +26,11 @@ WorkflowInstance* makeInstance(int id = 1) {
     return new WorkflowInstance(id, nullptr, WorkData(), nullptr);
 }
 
+// Builds a valid Issue (Issue has no default constructor).
+Issue makeIssue() {
+    return Issue("Test", "Test issue", 1, "element");
+}
+
 } // namespace
 
 // ---------------- your original test ----------------
@@ -128,7 +133,7 @@ TEST_CASE("Cancel is allowed from Created, Running and Suspended") {
 TEST_CASE("Fail moves a running instance to Failed") {
     WorkflowInstance* inst = makeInstance();
     inst->start();
-    inst->fail(Issue());       // adjust if Issue needs constructor arguments
+    inst->fail(makeIssue());       // adjust if Issue needs constructor arguments
     CHECK(inst->getStateName() == "Failed");
     delete inst;
 }
@@ -140,7 +145,7 @@ TEST_CASE("Illegal transitions from Created throw") {
     CHECK_THROWS_AS(inst->suspend(), std::logic_error);
     CHECK_THROWS_AS(inst->resume(), std::logic_error);
     CHECK_THROWS_AS(inst->complete(), std::logic_error);
-    CHECK_THROWS_AS(inst->fail(Issue()), std::logic_error);
+    CHECK_THROWS_AS(inst->fail(makeIssue)), std::logic_error);
     CHECK(inst->getStateName() == "Created");   // state unchanged
     delete inst;
 }
@@ -154,7 +159,7 @@ TEST_CASE("Illegal transitions from Running and Suspended throw") {
     inst->suspend();
     CHECK_THROWS_AS(inst->suspend(), std::logic_error);
     CHECK_THROWS_AS(inst->complete(), std::logic_error);
-    CHECK_THROWS_AS(inst->fail(Issue()), std::logic_error);
+    CHECK_THROWS_AS(inst->fail(makeIssue()), std::logic_error);
     CHECK(inst->getStateName() == "Suspended");
     delete inst;
 }
@@ -168,7 +173,7 @@ TEST_CASE("Terminal states refuse every action") {
     CHECK_THROWS_AS(done->resume(), std::logic_error);
     CHECK_THROWS_AS(done->complete(), std::logic_error);
     CHECK_THROWS_AS(done->cancel(), std::logic_error);
-    CHECK_THROWS_AS(done->fail(Issue()), std::logic_error);
+    CHECK_THROWS_AS(done->fail(makeIssue()), std::logic_error);
 
     WorkflowInstance* gone = makeInstance();
     gone->cancel();
