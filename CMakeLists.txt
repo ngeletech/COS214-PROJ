@@ -36,6 +36,8 @@ set(ENGINE_SRC
     src/CompletedState.cpp
     src/FailedState.cpp
     src/CancelledState.cpp
+    src/InstanceSnapshot.cpp
+    src/WorkflowInstance.cpp
 
     # Strategy + Chain of Responsibility
     src/Participant.cpp
@@ -76,6 +78,7 @@ add_executable(unit_tests
 
     # State + Memento
     # tests/test_state.cpp
+    tests/test_memento.cpp
     
     # Strategy + Chain of Responsibility
     src/Issue.cpp
