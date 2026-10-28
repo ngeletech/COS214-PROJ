@@ -15,6 +15,12 @@ set(ENGINE_SRC
     src/StandardDefinitionBuilder.cpp
 
     # Composite + Iterator
+    src/WorkElement.cpp
+    src/WorkGroup.cpp
+    src/ParallelGroup.cpp
+    src/SequentialGroup.cpp
+    src/DepthFirstIterator.cpp
+    src/AvailableItemIterator.cpp
     
     # State + Memento
     # src/WorkflowInstance.cpp
@@ -47,7 +53,7 @@ set(ENGINE_SRC
     # Observer + Template Method
     src/Task.cpp
     src/TemplateMethod.cpp
-
+    src/WorkflowInstance.cpp
 
     # Facade + Command
 )
