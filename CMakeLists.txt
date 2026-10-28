@@ -12,37 +12,19 @@ set(ENGINE_SRC
     # Builder + Factory Method
 
     # Composite + Iterator
-    src/WorkElement.cpp
-    src/WorkGroup.cpp
-    src/ParallelGroup.cpp
-    src/SequentialGroup.cpp
-    src/DepthFirstIterator.cpp
-    src/AvailableItemIterator.cpp
-
+    
     # State + Memento
 
     # Strategy + Chain of Responsibility
-    src/Participant.cpp
 
     # Adapter + Decorator
-    src/WorkData.cpp 
-    src/RestApiAdapter.cpp
-    src/RestApiClient.cpp
-    src/LegacySystemAdapter.cpp
-    src/LegacySystemApi.cpp
-    src/MessagingAdapter.cpp
-    src/MessageQueueClient.cpp
-    src/ServiceRequest.cpp
-    src/ServiceResponse.cpp
     src/WorkElementDecorator.cpp
     src/AuditedDecorator.cpp
     src/PriorityDecorator.cpp
     src/PayloadDecorator.cpp
 
     # Observer + Template Method
-    src/Task.cpp
-    src/TemplateMethod.cpp
-    src/WorkflowInstance.cpp
+
 
     # Facade + Command
 )
