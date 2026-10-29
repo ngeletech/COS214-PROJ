@@ -2,10 +2,13 @@
 #define DECORATOR_H
 
 #include <string>
+#include "WorkData.h"
+#include "composite.h"
+
 using namespace std;
 
 class WorkElementDecorator: public WorkElement {
-    private:
+    protected:
         WorkElement* wrapped;
     
     public:
@@ -13,18 +16,18 @@ class WorkElementDecorator: public WorkElement {
         ~WorkElementDecorator();
         void execute();
         void complete();
-        bool isComplete();
-        bool isAvailable();
-        WorkData getPayload();
-        string getName();
-        WorkItemStatus getstatus();
+        bool isComplete() const;
+        bool isAvailable() const;
+        WorkData getPayload() const;
+        string getName() const;
+        WorkItemStatus getStatus() const;
         void setStatus(WorkItemStatus status);
-        WorkflowInstance* getInstance();
+        WorkflowInstance* getInstance() const;
         void setInstance(WorkflowInstance* instance);
         void assignTo(Participant* participant);
 };
 
-class PayloadDecorator: WorkElementDecorator {
+class PayloadDecorator: public WorkElementDecorator {
     private:
         string key;
         string value;
@@ -32,7 +35,7 @@ class PayloadDecorator: WorkElementDecorator {
     public:
         PayloadDecorator(WorkElement* element, string key, string value);
         void execute();
-        WorkData getPayload();
+        WorkData getPayload() const;
 };
 
 class AuditedDecorator: public WorkElementDecorator {
@@ -42,13 +45,14 @@ class AuditedDecorator: public WorkElementDecorator {
         void execute();
 };
 
-class PriorityDecorator: WorkElementDecorator {
+class PriorityDecorator: public WorkElementDecorator {
     private:
         int priority;
 
     public:
         PriorityDecorator(WorkElement* element, int priority);
-        int getPriority();
+        void execute();
+        int getPriority() const;
         void setPriority(int priority);
 };
 
