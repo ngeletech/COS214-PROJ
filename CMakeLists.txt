@@ -45,6 +45,11 @@ set(ENGINE_SRC
     src/SupervisorHandler.cpp
     src/ManagerHandler.cpp
 
+    src/AssignmentService.cpp
+    src/AttributeMatchingStrategy.cpp
+    src/LeastLoadedStrategy.cpp
+    src/RoleMatchingStrategy.cpp
+
     # Adapter + Decorator
     src/WorkData.cpp 
     src/RestApiAdapter.cpp
@@ -91,6 +96,7 @@ add_executable(unit_tests
     
     # Strategy + Chain of Responsibility
     src/Issue.cpp
+    tests/test_strategy.cpp
     
     # Adapter + Decorator
     tests/test_adapter.cpp
