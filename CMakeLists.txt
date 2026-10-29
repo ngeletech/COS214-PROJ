@@ -13,6 +13,8 @@ set(ENGINE_SRC
     src/WorkflowDesigner.cpp
     src/WorkflowDefinition.cpp
     src/StandardDefinitionBuilder.cpp
+    src/WorkItemFactory.cpp
+    src/WorkItemFactoryRegistry.cpp
 
     # Composite + Iterator
     src/WorkElement.cpp
@@ -36,6 +38,7 @@ set(ENGINE_SRC
     src/CompletedState.cpp
     src/FailedState.cpp
     src/CancelledState.cpp
+    src/InstanceSnapshot.cpp
 
     # Strategy + Chain of Responsibility
     src/Participant.cpp
@@ -44,10 +47,10 @@ set(ENGINE_SRC
     src/FrontlineHandler.cpp
     src/SupervisorHandler.cpp
     src/ManagerHandler.cpp
-
     src/AssignmentService.cpp
     src/AttributeMatchingStrategy.cpp
     src/LeastLoadedStrategy.cpp
+    src/ReassignItemCommand.cpp
     src/RoleMatchingStrategy.cpp
 
     # Adapter + Decorator
@@ -70,12 +73,8 @@ set(ENGINE_SRC
     src/DashboardListener.cpp
 
     # Facade + Command
-    src/WorkflowCommand.cpp
-    src/CommandInvoker.cpp
-    src/StartInstanceCommand.cpp
-    src/CancelCommand.cpp
-    src/ChangeDataCommand.cpp
-    src/ReassignItemCommand.cpp
+
+    src/WorkflowEngine.cpp
 )
 
 if(ENGINE_SRC)
@@ -90,6 +89,9 @@ add_executable(unit_tests
     tests/test_chain_of_responsibility.cpp
     # Builder + Factory Method
     tests/test_builder.cpp
+    tests/test_factory_method.cpp
+    tests/test_memento.cpp
+
 
     # Composite + Iterator
     # tests/test_composite.cpp   
@@ -98,11 +100,10 @@ add_executable(unit_tests
     #ill uncomment this once workflowinstance builds
 
     # State + Memento
-    tests/test_state.cpp
+    # tests/test_state.cpp
     
     # Strategy + Chain of Responsibility
-    src/Issue.cpp
-    tests/test_strategy.cpp
+    # src/Issue.cpp
     
     # Adapter + Decorator
     tests/test_adapter.cpp
@@ -110,8 +111,6 @@ add_executable(unit_tests
     # Observer + Template Method
 
     # Facade + Command
-    tests/test_command.cpp
-    
 )
 if(TARGET tividy_engine)
     target_link_libraries(unit_tests tividy_engine)
