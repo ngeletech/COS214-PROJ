@@ -11,6 +11,7 @@ void SuspendedState::resume() {
     
 void SuspendedState::cancel() {
     WorkflowInstance* i = instance;
+    i->cancelOutstandingWork();
     i->setState(new CancelledState(*i));
     i->publish("InstanceCancelled");
 }
