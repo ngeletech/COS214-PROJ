@@ -4,15 +4,25 @@
 #include <string>
 #include <sstream>
 #include "WorkflowEngine.h"
+#include "WorkItemFactory.h"
+#include "State.h"
+#include "Iterator.h"
+#include "Participant.h"
+#include "Issue.h"
+#include "Builder.h"
+#include "Chain-Of-Responsibility.h"
+#include "composite.h"
+#include "WorkflowEvent.h"
+
 
 
 
 static const int MAX_RETRIES = 3;
 
-WorkflowEngine::WorkflowEngine(AssignmentService *assignment)
+WorkflowEngine::WorkflowEngine(AssignmentService *assignment, WorkItemFactoryRegistry* factories)
 {
     this->assignment = assignment;
-    this->factories = new WorkItemFactoryRegistry();
+    this->factories = factories;
     this->nextInstanceId = 1;
 }
 
@@ -29,7 +39,6 @@ WorkflowEngine::~WorkflowEngine()
             delete *vit;
         }
     }
-    delete factories;
 }
 
 void WorkflowEngine::registerDefinition(WorkflowDefinition *definition)
@@ -43,18 +52,18 @@ void WorkflowEngine::registerDefinition(WorkflowDefinition *definition)
     for (std::vector<WorkItemSpec>::iterator it = specs.begin(); it != specs.end(); ++it)
     {
         WorkItemSpec spec = *it;
-        WorkItemFactory *factory = factories->getFactory(spec.getType());
+        WorkItemFactory *factory = factories->getFactory(spec.type);
         if (factory == nullptr)
         {
-            std::cout << "No factory registered for work item type: " << spec.getType() << std::endl;
+            std::cout << "No factory registered for work item type: " << spec.type << std::endl;
             return;
         }
     }
     std::vector<WorkflowDefinition *> &versions = definitions[definition->getName()];
-    definition->setVersion(versions.size() + 1);
+    //definition->setVersion(versions.size() + 1);
     versions.push_back(definition);
 }
-WorkflowInstance *WorkflowEngine::startInstance(std::string defName, WorkData data)
+WorkflowInstance *WorkflowEngine::startInstance(const std::string& defName, WorkData data)
 {
     std::map<std::string, std::vector<WorkflowDefinition *>>::iterator found = definitions.find(defName);
     if (found == definitions.end() || found->second.empty())
@@ -64,8 +73,9 @@ WorkflowInstance *WorkflowEngine::startInstance(std::string defName, WorkData da
     }
 
     WorkflowDefinition *definition = found->second[found->second.size() - 1];
-    WorkflowInstance *instance = new WorkflowInstance(nextInstanceId++, definition, this, data);
-
+    WorkflowInstance *instance = new WorkflowInstance(nextInstanceId++, definition,data, this);
+    
+    instance->setRoot(new WorkGroup(definition->getName()));
     for (std::vector<WorkflowListener *>::iterator it = defaultListeners.begin(); it != defaultListeners.end(); ++it)
     {
         WorkflowListener *listener = *it;
@@ -75,10 +85,10 @@ WorkflowInstance *WorkflowEngine::startInstance(std::string defName, WorkData da
     const std::vector<WorkItemSpec> &specs = definition->getWorkItemSpecs();
     for (std::vector<WorkItemSpec>::const_iterator it = specs.begin(); it != specs.end(); ++it)
     {
-        WorkItemFactory *factory = factories->getFactory(it->getType());
+        WorkItemFactory *factory = factories->getFactory(it->type);
         if (factory == nullptr)
         {
-            std::cout << "No factory registered for work item type: " << it->getType() << std::endl;
+            std::cout << "No factory registered for work item type: " << it->type << std::endl;
             delete instance;
             return nullptr;
         }
@@ -90,7 +100,7 @@ WorkflowInstance *WorkflowEngine::startInstance(std::string defName, WorkData da
     return instance;
 }
 
-void WorkflowEngine::completeWorkItem(int instanceId, std::string elementName)
+void WorkflowEngine::completeWorkItem(int instanceId, const std::string& elementName)
 {
     WorkflowInstance *instance = getInstance(instanceId);
     if (instance == nullptr)
@@ -99,7 +109,14 @@ void WorkflowEngine::completeWorkItem(int instanceId, std::string elementName)
         return;
     }
 
-    WorkElement *element = instance->findElement(elementName);
+    /*WorkElement *element = instance->findElement(elementName);*/
+    WorkElement* element = nullptr;
+    for (DepthFirstIterator it(instance->getRoot()); !it.isDone(); it.next()){
+        if(it.current()->getName() == elementName) {
+            element = it.current();
+        }
+    }
+    
     if (element == nullptr)
     {
         std::cout << "No work element found with name: " << elementName << " in instance ID: " << instanceId << std::endl;
@@ -108,12 +125,13 @@ void WorkflowEngine::completeWorkItem(int instanceId, std::string elementName)
     element->complete();
 }
 
-void WorkflowEngine::handleIssue(Issue &issue, WorkflowInstance &instance)
+void WorkflowEngine::handleIssue(const Issue &issue, WorkflowInstance &instance)
 {
-    instance.publish(WorkflowEvent("IssueRaised", instance.getId(), issue.getElementName(), issue.getDescription()));
+    //instance.publish(WorkflowEvent("IssueRaised", instance.getId(), issue.getElementName(), issue.getDescription()));
+    instance.publish("IssueRaised");
 
     EscalationHandler *chain = instance.getDefinition()->getEscalationHandler();
-    if (chain == nullptr || !chain->handle(issue))
+    if (chain == nullptr || !chain->handleIssue(issue))
     {
         std::cout << "Issue could not be resolved: " << issue.getDescription() << std::endl;
         instance.fail(issue);
@@ -122,7 +140,15 @@ void WorkflowEngine::handleIssue(Issue &issue, WorkflowInstance &instance)
 
     if (!issue.getElementName().empty())
     {
-        WorkElement *element = instance.findElement(issue.getElementName());
+        /*WorkElement *element = instance.findElement(issue.getElementName());*/
+        WorkElement* element = nullptr;
+        for (DepthFirstIterator it(instance.getRoot()); !it.isDone(); it.next()) {
+            if(it.current()->getName() == issue.getElementName()){
+                element = it.current();
+                break;
+            }
+        }
+        
         if (element != nullptr)
         {
             std::string key = "retry:" + issue.getElementName();
@@ -151,23 +177,24 @@ void WorkflowEngine::handleIssue(Issue &issue, WorkflowInstance &instance)
                 old->decrementWorkload();
                 element->assignTo(nullptr);
             }
-            element->setStatus(CREATED);
+            element->setStatus(WorkItemStatus::CREATED);
         }
     }
 
-    instance.publish(WorkflowEvent("IssueResolved", instance.getId(), issue.getElementName(), issue.getDescription()));
+    //instance.publish(WorkflowEvent("IssueResolved", instance.getId(), issue.getElementName(), issue.getDescription()));
+    instance.publish("IssueResolved");
     activateNext(instance);
 }
 
-void WorkflowEngine::assignWork(WorkflowInstance &instance, WorkflowElement *element)
+void WorkflowEngine::assignWork(WorkflowInstance &instance, WorkElement *element)
 {
     if (element == nullptr)
     {
         return;
     }
 
-    assignment->setStrategy(instance.getDefinition()->getAssignmentStrategy());
-    Participant *participant = assignment->assignWork(*element, instance.getData(), participants);
+    //assignment->setStrategy(instance.getDefinition()->getAssignmentStrategy());
+    Participant *participant = assignment->assignWorkItem(*element, instance.getData(), participants);
 
     if (participant == nullptr)
     {
@@ -177,14 +204,15 @@ void WorkflowEngine::assignWork(WorkflowInstance &instance, WorkflowElement *ele
     }
 
     element->assignTo(participant);
-    element->setStatus(ASSIGNED);
+    element->setStatus(WorkItemStatus::ASSIGNED);
     participant->incrementWorkload();
-    instance.publish(WorkflowEvent("ElementAssigned", instance.getId(), element->getName(), participant->getName()));
+    //instance.publish(WorkflowEvent("ElementAssigned", instance.getId(), element->getName(), participant->getName()));
+    instance.publish("ElementAssigned");
 }
 
 void WorkflowEngine::activateNext(WorkflowInstance &instance)
 {
-    if (instance.getState()->getName() != "Running")
+    if (instance.getStateName() != "Running")
     {
         return;
     }
@@ -211,13 +239,13 @@ void WorkflowEngine::activateNext(WorkflowInstance &instance)
     for (std::vector<WorkElement *>::iterator rit = ready.begin(); rit != ready.end(); ++rit)
     {
         WorkElement *element = *rit;
-        element->setStatus(AVAILABLE);
+        element->setStatus(WorkItemStatus::AVAILABLE);
 
         if (element->requiresAssignee())
         {
             assignWork(instance, element);
 
-            if (instance.getState()->getName() != "Running")
+            if (instance.getStateName() != "Running")
             {
                 return;
             }
@@ -226,9 +254,9 @@ void WorkflowEngine::activateNext(WorkflowInstance &instance)
     instance.getRoot()->execute();
 }
 
-WorkflowInstance *WorkflowEngine::getInstance(int id)
+WorkflowInstance *WorkflowEngine::getInstance(int id) const
 {
-    std::map<int, WorkflowInstance *>::iterator it = instances.find(id);
+    std::map<int, WorkflowInstance *>::const_iterator it = instances.find(id);
     if (it == instances.end())
     {
         return nullptr;
@@ -247,7 +275,7 @@ void WorkflowEngine::addParticipant(Participant *participant)
 }
 Participant *WorkflowEngine::findParticipant(int id) const
 {
-    for (std::vector<Participant *>::iterator it = participants.begin(); it != participants.end(); ++it)
+    for (std::vector<Participant *>::const_iterator it = participants.begin(); it != participants.end(); ++it)
     {
         if ((*it)->getId() == id)
         {
