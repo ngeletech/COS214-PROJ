@@ -13,12 +13,8 @@ set(ENGINE_SRC
     src/WorkflowDesigner.cpp
     src/WorkflowDefinition.cpp
     src/StandardDefinitionBuilder.cpp
-<<<<<<< HEAD
-    src/WorkflowEngine.cpp
-=======
     src/WorkItemFactory.cpp
     src/WorkItemFactoryRegistry.cpp
->>>>>>> 11cc0185c5c3d3cc72660c2347764f91079ec983
 
     # Composite + Iterator
     src/WorkElement.cpp
