@@ -47,6 +47,11 @@ set(ENGINE_SRC
     src/FrontlineHandler.cpp
     src/SupervisorHandler.cpp
     src/ManagerHandler.cpp
+    src/AssignmentService.cpp
+    src/AttributeMatchingStrategy.cpp
+    src/LeastLoadedStrategy.cpp
+    src/ReassignItemCommand.cpp
+    src/RoleMatchingStrategy.cpp
 
     # Adapter + Decorator
     src/WorkData.cpp 
@@ -98,7 +103,7 @@ add_executable(unit_tests
     # tests/test_state.cpp
     
     # Strategy + Chain of Responsibility
-    src/Issue.cpp
+    # src/Issue.cpp
     
     # Adapter + Decorator
     tests/test_adapter.cpp
