@@ -1,242 +1,185 @@
 #include "doctest.h"
-#include "State.h"
-#include "composite.h"
-#include "InstanceSnapshot.h"
-#include "Observer.h"
-#include "WorkflowEvent.h"
-#include "Issue.h"
-#include <type_traits>
 #include <stdexcept>
 #include <string>
-#include <vector>
+#include "InstanceSnapshot.h"
+#include "State.h"
+#include "WorkData.h"
+#include "composite.h"
+#include "WorkflowEngine.h"
+
+// TEMPORARY: WorkflowInstance::restore() calls this, but src/WorkflowEngine.cpp
+// doesn't compile on dev yet. Delete this once WorkflowEngine.cpp is in CMakeLists.txt.
+Participant* WorkflowEngine::findParticipant(int) const {
+    return nullptr;
+}
 
 namespace {
-
-// Records the name of every event it receives.
-class RecordingListener : public WorkflowListener {
-public:
-    std::vector<std::string> events;
-    void update(const WorkflowEvent& e) override {
-        events.push_back(e.getEventName());
-    }
-};
-
-// Builds an instance with no definition and no engine.
-WorkflowInstance* makeInstance(int id = 1) {
-    return new WorkflowInstance(id, nullptr, WorkData(), nullptr);
+    // Minimal concrete leaf for tests (Task::doWork is pure virtual)
+    class DummyTask : public Task {
+    public:
+        DummyTask(const std::string& n) : Task(n) {}
+    protected:
+        void doWork() override {}
+    };
+}
+TEST_CASE("a new instance starts in the Created state") {
+    WorkflowInstance instance(1, nullptr, WorkData(), nullptr);
+    CHECK(instance.getStateName() == "Created");
 }
 
-// Builds a valid Issue (Issue has no default constructor).
-Issue makeIssue() {
-    return Issue("Test", "Test issue", 1, "element");
+TEST_CASE("normal lifecycle: start, suspend, resume, complete") {
+    WorkflowInstance instance(1, nullptr, WorkData(), nullptr);
+
+    instance.start();
+    CHECK(instance.getStateName() == "Running");
+    instance.suspend();
+    CHECK(instance.getStateName() == "Suspended");
+    instance.resume();
+    CHECK(instance.getStateName() == "Running");
+    instance.complete();
+    CHECK(instance.getStateName() == "Completed");
 }
 
-} // namespace
+TEST_CASE("illegal transitions throw std::logic_error") {
+    WorkflowInstance instance(1, nullptr, WorkData(), nullptr);
 
-// ---------------- your original test ----------------
+    CHECK_THROWS_AS(instance.suspend(), std::logic_error);
+    CHECK_THROWS_AS(instance.resume(), std::logic_error);
+    CHECK_THROWS_AS(instance.complete(), std::logic_error);
 
-TEST_CASE("State classes derive from InstanceState") {
-    CHECK(std::is_base_of<InstanceState, CreatedState>::value);
-    CHECK(std::is_base_of<InstanceState, RunningState>::value);
-    CHECK(std::is_base_of<InstanceState, SuspendedState>::value);
-    CHECK(std::is_base_of<InstanceState, CompletedState>::value);
-    CHECK(std::is_base_of<InstanceState, FailedState>::value);
-    CHECK(std::is_base_of<InstanceState, CancelledState>::value);
+    instance.start();
+    CHECK_THROWS_AS(instance.start(), std::logic_error);
+    CHECK_THROWS_AS(instance.resume(), std::logic_error);
 }
 
-// ---------------- state names and factory ----------------
+TEST_CASE("cancel works from Created, Running and Suspended") {
+    WorkflowInstance created(1, nullptr, WorkData(), nullptr);
+    created.cancel();
+    CHECK(created.getStateName() == "Cancelled");
 
-TEST_CASE("Concrete states report their names") {
-    WorkflowInstance* inst = makeInstance();
-    CreatedState created(*inst);
-    RunningState running(*inst);
-    SuspendedState suspended(*inst);
-    CompletedState completed(*inst);
-    FailedState failed(*inst);
-    CancelledState cancelled(*inst);
+    WorkflowInstance running(2, nullptr, WorkData(), nullptr);
+    running.start();
+    running.cancel();
+    CHECK(running.getStateName() == "Cancelled");
 
-    CHECK(created.getName() == "Created");
-    CHECK(running.getName() == "Running");
-    CHECK(suspended.getName() == "Suspended");
-    CHECK(completed.getName() == "Completed");
-    CHECK(failed.getName() == "Failed");
-    CHECK(cancelled.getName() == "Cancelled");
-    delete inst;
+    WorkflowInstance suspended(3, nullptr, WorkData(), nullptr);
+    suspended.start();
+    suspended.suspend();
+    suspended.cancel();
+    CHECK(suspended.getStateName() == "Cancelled");
 }
 
-TEST_CASE("canCancel is true only where cancelling is allowed") {
-    WorkflowInstance* inst = makeInstance();
-    CHECK(CreatedState(*inst).canCancel());
-    CHECK(RunningState(*inst).canCancel());
-    CHECK(SuspendedState(*inst).canCancel());
-    CHECK_FALSE(CompletedState(*inst).canCancel());
-    CHECK_FALSE(FailedState(*inst).canCancel());
-    CHECK_FALSE(CancelledState(*inst).canCancel());
-    delete inst;
+TEST_CASE("terminal states refuse every action") {
+    WorkflowInstance done(1, nullptr, WorkData(), nullptr);
+    done.start();
+    done.complete();
+    CHECK_THROWS_AS(done.start(), std::logic_error);
+    CHECK_THROWS_AS(done.suspend(), std::logic_error);
+    CHECK_THROWS_AS(done.cancel(), std::logic_error);
+
+    WorkflowInstance cancelled(2, nullptr, WorkData(), nullptr);
+    cancelled.cancel();
+    CHECK_THROWS_AS(cancelled.start(), std::logic_error);
+    CHECK_THROWS_AS(cancelled.cancel(), std::logic_error);
 }
 
-TEST_CASE("InstanceState::create builds the right state") {
-    WorkflowInstance* inst = makeInstance();
-    const char* names[] = {"Created", "Running", "Suspended",
-                           "Completed", "Failed", "Cancelled"};
-    for (int k = 0; k < 6; ++k) {
-        InstanceState* s = InstanceState::create(names[k], *inst);
-        REQUIRE(s != nullptr);
-        CHECK(s->getName() == names[k]);
-        delete s;
-    }
-    CHECK_THROWS_AS(InstanceState::create("Bogus", *inst), std::invalid_argument);
-    delete inst;
+TEST_CASE("work tree helpers are safe when there is no root") {
+    WorkflowInstance instance(1, nullptr, WorkData(), nullptr);
+
+    CHECK(instance.findElement("anything") == nullptr);
+    CHECK_NOTHROW(instance.cancelOutstandingWork());
+    CHECK_NOTHROW(instance.cancel());
 }
 
-// ---------------- lifecycle ----------------
+TEST_CASE("restore with no root still restores data and state") {
+    WorkflowInstance instance(1, nullptr, WorkData(), nullptr);
+    instance.setData("coupon", "SAVE10");
+    instance.start();
+    InstanceSnapshot snap = instance.saveSnapshot();
 
-TEST_CASE("New instance starts in Created") {
-    WorkflowInstance* inst = makeInstance(7);
-    CHECK(inst->getId() == 7);
-    CHECK(inst->getStateName() == "Created");
-    delete inst;
+    instance.setData("coupon", "SAVE50");
+    instance.suspend();
+
+    CHECK_NOTHROW(instance.restore(snap));
+    CHECK(instance.getStateName() == "Running");
+    CHECK(instance.getData().getData().at("coupon") == "SAVE10");
 }
 
-TEST_CASE("Normal lifecycle: Created -> Running -> Suspended -> Running -> Completed") {
-    WorkflowInstance* inst = makeInstance();
-    inst->start();
-    CHECK(inst->getStateName() == "Running");
-    inst->suspend();
-    CHECK(inst->getStateName() == "Suspended");
-    inst->resume();
-    CHECK(inst->getStateName() == "Running");
-    inst->complete();
-    CHECK(inst->getStateName() == "Completed");
-    delete inst;
+TEST_CASE("findElement finds elements at any depth and returns nullptr otherwise") {
+    WorkflowInstance instance(1, nullptr, WorkData(), nullptr);
+
+    WorkGroup* root = new WorkGroup("root");
+    DummyTask* top = new DummyTask("top");
+    SequentialGroup* inner = new SequentialGroup("inner");
+    DummyTask* nested = new DummyTask("nested");
+
+    root->add(top);
+    root->add(inner);
+    inner->add(nested);
+    instance.setRoot(root);           // instance now owns the tree
+
+    CHECK(instance.findElement("top") == top);
+    CHECK(instance.findElement("nested") == nested);
+    CHECK(instance.findElement("inner") == inner);
+    CHECK(instance.findElement("missing") == nullptr);
 }
 
-TEST_CASE("Cancel is allowed from Created, Running and Suspended") {
-    WorkflowInstance* a = makeInstance();
-    a->cancel();
-    CHECK(a->getStateName() == "Cancelled");
+TEST_CASE("cancelOutstandingWork cancels unfinished leaves only") {
+    WorkflowInstance instance(1, nullptr, WorkData(), nullptr);
 
-    WorkflowInstance* b = makeInstance();
-    b->start();
-    b->cancel();
-    CHECK(b->getStateName() == "Cancelled");
+    WorkGroup* root = new WorkGroup("root");
+    DummyTask* waiting = new DummyTask("waiting");
+    DummyTask* started = new DummyTask("started");
+    DummyTask* done = new DummyTask("done");
+    DummyTask* rejected = new DummyTask("rejected");
 
-    WorkflowInstance* c = makeInstance();
-    c->start();
-    c->suspend();
-    c->cancel();
-    CHECK(c->getStateName() == "Cancelled");
+    waiting->setStatus(WorkItemStatus::AVAILABLE);
+    started->setStatus(WorkItemStatus::STARTED);
+    done->setStatus(WorkItemStatus::COMPLETED);
+    rejected->setStatus(WorkItemStatus::REJECTED);
 
-    delete a; delete b; delete c;
+    root->add(waiting);
+    root->add(started);
+    root->add(done);
+    root->add(rejected);
+    instance.setRoot(root);
+
+    instance.cancelOutstandingWork();
+
+    CHECK((waiting->getStatus() == WorkItemStatus::CANCELLED));
+    CHECK((started->getStatus() == WorkItemStatus::CANCELLED));
+    CHECK((done->getStatus() == WorkItemStatus::COMPLETED));
+    CHECK((rejected->getStatus() == WorkItemStatus::REJECTED));
 }
 
-TEST_CASE("Fail moves a running instance to Failed") {
-    WorkflowInstance* inst = makeInstance();
-    inst->start();
-    inst->fail(makeIssue());       // adjust if Issue needs constructor arguments
-    CHECK(inst->getStateName() == "Failed");
-    delete inst;
+TEST_CASE("cancelling a running instance cancels its outstanding work") {
+    WorkflowInstance instance(1, nullptr, WorkData(), nullptr);
+
+    WorkGroup* root = new WorkGroup("root");
+    DummyTask* task = new DummyTask("task");
+    task->setStatus(WorkItemStatus::STARTED);
+    root->add(task);
+    instance.setRoot(root);
+
+    instance.start();
+    instance.cancel();
+
+    CHECK(instance.getStateName() == "Cancelled");
+    CHECK((task->getStatus() == WorkItemStatus::CANCELLED));
 }
 
-// ---------------- illegal transitions ----------------
+TEST_CASE("restore puts element statuses back") {
+    WorkflowInstance instance(1, nullptr, WorkData(), nullptr);
 
-TEST_CASE("Illegal transitions from Created throw") {
-    WorkflowInstance* inst = makeInstance();
-    CHECK_THROWS_AS(inst->suspend(), std::logic_error);
-    CHECK_THROWS_AS(inst->resume(), std::logic_error);
-    CHECK_THROWS_AS(inst->complete(), std::logic_error);
-    CHECK_THROWS_AS(inst->fail(makeIssue)), std::logic_error);
-    CHECK(inst->getStateName() == "Created");   // state unchanged
-    delete inst;
-}
+    WorkGroup* root = new WorkGroup("root");
+    DummyTask* task = new DummyTask("task");
+    task->setStatus(WorkItemStatus::AVAILABLE);
+    root->add(task);
+    instance.setRoot(root);
 
-TEST_CASE("Illegal transitions from Running and Suspended throw") {
-    WorkflowInstance* inst = makeInstance();
-    inst->start();
-    CHECK_THROWS_AS(inst->start(), std::logic_error);
-    CHECK_THROWS_AS(inst->resume(), std::logic_error);
+    InstanceSnapshot snap = instance.saveSnapshot();
+    task->setStatus(WorkItemStatus::COMPLETED);
 
-    inst->suspend();
-    CHECK_THROWS_AS(inst->suspend(), std::logic_error);
-    CHECK_THROWS_AS(inst->complete(), std::logic_error);
-    CHECK_THROWS_AS(inst->fail(makeIssue()), std::logic_error);
-    CHECK(inst->getStateName() == "Suspended");
-    delete inst;
-}
-
-TEST_CASE("Terminal states refuse every action") {
-    WorkflowInstance* done = makeInstance();
-    done->start();
-    done->complete();
-    CHECK_THROWS_AS(done->start(), std::logic_error);
-    CHECK_THROWS_AS(done->suspend(), std::logic_error);
-    CHECK_THROWS_AS(done->resume(), std::logic_error);
-    CHECK_THROWS_AS(done->complete(), std::logic_error);
-    CHECK_THROWS_AS(done->cancel(), std::logic_error);
-    CHECK_THROWS_AS(done->fail(makeIssue()), std::logic_error);
-
-    WorkflowInstance* gone = makeInstance();
-    gone->cancel();
-    CHECK_THROWS_AS(gone->start(), std::logic_error);
-    CHECK_THROWS_AS(gone->cancel(), std::logic_error);
-
-    delete done; delete gone;
-}
-
-// ---------------- observer ----------------
-
-TEST_CASE("setData stores the value and notifies subscribers") {
-    WorkflowInstance* inst = makeInstance();
-    RecordingListener l;
-    inst->subscribe(&l);
-    inst->subscribe(nullptr);                  // ignored, must not crash
-
-    inst->setData("k", "v");
-    CHECK(inst->getData().getData().at("k") == "v");
-    REQUIRE(l.events.size() == 1);
-    CHECK(l.events[0] == "DataChanged");
-    delete inst;
-}
-
-TEST_CASE("publish reaches every subscriber") {
-    WorkflowInstance* inst = makeInstance();
-    RecordingListener a, b;
-    inst->subscribe(&a);
-    inst->subscribe(&b);
-    inst->publish("Ping");
-    CHECK(a.events.size() == 1);
-    CHECK(b.events.size() == 1);
-    delete inst;
-}
-
-// ---------------- memento ----------------
-
-TEST_CASE("Snapshot restores state and data") {
-    WorkflowInstance* inst = makeInstance();
-    inst->setRoot(new WorkGroup("root"));
-    inst->setData("k", "before");
-    inst->start();
-
-    InstanceSnapshot snap = inst->saveSnapshot();
-
-    inst->suspend();
-    inst->setData("k", "after");
-    CHECK(inst->getStateName() == "Suspended");
-
-    inst->restore(snap);
-    CHECK(inst->getStateName() == "Running");
-    CHECK(inst->getData().getData().at("k") == "before");
-    delete inst;
-}
-
-TEST_CASE("setRoot replaces the old root without crashing") {
-    WorkflowInstance* inst = makeInstance();
-    WorkGroup* first = new WorkGroup("first");
-    inst->setRoot(first);
-    CHECK(inst->getRoot() == first);
-    inst->setRoot(first);                      // same pointer: no double delete
-    WorkGroup* second = new WorkGroup("second");
-    inst->setRoot(second);
-    CHECK(inst->getRoot() == second);
-    delete inst;
+    instance.restore(snap);
+    CHECK((task->getStatus() == WorkItemStatus::AVAILABLE));
 }

@@ -69,8 +69,10 @@ void WorkflowInstance::cancelOutstandingWork() {
         WorkElement* element = it.current();
         WorkItemStatus s = element->getStatus();
 
-        if (s != COMPLETED && s != REJECTED && s != CANCELLED) {
-            element->setStatus(CANCELLED);
+        if (s != WorkItemStatus::COMPLETED &&
+            s != WorkItemStatus::REJECTED &&
+            s != WorkItemStatus::CANCELLED) {
+            element->setStatus(WorkItemStatus::CANCELLED);
         }
     }
 }

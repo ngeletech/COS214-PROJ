@@ -28,7 +28,7 @@ set(ENGINE_SRC
     src/ReportGenerator.cpp
 
     # State + Memento
-    # src/WorkflowInstance.cpp
+    src/WorkflowInstance.cpp
     src/InstanceState.cpp
     src/CreatedState.cpp
     src/RunningState.cpp
@@ -87,7 +87,7 @@ add_executable(unit_tests
     #ill uncomment this once workflowinstance builds
 
     # State + Memento
-    # tests/test_state.cpp
+    tests/test_state.cpp
     
     # Strategy + Chain of Responsibility
     src/Issue.cpp
