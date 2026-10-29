@@ -21,6 +21,7 @@
 class WorkflowDefinition;
 class Issue;
 class WorkGroup;
+class WorkElement;
 class WorkflowEngine;
 class WorkflowListener;
 class InstanceSnapshot;
@@ -227,6 +228,16 @@ public:
 
     /// @brief Adds or updates a data entry and publishes "DataChanged".
     void setData(const std::string& key, const std::string& value);
+
+    /// @brief Finds a work element in the tree by name.
+    /// @param name Name of the element to look for.
+    /// @return The first matching element, or nullptr if there is no root or no match.
+    WorkElement* findElement(const std::string& name);
+
+    /// @brief Sets every element that has not finished to CANCELLED.
+    /// COMPLETED, REJECTED and already CANCELLED elements are left unchanged.
+    /// Called by the states when the instance is cancelled.
+    void cancelOutstandingWork();
 };
 
 #endif

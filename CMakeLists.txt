@@ -13,6 +13,8 @@ set(ENGINE_SRC
     src/WorkflowDesigner.cpp
     src/WorkflowDefinition.cpp
     src/StandardDefinitionBuilder.cpp
+    src/WorkItemFactory.cpp
+    src/WorkItemFactoryRegistry.cpp
 
     # Composite + Iterator
     src/WorkElement.cpp
@@ -28,7 +30,7 @@ set(ENGINE_SRC
     src/ReportGenerator.cpp
 
     # State + Memento
-    # src/WorkflowInstance.cpp
+    src/WorkflowInstance.cpp
     src/InstanceState.cpp
     src/CreatedState.cpp
     src/RunningState.cpp
@@ -36,6 +38,7 @@ set(ENGINE_SRC
     src/CompletedState.cpp
     src/FailedState.cpp
     src/CancelledState.cpp
+    src/InstanceSnapshot.cpp
 
     # Strategy + Chain of Responsibility
     src/Participant.cpp
@@ -44,6 +47,11 @@ set(ENGINE_SRC
     src/FrontlineHandler.cpp
     src/SupervisorHandler.cpp
     src/ManagerHandler.cpp
+    src/AssignmentService.cpp
+    src/AttributeMatchingStrategy.cpp
+    src/LeastLoadedStrategy.cpp
+    src/ReassignItemCommand.cpp
+    src/RoleMatchingStrategy.cpp
 
     # Adapter + Decorator
     src/WorkData.cpp 
@@ -56,6 +64,12 @@ set(ENGINE_SRC
     src/ServiceRequest.cpp
     src/ServiceResponse.cpp
 
+    # Decorator
+    src/WorkElementDecorator.cpp
+    src/PayloadDecorator.cpp
+    src/AuditedDecorator.cpp
+    src/PriorityDecorator.cpp
+
     # Observer + Template Method
     src/TemplateMethod.cpp
     src/WorkflowEvent.cpp
@@ -65,6 +79,8 @@ set(ENGINE_SRC
     src/DashboardListener.cpp
 
     # Facade + Command
+
+    src/WorkflowEngine.cpp
 )
 
 if(ENGINE_SRC)
@@ -79,6 +95,9 @@ add_executable(unit_tests
     tests/test_chain_of_responsibility.cpp
     # Builder + Factory Method
     tests/test_builder.cpp
+    tests/test_factory_method.cpp
+    tests/test_memento.cpp
+
 
     # Composite + Iterator
     # tests/test_composite.cpp   
@@ -90,10 +109,11 @@ add_executable(unit_tests
     # tests/test_state.cpp
     
     # Strategy + Chain of Responsibility
-    src/Issue.cpp
+    # src/Issue.cpp
     
     # Adapter + Decorator
     tests/test_adapter.cpp
+    tests/test_decorator.cpp
 
     # Observer + Template Method
 
