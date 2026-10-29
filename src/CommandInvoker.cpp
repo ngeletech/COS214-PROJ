@@ -23,17 +23,24 @@ void CommandInvoker::runNext() {
         history.push_back(command);
     }
 }
+
 void CommandInvoker::undoLast() {
-    if (!history.empty()) {
-        WorkflowCommand* command = history.back();
-        history.pop_back();
-        if (rollback->canRollback(command->getTarget()->getId())) {
-            rollback->rollback(command->getTarget());
-        } else {
-            std::cout << "No snapshot available for rollback." << std::endl;
-        }
-        delete command;
-    } else {
+    if (history.empty()) {
         std::cout << "No commands to undo." << std::endl;
+        return;
     }
+
+    WorkflowCommand* command = history.back();
+    history.pop_back();
+
+    WorkflowInstance* target = command->getTarget();
+
+    if (target == nullptr) {
+        std::cout << "Cannot undo a command without a target instance." << std::endl;
+    } else if (rollback != nullptr && rollback->canRollback(target->getId())) {
+        rollback->rollback(target);
+    } else {
+        std::cout << "No snapshot available for rollback." << std::endl;
+    }
+    delete command;
 }
