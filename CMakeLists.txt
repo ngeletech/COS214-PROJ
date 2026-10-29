@@ -39,6 +39,11 @@ set(ENGINE_SRC
 
     # Strategy + Chain of Responsibility
     src/Participant.cpp
+    src/Issue.cpp
+    src/Chain-Of-Responsibility.cpp
+    src/FrontlineHandler.cpp
+    src/SupervisorHandler.cpp
+    src/ManagerHandler.cpp
 
     # Adapter + Decorator
     src/WorkData.cpp 
@@ -77,6 +82,7 @@ add_executable(unit_tests
     tests/test_main.cpp
     tests/test_smoke.cpp
     tests/test_observer.cpp
+    tests/test_chain_of_responsibility.cpp
     # Builder + Factory Method
     tests/test_builder.cpp
 
