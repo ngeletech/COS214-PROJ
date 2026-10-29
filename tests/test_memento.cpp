@@ -64,7 +64,7 @@ TEST_CASE("snapshots are restored latest first") {
 
 TEST_CASE("rolling back one instance does not touch another") {
     WorkflowInstance orderA(1, nullptr, WorkData(), nullptr);
-    WorkflowInstance orderB(1, nullptr, WorkData(), nullptr);
+    WorkflowInstance orderB(2, nullptr, WorkData(), nullptr);
     RollbackManager manager;
 
     orderA.setData("address", "A home");
