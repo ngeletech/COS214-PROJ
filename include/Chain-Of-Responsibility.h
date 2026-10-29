@@ -1,6 +1,8 @@
 #ifndef ESCALATIONHANDLER_H
 #define ESCALATIONHANDLER_H
 
+#include <iostream>
+
 class Participant;
 class Issue;
 

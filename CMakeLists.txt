@@ -39,6 +39,11 @@ set(ENGINE_SRC
 
     # Strategy + Chain of Responsibility
     src/Participant.cpp
+    src/Issue.cpp
+    src/Chain-Of-Responsibility.cpp
+    src/FrontlineHandler.cpp
+    src/SupervisorHandler.cpp
+    src/ManagerHandler.cpp
 
     # Adapter + Decorator
     src/WorkData.cpp 
@@ -53,6 +58,11 @@ set(ENGINE_SRC
 
     # Observer + Template Method
     src/TemplateMethod.cpp
+    src/WorkflowEvent.cpp
+    src/WorkflowEventPublisher.cpp
+    src/AuditLogger.cpp
+    src/NotificationListener.cpp
+    src/DashboardListener.cpp
 
     # Facade + Command
 )
@@ -65,6 +75,8 @@ endif()
 add_executable(unit_tests
     tests/test_main.cpp
     tests/test_smoke.cpp
+    tests/test_observer.cpp
+    tests/test_chain_of_responsibility.cpp
     # Builder + Factory Method
     tests/test_builder.cpp
 
