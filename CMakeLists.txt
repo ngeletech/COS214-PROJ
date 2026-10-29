@@ -13,7 +13,12 @@ set(ENGINE_SRC
     src/WorkflowDesigner.cpp
     src/WorkflowDefinition.cpp
     src/StandardDefinitionBuilder.cpp
+<<<<<<< HEAD
     src/WorkflowEngine.cpp
+=======
+    src/WorkItemFactory.cpp
+    src/WorkItemFactoryRegistry.cpp
+>>>>>>> 11cc0185c5c3d3cc72660c2347764f91079ec983
 
     # Composite + Iterator
     src/WorkElement.cpp
@@ -37,6 +42,7 @@ set(ENGINE_SRC
     src/CompletedState.cpp
     src/FailedState.cpp
     src/CancelledState.cpp
+    src/InstanceSnapshot.cpp
 
     # Strategy + Chain of Responsibility
     src/Participant.cpp
@@ -45,6 +51,11 @@ set(ENGINE_SRC
     src/FrontlineHandler.cpp
     src/SupervisorHandler.cpp
     src/ManagerHandler.cpp
+    src/AssignmentService.cpp
+    src/AttributeMatchingStrategy.cpp
+    src/LeastLoadedStrategy.cpp
+    src/ReassignItemCommand.cpp
+    src/RoleMatchingStrategy.cpp
 
     # Adapter + Decorator
     src/WorkData.cpp 
@@ -72,6 +83,8 @@ set(ENGINE_SRC
     src/DashboardListener.cpp
 
     # Facade + Command
+
+    src/WorkflowEngine.cpp
 )
 
 if(ENGINE_SRC)
@@ -86,6 +99,9 @@ add_executable(unit_tests
     tests/test_chain_of_responsibility.cpp
     # Builder + Factory Method
     tests/test_builder.cpp
+    tests/test_factory_method.cpp
+    tests/test_memento.cpp
+
 
     # Composite + Iterator
     # tests/test_composite.cpp   
@@ -97,7 +113,7 @@ add_executable(unit_tests
     # tests/test_state.cpp
     
     # Strategy + Chain of Responsibility
-    src/Issue.cpp
+    # src/Issue.cpp
     
     # Adapter + Decorator
     tests/test_adapter.cpp

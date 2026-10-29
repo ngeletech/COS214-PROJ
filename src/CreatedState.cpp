@@ -11,6 +11,7 @@ void CreatedState::start() {
     
 void CreatedState::cancel() {
     WorkflowInstance* i = instance;
+    i->cancelOutstandingWork();
     i->setState(new CancelledState(*i));
     i->publish("InstanceCancelled");
 }

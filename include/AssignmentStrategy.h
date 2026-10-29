@@ -4,9 +4,8 @@
 #include <vector>
 #include <map>
 #include "WorkData.h"
-
-class Participant;
-class WorkElement;
+#include "composite.h"
+#include "Participant.h"
 
 
 class AssignmentStrategy {

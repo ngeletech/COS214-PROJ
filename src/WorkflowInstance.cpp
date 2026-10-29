@@ -49,6 +49,34 @@ void WorkflowInstance::setData(const std::string& key, const std::string& value)
     publish("DataChanged");
 }
 
+//work tree helpers
+WorkElement* WorkflowInstance::findElement(const std::string& name) {
+    if (root == nullptr) return nullptr;
+
+    for (DepthFirstIterator it(root); !it.isDone(); it.next()) {
+        WorkElement* element = it.current();
+        if (element->getName() == name) {
+            return element;
+        }
+    }
+    return nullptr;
+}
+
+void WorkflowInstance::cancelOutstandingWork() {
+    if (root == nullptr) return;
+
+    for (DepthFirstIterator it(root); !it.isDone(); it.next()) {
+        WorkElement* element = it.current();
+        WorkItemStatus s = element->getStatus();
+
+        if (s != WorkItemStatus::COMPLETED &&
+            s != WorkItemStatus::REJECTED &&
+            s != WorkItemStatus::CANCELLED) {
+            element->setStatus(WorkItemStatus::CANCELLED);
+        }
+    }
+}
+
 //state lifecycle
 void WorkflowInstance::start() {
     state->start();
@@ -117,24 +145,25 @@ InstanceSnapshot WorkflowInstance::saveSnapshot() {
 void WorkflowInstance::restore(const InstanceSnapshot& snap) {
     data = snap.data;
 
-    for (DepthFirstIterator it(root); !it.isDone(); it.next()) {
-        WorkElement* element = it.current();
+    if (root != nullptr) {
+        for (DepthFirstIterator it(root); !it.isDone(); it.next()) {
+            WorkElement* element = it.current();
 
-        std::map<std::string, int>::const_iterator a = snap.assignments.find(element->getName());
-        if (a != snap.assignments.end() && engine != nullptr) {
-            Participant* who = engine->findParticipant(a->second);
-            if (who != nullptr) {
-                element->assignTo(who);
+            std::map<std::string, int>::const_iterator a = snap.assignments.find(element->getName());
+            if (a != snap.assignments.end() && engine != nullptr) {
+                Participant* who = engine->findParticipant(a->second);
+                if (who != nullptr) {
+                    element->assignTo(who);
+                }
             }
-        }
 
-        // set the status last, because assignTo may change it
-        std::map<std::string, WorkItemStatus>::const_iterator s = snap.elementStatuses.find(element->getName());
-        if (s != snap.elementStatuses.end()) {
-            element->setStatus(s->second);
+            // set the status last, because assignTo may change it
+            std::map<std::string, WorkItemStatus>::const_iterator s = snap.elementStatuses.find(element->getName());
+            if (s != snap.elementStatuses.end()) {
+                element->setStatus(s->second);
+            }
         }
     }
 
     setState(InstanceState::create(snap.stateName, *this));
 }
-
