@@ -1,5 +1,5 @@
 #include "InstanceSnapshot.h"
-#include "WorkflowInstance.h"
+#include "State.h"
 
 /**
  * @brief Stores a snapshot of the instance's current state
@@ -13,15 +13,6 @@ void RollbackManager::save(WorkflowInstance* instance){
  * @brief Restores the instance to its most latest restore point and discards it.
  *        Publishes "RolledBack". Does nothing if there is no snapshot
  */
-/* void RollbackManager::rollback(WorkflowInstance* instance){
-     auto it = snapshots.find(instance->getId());
-     if(it == snapshots.end() || it->second.empty()){
-         return;
-     }
-     instance->restore(it->second.back());
-     it->second.pop_back();
- }
-*/
 void RollbackManager::rollback(WorkflowInstance* instance){
     auto it = snapshots.find(instance->getId());
     if(it == snapshots.end() || it->second.empty()){
