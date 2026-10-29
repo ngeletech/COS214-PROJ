@@ -13,6 +13,7 @@ set(ENGINE_SRC
     src/WorkflowDesigner.cpp
     src/WorkflowDefinition.cpp
     src/StandardDefinitionBuilder.cpp
+    src/WorkflowEngine.cpp
 
     # Composite + Iterator
     src/WorkElement.cpp
@@ -28,7 +29,7 @@ set(ENGINE_SRC
     src/ReportGenerator.cpp
 
     # State + Memento
-    # src/WorkflowInstance.cpp
+    src/WorkflowInstance.cpp
     src/InstanceState.cpp
     src/CreatedState.cpp
     src/RunningState.cpp
