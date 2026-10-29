@@ -70,6 +70,12 @@ set(ENGINE_SRC
     src/DashboardListener.cpp
 
     # Facade + Command
+    src/WorkflowCommand.cpp
+    src/CommandInvoker.cpp
+    src/StartInstanceCommand.cpp
+    src/CancelCommand.cpp
+    src/ChangeDataCommand.cpp
+    src/ReassignItemCommand.cpp
 )
 
 if(ENGINE_SRC)
@@ -104,6 +110,8 @@ add_executable(unit_tests
     # Observer + Template Method
 
     # Facade + Command
+    tests/test_command.cpp
+    
 )
 if(TARGET tividy_engine)
     target_link_libraries(unit_tests tividy_engine)
