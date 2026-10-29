@@ -51,6 +51,12 @@ set(ENGINE_SRC
     src/ServiceRequest.cpp
     src/ServiceResponse.cpp
 
+    # Decorator
+    src/WorkElementDecorator.cpp
+    src/PayloadDecorator.cpp
+    src/AuditedDecorator.cpp
+    src/PriorityDecorator.cpp
+
     # Observer + Template Method
     src/TemplateMethod.cpp
     src/WorkflowEvent.cpp
@@ -88,6 +94,7 @@ add_executable(unit_tests
     
     # Adapter + Decorator
     tests/test_adapter.cpp
+    tests/test_decorator.cpp
 
     # Observer + Template Method
 
