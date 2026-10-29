@@ -1,5 +1,0 @@
-[  1%] Building CXX object CMakeFiles/tividy_engine.dir/src/RunningState.cpp.o
-[  3%] Linking CXX static library libtividy_engine.a
-[ 83%] Built target tividy_engine
-[ 84%] Linking CXX executable unit_tests
-[100%] Built target unit_tests
