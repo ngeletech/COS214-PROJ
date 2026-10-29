@@ -5,8 +5,8 @@
 #include <queue>
 #include <vector>
 #include "WorkflowEngine.h"
-
-class WorkData;
+#include "State.h"
+#include "WorkData.h"
 class RollbackManager;
 
 class WorkflowCommand {
