@@ -80,3 +80,28 @@ TEST_CASE("findElement finds elements by name, nullptr otherwise") {
     SequentialGroup* inner = new SequentialGroup("inner");
     root->add(inner);
     inner->add(nested);
+    instance.setRoot(root);                               // instance owns the tree
+
+    CHECK(instance.findElement("nested") == nested);
+    CHECK(instance.findElement("missing") == nullptr);
+}
+
+TEST_CASE("Cancelling an instance cancels unfinished work only") {
+    WorkflowInstance instance(1, nullptr, WorkData(), nullptr);
+
+    WorkGroup* root = new WorkGroup("root");
+    DummyTask* started = new DummyTask("started");
+    DummyTask* done = new DummyTask("done");
+    started->setStatus(WorkItemStatus::STARTED);
+    done->setStatus(WorkItemStatus::COMPLETED);
+    root->add(started);
+    root->add(done);
+    instance.setRoot(root);
+
+    instance.start();
+    instance.cancel();
+
+    CHECK(instance.getStateName() == "Cancelled");
+    CHECK((started->getStatus() == WorkItemStatus::CANCELLED));
+    CHECK((done->getStatus() == WorkItemStatus::COMPLETED));
+}
