@@ -28,7 +28,7 @@ void Task::complete(){
 
     // listeners react to this event
     if(getInstance() != nullptr){
-        getInstance()->publish("ElementCompleted");
+        getInstance()->publish("TASK_COMPLETED");
     }
 }
 

@@ -140,6 +140,31 @@ public:
     void completeItem(int instanceId, const std::string& elementName);
 
     /**
+     * @brief Records an approval decision for an approval item.
+     *
+     * Approving completes the item and moves the workflow on. Rejecting raises
+     * an issue that goes through the escalation chain.
+     * @param instanceId The instance id.
+     * @param elementName Name of the approval item.
+     * @param approved true to approve, false to reject.
+     * @throws std::invalid_argument if the id is unknown or the item is not an approval.
+     * @throws std::logic_error if the instance is not running.
+     */
+    void decideItem(int instanceId, const std::string& elementName, bool approved);
+
+    /**
+     * @brief Raises an issue on an instance and sends it down the escalation chain.
+     * @param instanceId The instance id.
+     * @param elementName Name of the item the issue belongs to.
+     * @param type Issue category, e.g. "Damaged".
+     * @param description What went wrong.
+     * @param severity Severity level; higher values escalate further.
+     * @throws std::invalid_argument if the id is unknown.
+     * @throws std::logic_error if the instance is not running.
+     */
+    void reportIssue(int instanceId, const std::string& elementName, const std::string& type, const std::string& description, int severity);
+
+    /**
      * @brief Undoes the last command that changed an instance.
      *
      * Prints a message and does nothing if there is nothing to undo.

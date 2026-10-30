@@ -9,6 +9,9 @@
 #include "AssignmentStrategy.h"
 #include "WorkItemFactory.h"
 #include "InstanceSnapshot.h"
+#include "TemplateMethod.h"
+#include "Issue.h"
+
 #include <stdexcept>
 #include <algorithm>
 #include <sstream>
@@ -130,6 +133,31 @@ void TividyFacade::completeItem(int id, const std::string& elementName) {
     }
     
     engine->completeWorkItem(id, elementName);
+}
+
+void TividyFacade::decideItem(int id, const std::string& elementName, bool approved) {
+    WorkflowInstance& inst = requireInstance(id);
+    if (inst.getStateName() != "Running")
+        throw std::logic_error("Cannot decide an item while " + inst.getStateName());
+    ApprovalTask* task = dynamic_cast<ApprovalTask*>(inst.findElement(elementName));
+    if (task == nullptr)
+        throw std::invalid_argument("Not an approval item: " + elementName);
+    task->recordDecision(approved);
+    if (approved) {
+        engine->completeWorkItem(id, elementName);
+    } else {
+        Issue issue("Rejected", elementName + " was rejected", 3, elementName);
+        engine->handleIssue(issue, inst);
+    }
+}
+
+void TividyFacade::reportIssue(int id, const std::string& elementName,
+        const std::string& type, const std::string& description, int severity) {
+    WorkflowInstance& inst = requireInstance(id);
+    if (inst.getStateName() != "Running")
+        throw std::logic_error("Cannot report an issue while " + inst.getStateName());
+    Issue issue(type, description, severity, elementName);
+    engine->handleIssue(issue, inst);
 }
 
 void TividyFacade::undoLast() {
