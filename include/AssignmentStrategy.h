@@ -41,6 +41,8 @@ class AssignmentService {
         AssignmentStrategy* strategy;
     public:
         AssignmentService(AssignmentStrategy* strategy) : strategy(strategy) {}
+        void setStrategy(AssignmentStrategy* newStrategy) { strategy = newStrategy; }
+        AssignmentStrategy* getStrategy() const { return strategy; }
         Participant* assignWorkItem(WorkElement& element, const WorkData& data, std::vector<Participant*> candidates);
 };
 

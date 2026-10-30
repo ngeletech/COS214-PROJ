@@ -17,6 +17,10 @@ void ServiceTask::doWork() {
     std::cout << "[ServiceTask]: Invoking external service endpoint '" << getName()  << "'." << std::endl;
 }
 
+bool ServiceTask::requiresAssignee() const {
+    return false;
+}
+
 // 3. ApprovalTask Implementation
 ApprovalTask::ApprovalTask(const std::string& name) : Task(name), approved(false) {}
 
@@ -40,5 +44,9 @@ ScriptTask::ScriptTask(const std::string& name, const std::string& key, const st
 
 void ScriptTask::doWork() {
     std::cout << "[ScriptTask]: Executing script '" << getName() << "' -> Setting key [" << this->key << "] = " << this->value << std::endl;
+}
+
+bool ScriptTask::requiresAssignee() const {
+    return false;
 }
 
