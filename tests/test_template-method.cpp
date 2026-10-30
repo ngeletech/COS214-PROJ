@@ -42,7 +42,7 @@ TEST_SUITE("Template Method Pattern Tests") {
         CHECK(serviceTask.getStatus() == WorkItemStatus::COMPLETED);
     }
 
-    TEST_CASE("ApprovalTask - Decision Recording and Manual Completion") {
+    TEST_CASE("ApprovalTask- Decision Recording and Manual Completion") {
         ApprovalTask approvalTask("ManagerSignoff");
         Participant dummyManager(3, "Alice", "Manager");
         
