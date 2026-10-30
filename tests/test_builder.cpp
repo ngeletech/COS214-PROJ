@@ -5,25 +5,36 @@
 
 #include "doctest.h"
 #include "../include/Builder.h"
+#include "../include/AssignmentStrategy.h"
+#include "../include/Chain-Of-Responsibility.h"
+
+TEST_SUITE("Builder Pattern Tests") {
 
     TEST_CASE("WorkflowDesigner - Assembly via Director") {
         WorkflowDefinitionBuilder* builder = new StandardDefinitionBuilder();
         WorkflowDesigner designer(builder);
 
         std::vector<WorkItemSpec> specs = {
-            {"Task", "Step1", "Config1"}
+            {"UserTask", "ReviewApplication", "Role, Manager"},
+            {"ServiceTask", "SendConfirmationEmail", "Endpoint, NotificationAPI"}
         };
 
         // Use nullptr while Strategy .cpp is not yet linked
-        AssignmentStrategy* strategy = nullptr;
-        EscalationHandler* handler = nullptr; 
+        AssignmentStrategy* strategy = new RoleMatchingStrategy("Manager");
+        EscalationHandler* handler = new FrontlineHandler(nullptr, 2); 
 
-        WorkflowDefinition* def = designer.construct("MainWorkflow", specs, strategy, handler);
+        //Director contructs the product
+        WorkflowDefinition* def = designer.construct("ApprovalPinpeline", specs, strategy, handler);
 
-        CHECK(def != nullptr);
-        CHECK(def->getName() == "MainWorkflow");
-        CHECK(def->getWorkItemSpecs().size() == 1);
+        REQUIRE(def != nullptr);
+        CHECK(def->getName() == "ApprovalPinpeline");
+        CHECK(def->getWorkItemSpecs().size() == 2);
+        CHECK(def->getWorkItemSpecs()[0].name == "ReviewApplication");
+        CHECK(def->getWorkItemSpecs()[1].name == "SendConfirmationEmail");
+        CHECK(def->getAssignmentStrategy() == strategy);
+        CHECK(def->getEscalationHandler() == handler);
 
+        //safely deletes strategy and handler internally
         delete def; 
     }
 
@@ -35,20 +46,35 @@
         delete builder;
     }
 
-    TEST_CASE("WorkflowDesigner - Assembly via Director") {
-        WorkflowDefinitionBuilder* builder = new StandardDefinitionBuilder();
-        WorkflowDesigner designer(builder);
+    TEST_CASE("StandardDefinitionBuilder - Direct MAnual Construction") {
+        StandardDefinitionBuilder* builder = new StandardDefinitionBuilder();
+        builder->setName("Manual Pipeline");
 
-        std::vector<WorkItemSpec> specs = {
-            {"Task", "PrepBreakfast", "MenuA"},
-            {"Task", "DispatchOrder", "Courier1"}
-        };
+        WorkItemSpec spec1 = {"ApprovalTask", "ManagerSignoff", ""};
+        builder->addWorkItem(spec1);
 
-        WorkflowDefinition* def = designer.construct("Director Pipeline", specs, nullptr, nullptr);
+        AssignmentStrategy* strategy = new LeastLoadedStrategy();
+        builder->setAssignmentRule(strategy);
+
+        WorkflowDefinition* def = builder->build();
 
         REQUIRE(def != nullptr);
-        CHECK(def->getName() == "Director Pipeline");
-        CHECK(def->getWorkItemSpecs().size() == 2);
+        CHECK(def->getName() == "Manual Pipeline");
+        CHECK(def->getWorkItemSpecs().size() == 1);
+        CHECK(def->getAssignmentStrategy() == strategy);
 
         delete def;
+        delete builder;
     }
+
+    TEST_CASE("WorkflowDesigner - Construction throws when NULL Builder passed") {
+        WorkflowDesigner unattachedDesigner(nullptr);
+
+        std::vector<WorkItemSpec> specs = {
+            {"UserTask", "Task1", ""}
+        };
+
+        CHECK_THROWS_AS(unattachedDesigner.construct("Test", specs, nullptr, nullptr), std::runtime_error);
+    }
+
+}

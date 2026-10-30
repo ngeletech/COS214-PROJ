@@ -116,6 +116,7 @@ add_executable(unit_tests
     tests/test_decorator.cpp
 
     # Observer + Template Method
+    tests/test_template-method.cpp
 
     # Facade + Command
 )
