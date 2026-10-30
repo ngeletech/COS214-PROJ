@@ -1,3 +1,9 @@
+/**
+ * @file WorkItemFactory.h
+ * @brief Factory Method pattern: builds the work elements of a workflow instance
+ * 
+ * 
+ */
 #ifndef WORKITEMFACTORY_H
 #define WORKITEMFACTORY_H
 
@@ -9,8 +15,9 @@ class WorkflowInstance;
 struct WorkItemSpec;
 
 /**
- * @brief Creator in the Factory Method pattern.
- * create() is shared
+ * @class WorkItemFactory
+ * @brief Creator: Defines how an element is created and leaves the concrete type to its sublasses
+ * create() is shared part
  * makeElement() is the factory method that each subclass overrides
  */
 
@@ -32,8 +39,8 @@ class WorkItemFactory {
     protected:
         /**
          * @brief Factory Method: creates the concrete element for a spec
-         * @param spec work item description
-         * @return a new element 
+         * @param spec the work item description
+         * @return a new element (never nullptr)
          */
         virtual WorkElement* makeElement(const WorkItemSpec& spec) = 0;
 };
@@ -123,6 +130,8 @@ class SequentialGroupFactory : public WorkItemFactory {
  /**
   * @class WorkItemFactoryRegistry
   * @brief Lets the engine find the right factory for a spec's type
+  * 
+  * The registry owns every factory registered with it and deletes them in its destructor
   */
 class WorkItemFactoryRegistry {
     public:
@@ -139,6 +148,7 @@ class WorkItemFactoryRegistry {
         /**
          * @brief Registers a factory for a spec type and takes ownership of it
          * A factory already registered under the same type is deleted and replaced
+         * 
          * @param type the spec type
          * @param factory the factory to register
          */
@@ -152,6 +162,9 @@ class WorkItemFactoryRegistry {
         WorkItemFactory* getFactory(const std::string& type);
 
     private:
+        /**
+         * @brief owned factotories, keyed by spec type
+         */
         std::map<std::string, WorkItemFactory*> factories;
 };
 #endif
