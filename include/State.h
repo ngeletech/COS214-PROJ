@@ -95,7 +95,7 @@ public:
     virtual bool canCancel() const;
 
     /**
-     * @brief Name of the state, used by the Memento to save and restore it.
+     * @brief Gets the state name, used by the Memento to save and restore it.
      * @return The state name, e.g. "Created" or "Running".
      */
     virtual std::string getName() const = 0;
@@ -118,15 +118,22 @@ public:
  */
 class CreatedState : public InstanceState {
 public:
-    /** @brief Binds the state to its context. @param i The context. */
+    /**
+     * @brief Binds the state to its context.
+     * @param i The context.
+     */
     CreatedState(WorkflowInstance& i);
+
     /** @brief Moves the instance to Running. */
     void start() override;
+
     /** @brief Moves the instance to Cancelled. */
     void cancel() override;
-    /** @brief @return true. */
+
+    /** @brief Cancelling is allowed in this state. @return true. */
     bool canCancel() const override;
-    /** @brief @return "Created". */
+
+    /** @brief Gets the state name. @return "Created". */
     std::string getName() const override;
 };
 
@@ -138,22 +145,31 @@ public:
  */
 class RunningState : public InstanceState {
 public:
-    /** @brief Binds the state to its context. @param i The context. */
+    /**
+     * @brief Binds the state to its context.
+     * @param i The context.
+     */
     RunningState(WorkflowInstance& i);
+
     /** @brief Moves the instance to Suspended. */
     void suspend() override;
+
     /** @brief Moves the instance to Completed. */
     void complete() override;
+
     /** @brief Moves the instance to Cancelled. */
     void cancel() override;
+
     /**
      * @brief Moves the instance to Failed.
      * @param issue The problem that caused the failure.
      */
     void fail(const Issue& issue) override;
-    /** @brief @return true. */
+
+    /** @brief Cancelling is allowed in this state. @return true. */
     bool canCancel() const override;
-    /** @brief @return "Running". */
+
+    /** @brief Gets the state name. @return "Running". */
     std::string getName() const override;
 };
 
@@ -165,15 +181,22 @@ public:
  */
 class SuspendedState : public InstanceState {
 public:
-    /** @brief Binds the state to its context. @param i The context. */
+    /**
+     * @brief Binds the state to its context.
+     * @param i The context.
+     */
     SuspendedState(WorkflowInstance& i);
+
     /** @brief Moves the instance back to Running. */
     void resume() override;
+
     /** @brief Moves the instance to Cancelled. */
     void cancel() override;
-    /** @brief @return true. */
+
+    /** @brief Cancelling is allowed in this state. @return true. */
     bool canCancel() const override;
-    /** @brief @return "Suspended". */
+
+    /** @brief Gets the state name. @return "Suspended". */
     std::string getName() const override;
 };
 
@@ -183,9 +206,13 @@ public:
  */
 class CompletedState : public InstanceState {
 public:
-    /** @brief Binds the state to its context. @param i The context. */
+    /**
+     * @brief Binds the state to its context.
+     * @param i The context.
+     */
     CompletedState(WorkflowInstance& i);
-    /** @brief @return "Completed". */
+
+    /** @brief Gets the state name. @return "Completed". */
     std::string getName() const override;
 };
 
@@ -195,9 +222,13 @@ public:
  */
 class CancelledState : public InstanceState {
 public:
-    /** @brief Binds the state to its context. @param i The context. */
+    /**
+     * @brief Binds the state to its context.
+     * @param i The context.
+     */
     CancelledState(WorkflowInstance& i);
-    /** @brief @return "Cancelled". */
+
+    /** @brief Gets the state name. @return "Cancelled". */
     std::string getName() const override;
 };
 
@@ -207,9 +238,13 @@ public:
  */
 class FailedState : public InstanceState {
 public:
-    /** @brief Binds the state to its context. @param i The context. */
+    /**
+     * @brief Binds the state to its context.
+     * @param i The context.
+     */
     FailedState(WorkflowInstance& i);
-    /** @brief @return "Failed". */
+
+    /** @brief Gets the state name. @return "Failed". */
     std::string getName() const override;
 };
 
@@ -227,13 +262,13 @@ public:
  */
 class WorkflowInstance {
 private:
-    int id;                                    
-    WorkData data;                             
-    InstanceState* state;                      
-    const WorkflowDefinition* definition;      
-    WorkGroup* root;                           
-    WorkflowEngine* engine;                    
-    std::vector<WorkflowListener*> listeners;  
+    int id;                                    ///< Unique instance id.
+    WorkData data;                             ///< Key/value data for this run.
+    InstanceState* state;                      ///< Current state (owned).
+    const WorkflowDefinition* definition;      ///< Definition this was made from (not owned).
+    WorkGroup* root;                           ///< Root of the work tree (owned).
+    WorkflowEngine* engine;                    ///< Engine used to look up participants (not owned).
+    std::vector<WorkflowListener*> listeners;  ///< Subscribed observers (not owned).
 
 public:
     /**
@@ -278,25 +313,40 @@ public:
      */
     std::string getStateName() const;
 
-    /** @brief Starts the instance. @throws std::logic_error if the state refuses. */
+    /**
+     * @brief Starts the instance.
+     * @throws std::logic_error if the current state refuses.
+     */
     void start();
 
-    /** @brief Suspends the instance. @throws std::logic_error if the state refuses. */
+    /**
+     * @brief Suspends the instance.
+     * @throws std::logic_error if the current state refuses.
+     */
     void suspend();
 
-    /** @brief Resumes the instance. @throws std::logic_error if the state refuses. */
+    /**
+     * @brief Resumes the instance.
+     * @throws std::logic_error if the current state refuses.
+     */
     void resume();
 
-    /** @brief Completes the instance. @throws std::logic_error if the state refuses. */
+    /**
+     * @brief Completes the instance.
+     * @throws std::logic_error if the current state refuses.
+     */
     void complete();
 
-    /** @brief Cancels the instance. @throws std::logic_error if the state refuses. */
+    /**
+     * @brief Cancels the instance.
+     * @throws std::logic_error if the current state refuses.
+     */
     void cancel();
 
     /**
      * @brief Fails the instance.
      * @param issue The problem that caused the failure.
-     * @throws std::logic_error if the state refuses.
+     * @throws std::logic_error if the current state refuses.
      */
     void fail(const Issue& issue);
 
