@@ -123,6 +123,15 @@ void WorkflowEngine::completeWorkItem(int instanceId, const std::string& element
         return;
     }
     element->complete();
+
+    if (instance->getRoot()->isComplete())
+    {
+        if (instance->getStateName() == "Running") instance->complete();
+    }
+    else
+    {
+        activateNext(*instance);
+    }
 }
 
 void WorkflowEngine::handleIssue(const Issue &issue, WorkflowInstance &instance)

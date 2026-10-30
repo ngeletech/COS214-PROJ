@@ -59,8 +59,9 @@ void Task::execute(){
     doWork();
 
     Task::notifyListeners();
-
-    complete();
+    if (!requiresAssignee()) {
+        complete();
+    }
 }
 
 bool Task::checkReady() const {
