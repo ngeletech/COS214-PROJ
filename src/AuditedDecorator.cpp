@@ -7,12 +7,14 @@ AuditedDecorator::AuditedDecorator(WorkElement* element) : WorkElementDecorator(
 
 void AuditedDecorator::execute() {
     if(!wrapped) return;
-    cout << "[AUDIT] before execute" << endl;
+    cout << "[AUDIT] before execution" << endl;
     wrapped->execute();
-    cout << "[AUDIT] after execute" << endl;
+    cout << "[AUDIT] after execution" << endl;
 }
 
 void AuditedDecorator::complete() {
     if(!wrapped) return;
+    cout << "[AUDIT] before completion" << endl;
     wrapped->complete();
+    cout << "[AUDIT] after completion" << endl;
 }
