@@ -8,10 +8,26 @@
 #include "WorkflowCommand.h"
 #include "AssignmentStrategy.h"
 #include "WorkItemFactory.h"
-#include "ReportGenerator.h"
 #include "InstanceSnapshot.h"
 #include <stdexcept>
 #include <algorithm>
+#include <sstream>
+#include <map>
+#include <memory>
+
+//Helper: Turns status enum into text
+static std::string statusText(WorkItemStatus status) {
+    switch (status) {
+        case WorkItemStatus::CREATED:   return "created";
+        case WorkItemStatus::AVAILABLE: return "available";
+        case WorkItemStatus::ASSIGNED:  return "assigned";
+        case WorkItemStatus::STARTED:   return "started";
+        case WorkItemStatus::COMPLETED: return "completed";
+        case WorkItemStatus::REJECTED:  return "rejected";
+        case WorkItemStatus::CANCELLED: return "cancelled";
+    }
+    return "unknown";
+}
 
 TividyFacade::TividyFacade() {
     audit = new AuditHistory();
@@ -24,7 +40,6 @@ TividyFacade::TividyFacade() {
     designer = new WorkflowDesigner(new StandardDefinitionBuilder());
     auditLogger = new AuditLogger(audit);
     activator = new NextItemActivator(engine);
-    reports = new ReportGenerator(audit);
 
     engine->addDefaultListener(auditLogger);
     engine->addDefaultListener(activator);
@@ -34,7 +49,6 @@ TividyFacade::~TividyFacade() {
     delete invoker;        // history points into instances the engine owns
     delete engine;         // deletes instances and definitions
     delete designer;       // check whether it deletes its builder
-    delete reports;
     delete assignment;
     delete defaultStrategy;
     delete factories;
@@ -77,10 +91,9 @@ std::vector<std::string> TividyFacade::listDefinitions() const {
 }
 
 int TividyFacade::startWorkflow(const std::string& defName, const WorkData& data) {
-    WorkflowInstance* inst = engine->startInstance(defName, data);
-    if (inst == nullptr) throw std::invalid_argument("Unknown workflow: " + defName);
-    inst->start();                 // Created -> Running
-    engine->activateNext(*inst);
+    WorkflowInstance* inst = engine->startInstance(defName, data);      // creates and starts
+    if (inst == nullptr) throw std::invalid_argument("Unknown workflow: " + defName);               
+    engine->activateNext(*inst);    // assign the first available items
     return inst->getId();
 }
 
@@ -100,7 +113,22 @@ void TividyFacade::reassignItem(int id, const std::string& elementName, Particip
 }
 
 void TividyFacade::completeItem(int id, const std::string& elementName) {
-    requireInstance(id);
+    WorkflowInstance& inst = requireInstance(id);
+
+    WorkElement* found = nullptr;
+    if (inst.getRoot() != nullptr) {
+        for (DepthFirstIterator it(inst.getRoot()); !it.isDone(); it.next()) {
+            if (it.current()->getName() == elementName) { found = it.current(); break; }
+        }
+    }
+    if (found == nullptr) {
+        throw std::invalid_argument("Unknown work item: " + elementName);
+    }
+
+    if (inst.getStateName() != "Running") {
+        throw std::logic_error("Cannot complete an item while " + inst.getStateName());
+    }
+    
     engine->completeWorkItem(id, elementName);
 }
 
@@ -120,14 +148,62 @@ std::vector<std::string> TividyFacade::getAvailableWork(int id) const {
         return names;
     }
 
-    for (AvailableItemIterator it(inst.getRoot()); !it.isDone(); it.next()) {
-        names.push_back(it.current()->getName());
+    for (DepthFirstIterator it(inst.getRoot()); !it.isDone(); it.next()) {
+        WorkElement* e = it.current();
+        if (dynamic_cast<WorkGroup*>(e) != nullptr) continue;   // skip groups
+        WorkItemStatus s = e->getStatus();
+        if (s == WorkItemStatus::AVAILABLE || s == WorkItemStatus::ASSIGNED ||s == WorkItemStatus::STARTED) {
+            names.push_back(e->getName());
+        }    
     }
+
     return names;
 }
 
 std::string TividyFacade::generateReport(int id) const {
-    return reports->progressReport(requireInstance(id));
+     WorkflowInstance& inst = requireInstance(id);
+    std::ostringstream out;
+
+    out << "=== Workflow instance " << id << " ===\n";
+    out << "State: " << inst.getStateName() << "\n";
+
+    // data
+    out << "\nData:\n";
+    const std::map<std::string, std::string>& values = inst.getData().getData();
+    if (values.empty()) {
+        out << "  (none)\n";
+    }
+    for (std::map<std::string, std::string>::const_iterator it = values.begin();
+         it != values.end(); ++it) {
+        out << "  " << it->first << " = " << it->second << "\n";
+    }
+
+    // progress: every task in the work tree
+    out << "\nWork items:\n";
+    for (DepthFirstIterator it(inst.getRoot()); !it.isDone(); it.next()) {
+        WorkElement* element = it.current();
+        if (element == inst.getRoot()) continue;               // skip the hidden root group
+        out << "  " << element->getName() << ": " << statusText(element->getStatus());
+        Participant* who = element->getAssignee();
+        if (who != nullptr) out << " (" << who->getName() << ")";
+        out << "\n";
+    }
+
+    // history: the audit entries for this instance only
+    out << "\nHistory:\n";
+    std::unique_ptr<WorkIterator<const AuditEntry> > entries(audit->createIterator());
+    int count = 0;
+    for (entries->first(); !entries->isDone(); entries->next()) {
+        const AuditEntry* entry = entries->current();
+        if (entry->getInstanceId() != id) continue;
+        out << "  " << entry->getEventType();
+        if (!entry->getDetails().empty()) out << " - " << entry->getDetails();
+        out << "\n";
+        ++count;
+    }
+    if (count == 0) out << "  (no events recorded)\n";
+
+    return out.str();
 }
 
 void TividyFacade::registerParticipant(Participant* participant) {

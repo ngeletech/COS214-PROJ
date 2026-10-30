@@ -20,7 +20,6 @@ class AssignmentService;
 class WorkItemFactoryRegistry;
 class WorkflowEngine;
 class WorkflowDesigner;
-class ReportGenerator;
 class AuditLogger;
 class NextItemActivator;
 
@@ -43,7 +42,6 @@ private:
     WorkItemFactoryRegistry* factories;
     WorkflowEngine* engine;
     WorkflowDesigner* designer;
-    ReportGenerator* reports;
     AuditLogger* auditLogger;
     NextItemActivator* activator;
     std::vector<Participant*> participants;
