@@ -77,6 +77,7 @@ class PayloadDecorator: public WorkElementDecorator {
 
         /**
          * @brief Returns a copy of the wrapped payload with the new entry added
+         * @return A WorkData payload reference
          */
         WorkData getPayload() const;
 };
@@ -131,6 +132,7 @@ class PriorityDecorator: public WorkElementDecorator {
 
         /**
          * @brief Returns the priority of the wrapped element
+         * @return A priority 
          */
         int getPriority() const;
 
