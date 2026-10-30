@@ -44,6 +44,7 @@ public:
     ServiceTask(const std::string& name);
 
     virtual ~ServiceTask() {}
+    bool requiresAssignee() const override;
 };
 
 /**
@@ -101,6 +102,7 @@ public:
     ScriptTask(const std::string& name, const std::string& key, const std::string& value);
 
     virtual ~ScriptTask() {}
+    bool requiresAssignee() const override;
 };
 
 #endif // TEMPLATE_METHOD_H
