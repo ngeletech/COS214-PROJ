@@ -204,7 +204,13 @@ void WorkflowEngine::assignWork(WorkflowInstance &instance, WorkElement *element
         return;
     }
 
-    //assignment->setStrategy(instance.getDefinition()->getAssignmentStrategy());
+    AssignmentStrategy *rule = instance.getDefinition()->getAssignmentStrategy();
+    AssignmentStrategy *previous = assignment->getStrategy();
+    if (rule != nullptr)
+    {
+        assignment->setStrategy(rule);
+    }
+
     Participant *participant = assignment->assignWorkItem(*element, instance.getData(), participants);
 
     if (participant == nullptr)
@@ -217,7 +223,6 @@ void WorkflowEngine::assignWork(WorkflowInstance &instance, WorkElement *element
     element->assignTo(participant);
     element->setStatus(WorkItemStatus::ASSIGNED);
     participant->incrementWorkload();
-    //instance.publish(WorkflowEvent("ElementAssigned", instance.getId(), element->getName(), participant->getName()));
     instance.publish("ElementAssigned");
 }
 
