@@ -1,3 +1,8 @@
+/**
+ * @file WorkItemFactory.cpp
+ * @brief Implementation of the Factory Method 
+ *        pattern for work elements.
+ */
 #include "WorkItemFactory.h"
 #include "State.h"
 #include "composite.h"
@@ -9,7 +14,8 @@
 
 namespace {
     /**
-     * @brief Removes the leading and trailing spaces and tabs from a string*/
+     * @brief Removes the leading and trailing spaces
+     *          and tabs from a string*/
     std::string trim(const std::string& text) {
         const char* whitespace = " \t";
         std::string::size_type first = text.find_first_not_of(whitespace);
@@ -29,6 +35,9 @@ WorkItemFactory::~WorkItemFactory() {}
 /**
  * @brief Builds a work element from a spec and links it to its instance.
  *        The concrete type comes from makeElement()
+ * @details Calls the factory method makeElement(), then does the setup 
+ *          every element needs: links it to its instance and sets the 
+ *          status to CREATED
  * @param spec
  * @param instance the running instance that will own the element
  * @return a new element in created status (caller takes ownership)
@@ -45,6 +54,7 @@ WorkElement* WorkItemFactory::create(const WorkItemSpec& spec, WorkflowInstance*
 
 /**
  * @brief Creates a UserTask
+ * @details Uses new UserTask(spec.name)
  */
 WorkElement* UserTaskFactory::makeElement(const WorkItemSpec& spec){
     return new UserTask(spec.name);
@@ -52,6 +62,7 @@ WorkElement* UserTaskFactory::makeElement(const WorkItemSpec& spec){
 
 /**
  * @brief Creates a ServiceTask
+ * @details Uses new ServiceTask(spec.name)
  */
 WorkElement* ServiceTaskFactory::makeElement(const WorkItemSpec& spec){
     return new ServiceTask(spec.name);
@@ -59,6 +70,7 @@ WorkElement* ServiceTaskFactory::makeElement(const WorkItemSpec& spec){
 
 /**
  * @brief Creates an ApprovalTask
+ * @details Uses new ApprovalTask(spec.name)
  */
 WorkElement* ApprovalTaskFactory::makeElement(const WorkItemSpec& spec){
     return new ApprovalTask(spec.name);
@@ -66,7 +78,10 @@ WorkElement* ApprovalTaskFactory::makeElement(const WorkItemSpec& spec){
 
 
 /**
- * @brief The specs config is a single string for a script task it is assumed to look like "key,value"; only the first "," splits it. 
+ * @brief The specs config is a single string for a script task it 
+ *         is assumed to look like "key,value"; only the first "," 
+ *         splits it.
+ * @details Uses new ScriptTask(spec.name, key, value) 
  */
 WorkElement* ScriptTaskFactory::makeElement(const WorkItemSpec& spec){
     std::string::size_type comma = spec.config.find(',');
@@ -84,13 +99,15 @@ WorkElement* ScriptTaskFactory::makeElement(const WorkItemSpec& spec){
 
 /**
  * @brief Creates a ParallelGroup
+ * @details Uses new Parallel(spec.name)
  */
 WorkElement* ParallelGroupFactory::makeElement(const WorkItemSpec& spec){
     return new ParallelGroup(spec.name);
 }
 
 /**
- * @brief
+ * @brief creates a SequentialGroupFactory
+ * @details Uses new SequentialGroup(spec.name)
  */
 WorkElement* SequentialGroupFactory::makeElement(const WorkItemSpec& spec){
     return new SequentialGroup(spec.name);

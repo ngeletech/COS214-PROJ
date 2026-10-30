@@ -1,3 +1,8 @@
+/**
+ * @file InstanceSnapshot.h
+ * @brief Memento pattern: saving and restoring state of a
+ *        workflow instance
+ */
 #ifndef INSTANCESNAPSHOT_H
 #define INSTANCESNAPSHOT_H
 
@@ -18,9 +23,14 @@ class InstanceSnapshot {
     friend class WorkflowInstance;
 
     private:
+        /**
+         * @brief Constructor
+         *        Private so that only WorkflowInstance can create snapshots.
+         */
         InstanceSnapshot() {}
-    private:
-        WorkData data;
+        
+    private: 
+        WorkData data; 
         std::string stateName;
         std::map<std::string, WorkItemStatus> elementStatuses;
         std::map<std::string, int> assignments;
@@ -56,7 +66,7 @@ class RollbackManager {
         bool canRollback(int instanceId) const ;
 
     private:
-        std::map<int, std::vector<InstanceSnapshot>> snapshots;//save snapshots per instance
+        std::map<int, std::vector<InstanceSnapshot>> snapshots;///save snapshots per instance
 };
 
 #endif

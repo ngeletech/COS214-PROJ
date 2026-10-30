@@ -75,7 +75,9 @@ WorkflowInstance *WorkflowEngine::startInstance(const std::string& defName, Work
     WorkflowDefinition *definition = found->second[found->second.size() - 1];
     WorkflowInstance *instance = new WorkflowInstance(nextInstanceId++, definition,data, this);
     
-    instance->setRoot(new WorkGroup(definition->getName()));
+    SequentialGroup* root = new SequentialGroup(definition->getName());
+    root->setInstance(instance);      // so children added later inherit the instance
+    instance->setRoot(root);
     for (std::vector<WorkflowListener *>::iterator it = defaultListeners.begin(); it != defaultListeners.end(); ++it)
     {
         WorkflowListener *listener = *it;
@@ -123,6 +125,15 @@ void WorkflowEngine::completeWorkItem(int instanceId, const std::string& element
         return;
     }
     element->complete();
+
+    if (instance->getRoot()->isComplete())
+    {
+        if (instance->getStateName() == "Running") instance->complete();
+    }
+    else
+    {
+        activateNext(*instance);
+    }
 }
 
 void WorkflowEngine::handleIssue(const Issue &issue, WorkflowInstance &instance)
@@ -193,7 +204,13 @@ void WorkflowEngine::assignWork(WorkflowInstance &instance, WorkElement *element
         return;
     }
 
-    //assignment->setStrategy(instance.getDefinition()->getAssignmentStrategy());
+    AssignmentStrategy *rule = instance.getDefinition()->getAssignmentStrategy();
+    AssignmentStrategy *previous = assignment->getStrategy();
+    if (rule != nullptr)
+    {
+        assignment->setStrategy(rule);
+    }
+
     Participant *participant = assignment->assignWorkItem(*element, instance.getData(), participants);
 
     if (participant == nullptr)
@@ -206,7 +223,6 @@ void WorkflowEngine::assignWork(WorkflowInstance &instance, WorkElement *element
     element->assignTo(participant);
     element->setStatus(WorkItemStatus::ASSIGNED);
     participant->incrementWorkload();
-    //instance.publish(WorkflowEvent("ElementAssigned", instance.getId(), element->getName(), participant->getName()));
     instance.publish("ElementAssigned");
 }
 
