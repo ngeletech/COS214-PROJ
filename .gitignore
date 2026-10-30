@@ -3,3 +3,7 @@ build/
 *.a
 .vscode/
 ~$*
+build.log
+build-clang/
+build.log
+build-asan/

@@ -1,7 +1,7 @@
 //Concrete Builder
 #include "../include/Builder.h"
 
-StandardDefinitionBuilder::StandardDefinitionBuilder() {
+StandardDefinitionBuilder::StandardDefinitionBuilder() : product(nullptr) {
     this->reset();
 
 
@@ -62,5 +62,6 @@ WorkflowDefinition* StandardDefinitionBuilder::build() {
 }
 
 void StandardDefinitionBuilder::reset() {
+    delete this->product;
     this->product = new WorkflowDefinition();
 }

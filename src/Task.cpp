@@ -28,7 +28,7 @@ void Task::complete(){
 
     // listeners react to this event
     if(getInstance() != nullptr){
-        getInstance()->publish("ElementCompleted");
+        getInstance()->publish("TASK_COMPLETED");
     }
 }
 
@@ -59,8 +59,9 @@ void Task::execute(){
     doWork();
 
     Task::notifyListeners();
-
-    complete();
+    if (!requiresAssignee()) {
+        complete();
+    }
 }
 
 bool Task::checkReady() const {

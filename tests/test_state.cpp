@@ -7,12 +7,6 @@
 #include <stdexcept>
 #include <string>
 
-// TEMPORARY: WorkflowInstance::restore() calls this, but src/WorkflowEngine.cpp
-// doesn't compile on dev yet. Delete once WorkflowEngine.cpp is in CMakeLists.txt.
-Participant* WorkflowEngine::findParticipant(int) const {
-    return nullptr;
-}
-
 namespace {
 
 // Minimal concrete leaf (Task::doWork is pure virtual).

@@ -1,5 +1,6 @@
 #include "WorkflowCommand.h"
 #include "InstanceSnapshot.h"
+#include "State.h"
 
 CommandInvoker::CommandInvoker(RollbackManager* rollback) : rollback(rollback) {}
 void CommandInvoker::submit(WorkflowCommand* command) {
@@ -19,7 +20,18 @@ void CommandInvoker::runNext() {
     if (!queue.empty()) {
         WorkflowCommand* command = queue.front();
         queue.pop();
-        command->execute();
+
+        //save snapshot
+        WorkflowInstance* target = command->getTarget();
+        if (rollback != nullptr && target != nullptr) {
+            rollback->save(target);
+        }
+        try {
+            command->execute();
+        } catch(...) {
+            delete command;
+            throw;
+        }
         history.push_back(command);
     }
 }
