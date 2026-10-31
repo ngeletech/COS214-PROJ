@@ -53,6 +53,7 @@ class AssignmentStrategy {
 class RoleMatchingStrategy : public AssignmentStrategy {
     private:
         std::string requiredRole; ///< Role that a candidate must have to be selected.
+        std::map<std::string, std::string> roleByItem; 
 
     public:
         /**
@@ -71,6 +72,8 @@ class RoleMatchingStrategy : public AssignmentStrategy {
          *         or nullptr if no candidate matches.
          */
         Participant* select(WorkElement& element, const WorkData& data, std::vector<Participant*> candidates) override;
+
+        void requireRoleFor(const std::string& itemName, const std::string& role);
 };
 
 /**
