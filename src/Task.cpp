@@ -82,7 +82,7 @@ void Task::notifyListeners(){
     if (instance != nullptr) {
         std::cout << "[Task]: Task '" << getName() << "' has been executed. Notifying listeners." << std::endl;
 
-        instance->publish("ElementExecuted: " , getName());
+        instance->publish("ElementExecuted" , getName());
 
     } else {
         std::cout << "[Task]: Task '" << getName() << "' has been executed, but no WorkflowInstance is associated." << std::endl;
