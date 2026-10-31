@@ -103,7 +103,9 @@ class WorkElementDecorator: public WorkElement {
          */
         void setParent(WorkGroup* parent);
 
-
+        /**
+         * @brief Returns the wrapped element as a group or nullptr
+         */
         WorkGroup* asGroup();
 
         /**

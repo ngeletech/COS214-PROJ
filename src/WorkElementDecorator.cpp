@@ -33,6 +33,7 @@ bool WorkElementDecorator::isAvailable() const {
 }
 
 WorkData WorkElementDecorator::getPayload() const {
+    if(!wrapped) return WorkData();
     return wrapped->getPayload();
 }
 
@@ -67,8 +68,8 @@ void WorkElementDecorator::assignTo(Participant* participant) {
 }
 
 void WorkElementDecorator::setParent(WorkGroup* parent) {
-    if(!wrapped) return; 
-    wrapped->setParent(parent);
+    WorkElement::setParent(parent); 
+    if (wrapped )wrapped->setParent(parent);
 }
 
 WorkGroup* WorkElementDecorator::asGroup() {
