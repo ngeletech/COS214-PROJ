@@ -212,7 +212,8 @@ void WorkflowEngine::assignWork(WorkflowInstance &instance, WorkElement *element
     }
 
     Participant *participant = assignment->assignWorkItem(*element, instance.getData(), participants);
-
+    assignment->setStrategy(previous);
+    
     if (participant == nullptr)
     {
         Issue issue("NoCandidate", "No suitable participant for " + element->getName(), 2, element->getName());
