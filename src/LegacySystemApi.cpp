@@ -3,7 +3,7 @@
 #include <algorithm>
 using namespace std;
 
-int LegacySystemApi::counter = 0;
+//int LegacySystemApi::counter = 0;
 
 string LegacySystemApi::submitRecord(string record) {
     int n = ++counter;

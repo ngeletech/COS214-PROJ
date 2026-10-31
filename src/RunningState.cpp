@@ -24,6 +24,7 @@ void RunningState::cancel() {
     
 void RunningState::fail(const Issue&) {
     WorkflowInstance* i = instance;
+    i->cancelOutstandingWork();
     i->setState(new FailedState(*i));
     i->publish("InstanceFailed");
 }

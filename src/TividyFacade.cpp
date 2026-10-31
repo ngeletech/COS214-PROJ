@@ -32,6 +32,10 @@ static std::string statusText(WorkItemStatus status) {
     return "unknown";
 }
 
+static bool isActive(WorkItemStatus s) {
+    return s == WorkItemStatus::AVAILABLE || s == WorkItemStatus::ASSIGNED || s == WorkItemStatus::STARTED;
+}
+
 TividyFacade::TividyFacade() {
     audit = new AuditHistory();
     rollback = new RollbackManager();
@@ -81,6 +85,13 @@ void TividyFacade::run(WorkflowCommand* command) {
 WorkflowDefinition* TividyFacade::defineWorkflow(const std::string& name,
         const std::vector<WorkItemSpec>& specs,
         AssignmentStrategy* strategy, EscalationHandler* chain) {
+
+    for (size_t k = 0; k < specs.size(); ++k) {
+        if(factories->getFactory(specs[k].type) == nullptr) {
+            throw std::invalid_argument("Unknown work item type: " + specs[k].type);
+        }
+    }
+    
     WorkflowDefinition* def = designer->construct(name, specs, strategy, chain);
     engine->registerDefinition(def);
     if (std::find(definitionNames.begin(), definitionNames.end(), name)
@@ -112,24 +123,34 @@ void TividyFacade::reassignItem(int id, const std::string& elementName, Particip
     if (p == nullptr) {
         throw std::invalid_argument("No participant given");
     }
-    run(new ReassignItemCommand(&requireInstance(id), elementName, p));
+    //run(new ReassignItemCommand(&requireInstance(id), elementName, p));
+
+    WorkflowInstance& inst = requireInstance(id);
+    WorkElement* element = inst.findElement(elementName);
+    if (element == nullptr) {
+        throw std::invalid_argument("Unknown work item: " + elementName);
+    }
+    if (element->getStatus() != WorkItemStatus::ASSIGNED && element->getStatus() != WorkItemStatus::STARTED) {
+        throw std::logic_error("Item is not assigned: " + elementName);
+    }
+
+    run(new ReassignItemCommand(&inst, elementName, p));
 }
 
 void TividyFacade::completeItem(int id, const std::string& elementName) {
     WorkflowInstance& inst = requireInstance(id);
 
-    WorkElement* found = nullptr;
-    if (inst.getRoot() != nullptr) {
-        for (DepthFirstIterator it(inst.getRoot()); !it.isDone(); it.next()) {
-            if (it.current()->getName() == elementName) { found = it.current(); break; }
-        }
-    }
+
+    WorkElement* found = inst.findElement(elementName);
     if (found == nullptr) {
         throw std::invalid_argument("Unknown work item: " + elementName);
     }
 
     if (inst.getStateName() != "Running") {
         throw std::logic_error("Cannot complete an item while " + inst.getStateName());
+    }
+    if(!isActive(found->getStatus())) {
+        throw std::logic_error("Item is not active: " + elementName);
     }
     
     engine->completeWorkItem(id, elementName);
@@ -142,6 +163,10 @@ void TividyFacade::decideItem(int id, const std::string& elementName, bool appro
     ApprovalTask* task = dynamic_cast<ApprovalTask*>(inst.findElement(elementName));
     if (task == nullptr)
         throw std::invalid_argument("Not an approval item: " + elementName);
+    
+    if(!isActive(task->getStatus())) {
+        throw std::logic_error("Item is not active: " + elementName);
+    }
     task->recordDecision(approved);
     if (approved) {
         engine->completeWorkItem(id, elementName);

@@ -48,9 +48,33 @@ WorkflowDefinition* StandardDefinitionBuilder::build() {
         throw std::runtime_error("StandardDefinitionBuilder: No active product to build!");
     }
 
-    if (this->product->workItemSpecs.empty()) {
+    /*if (this->product->workItemSpecs.empty()) {
         throw std::runtime_error("StandardDefinitionBuilder: Cannot build; empty workflow with no task!");
+    }*/
+
+    std::string problem;
+    const std::vector<WorkItemSpec>& specs = this->product->workItemSpecs;
+
+    if (specs.empty()) {
+        problem = "Cannot build; empty workflow with no task!";
+
     }
+
+    for (size_t i = 0; i < specs.size() && problem.empty(); ++i) {
+        for (size_t j = i + 1; j < specs.size(); ++j) {
+            if (specs[i].name == specs[j].name) {
+            problem = "Cannot build; duplicate work item name '" + specs[i].name + "'";
+            break;
+            }
+        }
+    }
+    if (!problem.empty()) {
+        // nothing was built, so the caller still owns its strategy and chain
+        this->product->assignmentStrategy = nullptr;
+        this->product->escalationHandler = nullptr;
+        throw std::runtime_error("StandardDefinitionBuilder: " + problem);
+    }
+    
 
     WorkflowDefinition* finishedProduct = this->product;
 
