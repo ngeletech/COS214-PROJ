@@ -1,4 +1,4 @@
-#include "../include/scenarios.h"
+#include "../include/Scenarios.h"
 #include "../include/AssignmentStrategy.h"
 #include "../include/Chain-Of-Responsibility.h"
 #include "../include/Participant.h"
@@ -19,7 +19,8 @@ void setupFoodCateringScenario(TividyFacade& facade) {
     supHandler->setNext(mgrHandler);
 
     //Define Strategy
-    AssignmentStrategy* strategy = new RoleMatchingStrategy("Kitchen");
+    RoleMatchingStrategy* strategy = new RoleMatchingStrategy("Kitchen");
+    strategy->requireRoleFor("ManagerSignoff", "Management");
 
     //Define WorkItem Specifications for Meal Order
     std::vector<WorkItemSpec> specs = {
@@ -38,7 +39,10 @@ void setupTelecomScenario(TividyFacade& facade) {
     //Register Participants
     facade.registerParticipant(new Participant(10, "Techician Bob", "FieldTech"));
     facade.registerParticipant(new Participant(11, "Agent Sarah", "CreditOfficer"));
-    facade.registerParticipant(new Participant(12, "Eng David", "NetworkEng"));
+    //facade.registerParticipant(new Participant(12, "Eng David", "NetworkEng"));
+    Participant* david = new Participant(12, "Eng David", "NetworkEng");
+    david->setAttribute("department", "Engineering");
+    facade.registerParticipant(david);
 
     //Build Escalation Chain
     EscalationHandler* chain = new FrontlineHandler(nullptr, 2);

@@ -38,7 +38,7 @@ void ApprovalTask::doWork() {
     //     std::cout << "[ApprovalTask]: Task '" << getName() << "' has been rejected." << std::endl;
     // }
 
-    std::cout << "[ApprovalTask]: " << getName() << "' is waiting for a decision." <<std::endl;
+    std::cout << "[ApprovalTask]: '" << getName() << "' is waiting for a decision." <<std::endl;
 }
 
 // 4. ScriptTask Implementation

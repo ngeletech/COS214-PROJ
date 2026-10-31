@@ -60,7 +60,7 @@ void WorkflowEngine::registerDefinition(WorkflowDefinition *definition)
         }
     }
     std::vector<WorkflowDefinition *> &versions = definitions[definition->getName()];
-    //definition->setVersion(versions.size() + 1);
+    definition->setVersion(static_cast<int>(versions.size() + 1));
     versions.push_back(definition);
 }
 WorkflowInstance *WorkflowEngine::startInstance(const std::string& defName, WorkData data)
@@ -112,12 +112,7 @@ void WorkflowEngine::completeWorkItem(int instanceId, const std::string& element
     }
 
     /*WorkElement *element = instance->findElement(elementName);*/
-    WorkElement* element = nullptr;
-    for (DepthFirstIterator it(instance->getRoot()); !it.isDone(); it.next()){
-        if(it.current()->getName() == elementName) {
-            element = it.current();
-        }
-    }
+    WorkElement* element = instance->findElement(elementName);
     
     if (element == nullptr)
     {
@@ -151,14 +146,8 @@ void WorkflowEngine::handleIssue(const Issue &issue, WorkflowInstance &instance)
 
     if (!issue.getElementName().empty())
     {
-        /*WorkElement *element = instance.findElement(issue.getElementName());*/
-        WorkElement* element = nullptr;
-        for (DepthFirstIterator it(instance.getRoot()); !it.isDone(); it.next()) {
-            if(it.current()->getName() == issue.getElementName()){
-                element = it.current();
-                break;
-            }
-        }
+        WorkElement *element = instance.findElement(issue.getElementName());
+        
         
         if (element != nullptr)
         {
@@ -185,7 +174,9 @@ void WorkflowEngine::handleIssue(const Issue &issue, WorkflowInstance &instance)
             Participant *old = element->getAssignee();
             if (old != nullptr)
             {
-                old->decrementWorkload();
+                if (element->getStatus() == WorkItemStatus::ASSIGNED || element->getStatus() == WorkItemStatus::STARTED) {
+                    old->decrementWorkload();
+                }
                 element->assignTo(nullptr);
             }
             element->setStatus(WorkItemStatus::CREATED);
@@ -212,6 +203,7 @@ void WorkflowEngine::assignWork(WorkflowInstance &instance, WorkElement *element
     }
 
     Participant *participant = assignment->assignWorkItem(*element, instance.getData(), participants);
+    assignment->setStrategy(previous);
 
     if (participant == nullptr)
     {
@@ -223,7 +215,7 @@ void WorkflowEngine::assignWork(WorkflowInstance &instance, WorkElement *element
     element->assignTo(participant);
     element->setStatus(WorkItemStatus::ASSIGNED);
     participant->incrementWorkload();
-    instance.publish("ElementAssigned");
+    instance.publish("ElementAssigned", element->getName());
 }
 
 void WorkflowEngine::activateNext(WorkflowInstance &instance)
@@ -268,6 +260,11 @@ void WorkflowEngine::activateNext(WorkflowInstance &instance)
         }
     }
     instance.getRoot()->execute();
+
+    if (instance.getStateName() == "Running" && instance.getRoot()->isComplete()) {
+        instance.complete();
+    }
+    
 }
 
 WorkflowInstance *WorkflowEngine::getInstance(int id) const

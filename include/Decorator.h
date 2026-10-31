@@ -31,18 +31,100 @@ class WorkElementDecorator: public WorkElement {
         /**
          * @brief Deleted the wrapped element
          */
-        ~WorkElementDecorator();
+        virtual ~WorkElementDecorator();
+
+        /**
+         * @brief Forwards the execution to the wrapped element
+         */
         void execute();
+
+        /**
+         * @brief Forwards completion to the wrapped element
+         */
         void complete();
+
+        /**
+         * @brief Checks if the wrapped element is complete
+         * @return Ture if complete, false otherwise
+         */
         bool isComplete() const;
+
+        /**
+         * @brief Checks if the wrapped element is available
+         * @return Ture if available, false otherwise
+         */
         bool isAvailable() const;
+
+        /**
+         * @brief  Returns the payload of the wrapped element
+         * @return A copy of the WorkData payload
+         */
         WorkData getPayload() const;
+
+        /** 
+         * @brief Returns the name of the wrapped element.
+         * @return The name string.
+         */
         string getName() const;
+
+        /**
+         * @brief Returns the status of the wrapped element.
+         * @return The current WorkItemStatus.
+         */
         WorkItemStatus getStatus() const;
+
+        /**
+         * @brief Sets the status of the wrapped element.
+         * @param status The new status.
+         */
         void setStatus(WorkItemStatus status);
+
+        /**
+         * @brief Returns the owning instance of the wrapped element.
+         * @return Pointer to the WorkflowInstance, or nullptr if not set.
+         */
         WorkflowInstance* getInstance() const;
+
+        /**
+         * @brief Sets the owning instance of the wrapped element.
+         * @param instance The WorkflowInstance to set.
+         */
         void setInstance(WorkflowInstance* instance);
+
+        /**
+         * @brief Assigns a participant to the wrapped element.
+         * @param participant The participant to assign.
+         */
         void assignTo(Participant* participant);
+
+        /**
+         * @brief Sets the parent group of the wrapped element.
+         * @param parent The WorkGroup to set as parent.
+         */
+        void setParent(WorkGroup* parent);
+
+        /**
+         * @brief Returns the wrapped element as a group or nullptr
+         */
+        WorkGroup* asGroup();
+
+        /**
+         * @brief Returns the assigned participant of the wrapped element.
+         * @return Pointer to the Participant, or nullptr if none.
+         */
+        Participant* getAssignee() const;
+
+        /**
+         * @brief Checks if the wrapped element requires an assignee.
+         * @return True if an assignee is required, false otherwise.
+         */
+        bool requiresAssignee() const;
+
+        /**
+         * @brief Returns the priority of the wrapped element 
+         * @return The priority, or 0 if nothig is wrapped.
+         */
+        int getPriority() const;
 };
 
 /**

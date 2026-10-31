@@ -8,8 +8,13 @@
 #include "WorkflowEngine.h"
 #include <map>
 
+static bool holdsWork(WorkElement* element) {
+    WorkItemStatus s = element->getStatus();
+    return element->getAssignee() != nullptr && (s == WorkItemStatus::ASSIGNED || s == WorkItemStatus::STARTED);
+}
+
 WorkflowInstance::WorkflowInstance(int id, const WorkflowDefinition* definition, WorkData data, WorkflowEngine* engine)
-    : id(id), data(data), state(nullptr), definition(definition), root(nullptr), engine(engine) {
+    : id(id), data(data), state(nullptr), definition(definition), root(nullptr), engine(engine), publishing(false) {
     state = new CreatedState(*this);
 }
     
@@ -44,6 +49,10 @@ const WorkData& WorkflowInstance::getData() const {
     return data;
 }
 
+WorkflowEngine* WorkflowInstance::getEngine() const {
+    return engine;
+}
+
 void WorkflowInstance::setData(const std::string& key, const std::string& value) {
     data.addData(key, value);
     publish("DataChanged");
@@ -55,7 +64,7 @@ WorkElement* WorkflowInstance::findElement(const std::string& name) {
 
     for (DepthFirstIterator it(root); !it.isDone(); it.next()) {
         WorkElement* element = it.current();
-        if (element->getName() == name) {
+        if (element != root && element->getName() == name) {
             return element;
         }
     }
@@ -68,6 +77,7 @@ void WorkflowInstance::cancelOutstandingWork() {
     for (DepthFirstIterator it(root); !it.isDone(); it.next()) {
         WorkElement* element = it.current();
         WorkItemStatus s = element->getStatus();
+        if(holdsWork(element)) element->getAssignee()->decrementWorkload();
 
         if (s != WorkItemStatus::COMPLETED &&
             s != WorkItemStatus::REJECTED &&
@@ -115,11 +125,24 @@ void WorkflowInstance::subscribe(WorkflowListener* listener) {
     }
 }
     
-void WorkflowInstance::publish(const std::string& event) {
-    WorkflowEvent ev(event, id, "", "");
+void WorkflowInstance::publish(const std::string& event, const std::string& elementName) {
+    /*WorkflowEvent ev(event, id, "", "");
     for (std::size_t k = 0; k < listeners.size(); ++k) {
         listeners[k]->update(ev);
+    }*/
+    pending.push_back(WorkflowEvent(event, id, elementName, ""));
+    if (publishing) return; // a listener is still running; its events go out after it
+    publishing = true;
+    for(std::size_t e = 0; e < pending.size(); ++e) {
+        WorkflowEvent ev = pending[e];
+        for (std::size_t k = 0; k < listeners.size(); ++k) {
+            listeners[k]->update(ev);
+        }   
     }
+    pending.clear();
+    publishing = false;
+
+    
 }
 
 //memento
@@ -149,12 +172,12 @@ void WorkflowInstance::restore(const InstanceSnapshot& snap) {
         for (DepthFirstIterator it(root); !it.isDone(); it.next()) {
             WorkElement* element = it.current();
 
-            std::map<std::string, int>::const_iterator a = snap.assignments.find(element->getName());
-            if (a != snap.assignments.end() && engine != nullptr) {
-                Participant* who = engine->findParticipant(a->second);
-                if (who != nullptr) {
-                    element->assignTo(who);
-                }
+            if(holdsWork(element)) element->getAssignee()->decrementWorkload();
+            if (engine != nullptr) {
+                Participant* who = nullptr;
+                std::map<std::string, int>::const_iterator a = snap.assignments.find(element->getName());
+                if (a != snap.assignments.end()) who = engine->findParticipant(a->second);
+                element->assignTo(who);
             }
 
             // set the status last, because assignTo may change it
@@ -162,6 +185,8 @@ void WorkflowInstance::restore(const InstanceSnapshot& snap) {
             if (s != snap.elementStatuses.end()) {
                 element->setStatus(s->second);
             }
+
+            if(holdsWork(element)) element->getAssignee()->incrementWorkload();
         }
     }
 
