@@ -29,6 +29,9 @@ void CommandInvoker::runNext() {
         try {
             command->execute();
         } catch(...) {
+            if(rollback != nullptr && target != nullptr) {
+                rollback->rollback(target);
+            }
             delete command;
             throw;
         }
