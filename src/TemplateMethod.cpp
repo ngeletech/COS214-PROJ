@@ -1,5 +1,5 @@
 #include "../include/TemplateMethod.h"
-
+#include "../include/State.h"
 #include <iostream>
 
 // 1. UserTask Implementation
@@ -46,6 +46,9 @@ ScriptTask::ScriptTask(const std::string& name, const std::string& key, const st
 
 void ScriptTask::doWork() {
     std::cout << "[ScriptTask]: Executing script '" << getName() << "' -> Setting key [" << this->key << "] = " << this->value << std::endl;
+    if(getInstance() != nullptr) {
+        getInstance()->setData(key, value);
+    }
 }
 
 bool ScriptTask::requiresAssignee() const {
