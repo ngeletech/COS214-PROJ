@@ -14,7 +14,7 @@ static bool holdsWork(WorkElement* element) {
 }
 
 WorkflowInstance::WorkflowInstance(int id, const WorkflowDefinition* definition, WorkData data, WorkflowEngine* engine)
-    : id(id), data(data), state(nullptr), definition(definition), root(nullptr), engine(engine) {
+    : id(id), data(data), state(nullptr), definition(definition), root(nullptr), engine(engine), publishing(false) {
     state = new CreatedState(*this);
 }
     

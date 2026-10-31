@@ -140,13 +140,8 @@ void TividyFacade::reassignItem(int id, const std::string& elementName, Particip
 void TividyFacade::completeItem(int id, const std::string& elementName) {
     WorkflowInstance& inst = requireInstance(id);
 
-    WorkElement* found = nullptr;
-    if (inst.getRoot() != nullptr) {
-        /*for (DepthFirstIterator it(inst.getRoot()); !it.isDone(); it.next()) {
-            if (it.current()->getName() == elementName) { found = it.current(); break; }
-        }*/
-       WorkElement* found = inst.findElement(elementName);
-    }
+
+    WorkElement* found = inst.findElement(elementName);
     if (found == nullptr) {
         throw std::invalid_argument("Unknown work item: " + elementName);
     }
