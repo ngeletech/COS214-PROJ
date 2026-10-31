@@ -109,6 +109,7 @@ private:
 
     // Friend class declaration granting StandardDefinitionBuilder access to private members.
     friend class StandardDefinitionBuilder;
+    friend class WorkflowEngine;
 
 public:
     /**

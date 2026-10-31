@@ -60,7 +60,7 @@ void WorkflowEngine::registerDefinition(WorkflowDefinition *definition)
         }
     }
     std::vector<WorkflowDefinition *> &versions = definitions[definition->getName()];
-    //definition->setVersion(versions.size() + 1);
+    definition->setVersion(static_cast<int>(versions.size() + 1));
     versions.push_back(definition);
 }
 WorkflowInstance *WorkflowEngine::startInstance(const std::string& defName, WorkData data)
@@ -174,7 +174,9 @@ void WorkflowEngine::handleIssue(const Issue &issue, WorkflowInstance &instance)
             Participant *old = element->getAssignee();
             if (old != nullptr)
             {
-                old->decrementWorkload();
+                if (element->getStatus() == WorkItemStatus::ASSIGNED || element->getStatus() == WorkItemStatus::STARTED) {
+                    old->decrementWorkload();
+                }
                 element->assignTo(nullptr);
             }
             element->setStatus(WorkItemStatus::CREATED);
@@ -258,6 +260,11 @@ void WorkflowEngine::activateNext(WorkflowInstance &instance)
         }
     }
     instance.getRoot()->execute();
+
+    if (instance.getStateName() == "Running" && instance.getRoot()->isComplete()) {
+        instance.complete();
+    }
+    
 }
 
 WorkflowInstance *WorkflowEngine::getInstance(int id) const
