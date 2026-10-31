@@ -31,12 +31,14 @@ void ApprovalTask::recordDecision(bool isApproved) {
 }
 
 void ApprovalTask::doWork() {
-    std::cout << "[ApprovalTask]: Processing approval decision for '" << getName() << "'." << std::endl;
-    if (approved) {
-        std::cout << "[ApprovalTask]: Task '" << getName() << "' has been approved." << std::endl;
-    } else {
-        std::cout << "[ApprovalTask]: Task '" << getName() << "' has been rejected." << std::endl;
-    }
+    // std::cout << "[ApprovalTask]: Processing approval decision for '" << getName() << "'." << std::endl;
+    // if (approved) {
+    //     std::cout << "[ApprovalTask]: Task '" << getName() << "' has been approved." << std::endl;
+    // } else {
+    //     std::cout << "[ApprovalTask]: Task '" << getName() << "' has been rejected." << std::endl;
+    // }
+
+    std::cout << "[ApprovalTask]: " << getName() << "' is waiting for a decision." <<std::endl;
 }
 
 // 4. ScriptTask Implementation
