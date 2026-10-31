@@ -138,9 +138,22 @@ add_executable(unit_tests
     tests/test_facade.cpp
     tests/test_command.cpp
 )
+
 if(TARGET tividy_engine)
     target_link_libraries(unit_tests tividy_engine)
 endif()
+
+
+# ---------- TUI application ----------
+add_executable(tividy_app
+    src/main.cpp
+    src/TUI.cpp
+    src/TerminalUI.cpp
+    src/Scenarios.cpp
+    # Add src/WorkflowScreens.cpp once Person 2 creates it
+)
+
+target_link_libraries(tividy_app tividy_engine)
 
 enable_testing()
 add_test(NAME unit_tests COMMAND unit_tests)
