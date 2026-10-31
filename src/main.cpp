@@ -1,20 +1,17 @@
 #include "TividyFacade.h"
-#include "scenarios.h"
 #include "TUI.h"
+#include "Scenarios.h"
 
 int main() {
 
-    // Create the workflow engine facade
+    // Create the workflow engine.
     TividyFacade facade;
 
-    // Register both industry workflows
+    // Register the two industry workflows.
     setupFoodCateringScenario(facade);
     setupTelecomScenario(facade);
 
-    // Enable terminal colours
-    TerminalUI::enableColors();
-
-    // Start the TUI
+    // Create and launch the terminal interface.
     TUI tui(facade);
     tui.run();
 
