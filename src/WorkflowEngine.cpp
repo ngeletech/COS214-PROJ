@@ -112,12 +112,7 @@ void WorkflowEngine::completeWorkItem(int instanceId, const std::string& element
     }
 
     /*WorkElement *element = instance->findElement(elementName);*/
-    WorkElement* element = nullptr;
-    for (DepthFirstIterator it(instance->getRoot()); !it.isDone(); it.next()){
-        if(it.current()->getName() == elementName) {
-            element = it.current();
-        }
-    }
+    WorkElement* element = instance->findElement(elementName);
     
     if (element == nullptr)
     {
@@ -151,14 +146,8 @@ void WorkflowEngine::handleIssue(const Issue &issue, WorkflowInstance &instance)
 
     if (!issue.getElementName().empty())
     {
-        /*WorkElement *element = instance.findElement(issue.getElementName());*/
-        WorkElement* element = nullptr;
-        for (DepthFirstIterator it(instance.getRoot()); !it.isDone(); it.next()) {
-            if(it.current()->getName() == issue.getElementName()){
-                element = it.current();
-                break;
-            }
-        }
+        WorkElement *element = instance.findElement(issue.getElementName());
+        
         
         if (element != nullptr)
         {
@@ -213,7 +202,7 @@ void WorkflowEngine::assignWork(WorkflowInstance &instance, WorkElement *element
 
     Participant *participant = assignment->assignWorkItem(*element, instance.getData(), participants);
     assignment->setStrategy(previous);
-    
+
     if (participant == nullptr)
     {
         Issue issue("NoCandidate", "No suitable participant for " + element->getName(), 2, element->getName());
@@ -224,7 +213,7 @@ void WorkflowEngine::assignWork(WorkflowInstance &instance, WorkElement *element
     element->assignTo(participant);
     element->setStatus(WorkItemStatus::ASSIGNED);
     participant->incrementWorkload();
-    instance.publish("ElementAssigned");
+    instance.publish("ElementAssigned", element->getName());
 }
 
 void WorkflowEngine::activateNext(WorkflowInstance &instance)

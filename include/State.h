@@ -17,6 +17,7 @@
 #include <string>
 #include <vector>
 #include "WorkData.h"
+#include "WorkflowEvent.h"
 
 class WorkflowDefinition;
 class Issue;
@@ -269,6 +270,8 @@ private:
     WorkGroup* root;                           ///< Root of the work tree (owned).
     WorkflowEngine* engine;                    ///< Engine used to look up participants (not owned).
     std::vector<WorkflowListener*> listeners;  ///< Subscribed observers (not owned).
+    std::vector<WorkflowEvent> pending;
+    bool publishing;
 
 public:
     /**
@@ -312,6 +315,12 @@ public:
      * @return e.g. "Created" or "Running".
      */
     std::string getStateName() const;
+
+    /**
+     * @brief gets the engine
+     * @return the enginr
+     */
+    WorkflowEngine* getEngine() const;
 
     /**
      * @brief Starts the instance.
@@ -368,7 +377,8 @@ public:
      * @brief Observer: notifies every listener of an event.
      * @param event Event name, e.g. "DataChanged".
      */
-    void publish(const std::string& event);
+    //void publish(const std::string& event);
+    void publish(const std::string& event, const std::string& elementName = "");
 
     /**
      * @brief Memento: captures data, state name, element statuses and assignments.
