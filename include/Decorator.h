@@ -117,6 +117,12 @@ class WorkElementDecorator: public WorkElement {
          * @return True if an assignee is required, false otherwise.
          */
         bool requiresAssignee() const;
+
+        /**
+         * @brief Returns the priority of the wrapped element 
+         * @return The priority, or 0 if nothig is wrapped.
+         */
+        int getPriority() const;
 };
 
 /**

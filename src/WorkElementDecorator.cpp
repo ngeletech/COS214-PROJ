@@ -85,3 +85,8 @@ bool WorkElementDecorator::requiresAssignee() const {
     if(!wrapped) return false;
     return wrapped->requiresAssignee(); 
 }
+
+int WorkElementDecorator::getPriority() const {
+    if(wrapped) return 0;
+    return wrapped->getPriority();
+}
