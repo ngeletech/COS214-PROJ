@@ -88,6 +88,6 @@ bool WorkElementDecorator::requiresAssignee() const {
 }
 
 int WorkElementDecorator::getPriority() const {
-    if(wrapped) return 0;
+    if(!wrapped) return 0;
     return wrapped->getPriority();
 }

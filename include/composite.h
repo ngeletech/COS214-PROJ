@@ -12,12 +12,7 @@ class WorkData;
 class WorkflowInstance;
 class WorkGroup;
 
-/** @note 
-    
-    Not in the uml parent, setParent(), asGroup(), getItems(), WorkGroup::isAvailable()
-    and the ParallelGroup and SequentialGroup constructors.
- 
- */
+
 
 /** @brief Status of a work element. */
 enum class WorkItemStatus {
@@ -63,8 +58,7 @@ public:
     /** @brief Returns nullptr if this isn't a group. */
     virtual WorkGroup* asGroup();
 
-    // Not in the UML, but in the implementation spec I added them regardless
-    // should you choose to use them 
+  
     virtual Participant* getAssignee() const;
     virtual bool requiresAssignee() const;
     virtual int getPriority() const;
@@ -94,7 +88,7 @@ public:
     Participant* getAssignee() const override;
     bool requiresAssignee() const override;
 
-    void reportIssue(Issue issue);
+    
 };
 
 /** @brief Composite: a group of work elements. */
