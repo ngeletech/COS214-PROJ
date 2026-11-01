@@ -1,0 +1,14 @@
+<map id="ServiceTask" name="ServiceTask">
+<area shape="rect" id="Node000001" title="Concrete task executing automated system operations via external connectors." alt="" coords="349,168,447,193"/>
+<area shape="rect" id="Node000002" href="$classTask.html" title="Leaf: a single task. execute() is the Template Method." alt="" coords="373,93,423,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="401,133,401,168,395,168,395,133"/>
+<area shape="rect" id="Node000003" href="$classWorkElement.html" title="Component: a task or a group of tasks." alt="" coords="253,5,362,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="331,38,387,91,384,95,328,42"/>
+<area shape="rect" id="Node000004" href="$classWorkGroup.html" title="Composite: a group of work elements." alt="" coords="193,93,288,119"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="304,45,291,71,263,95,260,91,287,68,299,43"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="234,79,235,66,240,53,253,39,270,29,272,33,256,43,244,56,240,67,239,79"/>
+<area shape="rect" id="Node000005" href="$classWorkIterable.html" title=" " alt="" coords="5,5,228,31"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="146,36,225,91,222,95,143,41"/>
+<area shape="rect" id="Node000006" href="$classParticipant.html" title=" " alt="" coords="386,5,477,31"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="424,45,405,94,400,92,419,43"/>
+</map>

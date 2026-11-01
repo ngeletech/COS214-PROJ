@@ -1,0 +1,13 @@
+<map id="PayloadDecorator" name="PayloadDecorator">
+<area shape="rect" id="Node000001" title="Adds a key&#45;value pair to the payload returned by the wrapped element." alt="" coords="23,168,161,193"/>
+<area shape="rect" id="Node000002" href="$classWorkElementDecorator.html" title="Base Decorator: forwards all requests to the wrapped WorkElement." alt="" coords="5,93,179,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,133,95,168,89,168,89,133"/>
+<area shape="rect" id="Node000003" href="$classWorkElement.html" title="Component: a task or a group of tasks." alt="" coords="77,5,187,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="115,43,108,56,96,94,91,92,103,54,111,40"/>
+<area shape="poly" id="edge6_Node000002_Node000003" title=" " alt="" coords="123,44,100,94,95,92,118,42"/>
+<area shape="rect" id="Node000004" href="$classWorkGroup.html" title="Composite: a group of work elements." alt="" coords="209,93,303,119"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="161,36,241,91,238,95,158,41"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="244,82,225,57,204,43,181,33,183,28,206,38,228,53,248,79"/>
+<area shape="rect" id="Node000005" href="$classWorkIterable.html" title=" " alt="" coords="211,5,434,31"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="319,45,306,71,279,95,275,91,302,68,314,43"/>
+</map>

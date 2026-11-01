@@ -1,0 +1,5 @@
+<map id="SequentialGroupFactory" name="SequentialGroupFactory">
+<area shape="rect" id="Node000001" title="Concrete Creator that builds a SequentialGroup." alt="" coords="5,79,183,104"/>
+<area shape="rect" id="Node000002" href="$classWorkItemFactory.html" title="Creator: Defines how an element is created and leaves the concrete type to its sublasses create() is ..." alt="" coords="28,5,160,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,44,97,79,91,79,91,44"/>
+</map>

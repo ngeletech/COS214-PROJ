@@ -1,0 +1,9 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classEscalationHandler.html" title="Abstract base class implementing the Chain of Responsibility pattern." alt="" coords="5,55,145,80"/>
+<area shape="rect" id="Node000001" href="$classFrontlineHandler.html" title="First&#45;level support handler." alt="" coords="199,5,330,31"/>
+<area shape="poly" id="edge20_Node000000_Node000001" title=" " alt="" coords="137,49,214,28,215,33,138,54"/>
+<area shape="rect" id="Node000002" href="$classManagerHandler.html" title="Final escalation handler." alt="" coords="199,55,330,80"/>
+<area shape="poly" id="edge21_Node000000_Node000002" title=" " alt="" coords="159,65,199,65,199,70,159,70"/>
+<area shape="rect" id="Node000003" href="$classSupervisorHandler.html" title="Second&#45;level escalation handler." alt="" coords="193,104,336,129"/>
+<area shape="poly" id="edge22_Node000000_Node000003" title=" " alt="" coords="138,81,215,101,214,106,137,86"/>
+</map>

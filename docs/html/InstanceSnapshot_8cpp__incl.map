@@ -1,0 +1,33 @@
+<map id="src/InstanceSnapshot.cpp" name="src/InstanceSnapshot.cpp">
+<area shape="rect" id="Node000001" title="Implementation of the Memento caretaker." alt="" coords="218,5,405,31"/>
+<area shape="rect" id="Node000002" href="$InstanceSnapshot_8h.html" title="Memento pattern: saving and restoring state of a workflow instance." alt="" coords="181,79,330,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="304,33,275,69,271,66,300,29"/>
+<area shape="rect" id="Node000009" href="$State_8h.html" title="State pattern for the workflow instance lifecycle." alt="" coords="333,152,401,177"/>
+<area shape="poly" id="edge14_Node000001_Node000009" title=" " alt="" coords="320,30,344,78,364,138,359,139,340,80,316,32"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="565,299,615,324"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="331,93,402,104,480,126,518,143,554,165,585,191,611,224,617,240,617,256,607,287,602,285,611,255,611,240,606,227,581,195,551,169,516,148,478,131,401,109,330,98"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="251,299,310,324"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="259,104,280,284,275,285,254,105"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,299,68,324"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="181,102,114,120,81,135,52,154,29,175,16,196,11,220,14,250,27,286,22,287,9,251,6,220,11,194,25,172,48,150,79,130,112,115,180,97"/>
+<area shape="rect" id="Node000006" href="$WorkData_8h.html" title=" " alt="" coords="498,225,597,251"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="293,102,351,122,415,150,473,183,522,215,519,220,471,187,413,154,349,127,291,107"/>
+<area shape="rect" id="Node000007" href="$composite_8h.html" title=" " alt="" coords="63,152,165,177"/>
+<area shape="poly" id="edge8_Node000002_Node000007" title=" " alt="" coords="234,106,150,148,148,143,231,102"/>
+<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="557,250,578,286,574,288,552,252"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="505,253,324,301,323,296,504,248"/>
+<area shape="poly" id="edge9_Node000007_Node000004" title=" " alt="" coords="129,176,259,287,255,292,126,180"/>
+<area shape="poly" id="edge10_Node000007_Node000005" title=" " alt="" coords="83,180,50,198,36,211,24,227,20,241,19,256,27,285,22,286,14,256,14,240,20,224,32,208,47,194,80,175"/>
+<area shape="rect" id="Node000008" href="$Iterator_8h.html" title=" " alt="" coords="35,225,116,251"/>
+<area shape="poly" id="edge11_Node000007_Node000008" title=" " alt="" coords="110,179,90,215,86,212,105,176"/>
+<area shape="poly" id="edge12_Node000008_Node000004" title=" " alt="" coords="109,248,239,293,237,298,107,253"/>
+<area shape="poly" id="edge13_Node000008_Node000005" title=" " alt="" coords="71,252,52,288,47,285,67,250"/>
+<area shape="poly" id="edge15_Node000009_Node000004" title=" " alt="" coords="363,179,334,227,297,288,292,286,329,224,358,176"/>
+<area shape="poly" id="edge16_Node000009_Node000005" title=" " alt="" coords="342,180,77,296,74,291,340,175"/>
+<area shape="poly" id="edge17_Node000009_Node000006" title=" " alt="" coords="397,175,506,218,504,223,395,180"/>
+<area shape="rect" id="Node000010" href="$WorkflowEvent_8h.html" title=" " alt="" coords="343,225,474,251"/>
+<area shape="poly" id="edge18_Node000009_Node000010" title=" " alt="" coords="376,176,397,212,393,215,372,179"/>
+<area shape="poly" id="edge20_Node000010_Node000004" title=" " alt="" coords="389,253,315,294,313,289,387,248"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="369,299,449,324"/>
+<area shape="poly" id="edge19_Node000010_Node000011" title=" " alt="" coords="411,251,411,285,406,285,406,251"/>
+</map>
