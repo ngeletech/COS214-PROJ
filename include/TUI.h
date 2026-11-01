@@ -18,6 +18,9 @@ private:
     // Displays the screen for starting a new workflow.
     void showStartWorkflow();
 
+    // Create a new sequential workflow definition at runtime.
+    void showCreateWorkflow();
+
     // Displays workflows currently active in this session.
     void showActiveWorkflows();
 

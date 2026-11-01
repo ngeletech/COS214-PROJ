@@ -7,9 +7,6 @@
 #include <exception>
 #include <limits>
 #include <cstdlib>
-#include <chrono>
-#include <thread>
-#include <functional>
 #include <exception>
 
 namespace {
@@ -97,80 +94,8 @@ namespace {
         TerminalUI::showSuccess(message);
         TerminalUI::waitForContinue();
     }
-    std::string getMessageColor(const std::string& label) {
-        if (label == "[Task]") {
-            return BLUE;
-        }
-        if (label == "[ScriptTask]") {
-            return TEAL;
-        }
-        if (label == "[ApprovalTask]") {
-            return AMBER;
-        }
-        if (label == "[ServiceTask]") {
-            return GREEN;
-        }
-        if (label == "[SUCCESS]") {
-            return GREEN;
-        }
-        if (label == "[ERROR]") {
-            return RED;
-        }
-        return GREY;
+    
     }
-
-    void printEngineMessage(const std::string& message) {
-        if (message.empty()) {
-            return;
-        }
-
-        std::size_t end = message.find(']');
-
-        if (!message.empty() && message[0] == '[' && end != std::string::npos) {
-            std::string label = message.substr(0, end + 1);
-            std::string description = message.substr(end + 1);
-
-            std::cout << getMessageColor(label) << label << RESET << WHITE << description << RESET << "\n";
-        }
-        else {
-            std::cout << GREY << message << RESET << "\n";
-        }
-
-        std::cout.flush();
-    }
-    void runWithStyledOutput(const std::function<void()>& action) {
-        std::ostringstream captured;
-        std::streambuf* original = std::cout.rdbuf(captured.rdbuf());
-
-        std::exception_ptr error;
-
-        try {
-            action();
-        }
-        catch (...) {
-            error = std::current_exception();
-        }
-
-        std::cout.rdbuf(original);
-
-        std::istringstream messages(captured.str());
-        std::string line;
-
-        while (std::getline(messages, line)) {
-            printEngineMessage(line);
-
-            if (!line.empty()) {
-                std::this_thread::sleep_for(
-                    std::chrono::milliseconds(110)
-                );
-            }
-        }
-
-        if (error) {
-            std::rethrow_exception(error);
-        }
-    }
-}
 
 WorkflowScreens::WorkflowScreens(TividyFacade& f) : facade(f) {}
 
@@ -180,7 +105,8 @@ void WorkflowScreens::showOverview(int id) {
         TerminalUI::showHeader("WORKFLOW OVERVIEW | INSTANCE " + std::to_string(id));
 
         try {
-            std::string status = facade.trackStatus(id);
+            std::
+            string status = facade.trackStatus(id);
             std::cout << GREY << "Current Status: " << statusColor(status) << status << RESET << "\n\n";
             TerminalUI::showDivider();
             printFormattedReport(facade.generateReport(id));
@@ -283,17 +209,38 @@ void WorkflowScreens::interactWithItem(int id, const std::string& name) {
 
         try {
             if (approval && (choice == 0 || choice == 1)) {
-                runWithStyledOutput([&]() {
-                    facade.decideItem(id, name, choice == 0);
+                bool approved = (choice == 0);
+
+                TerminalUI::clearScreen();
+                TerminalUI::showHeader(
+                    "WORKFLOW EXECUTION | " + name
+                );
+
+                TerminalUI::runWithStyledOutput([&]() {
+                    facade.decideItem(id, name, approved);
                 });
-                showResult(choice == 0 ? "Approval submitted." : "Rejection submitted to escalation.");
+
+                if (approved) {
+                    TerminalUI::showSuccess("Approval submitted.");
+                }
+                else {
+                    TerminalUI::showSuccess("Rejection submitted to escalation.");
+                }
+
+                TerminalUI::waitForContinue();
                 return;
             }
             if (!approval && choice == 0) {
-                runWithStyledOutput([&]() {
+                TerminalUI::clearScreen();
+                TerminalUI::showHeader("WORKFLOW EXECUTION | " + name);
+
+                TerminalUI::runWithStyledOutput([&]() {
                     facade.completeItem(id, name);
                 });
-                showResult("Task completed.");
+
+                TerminalUI::showSuccess("Task completed.");
+                TerminalUI::waitForContinue();
+
                 return;
             }
 
@@ -317,20 +264,31 @@ void WorkflowScreens::interactWithItem(int id, const std::string& name) {
                 if (picked == static_cast<int>(people.size())) {
                     continue;
                 }
-                runWithStyledOutput([&]() {
+                TerminalUI::clearScreen();
+                TerminalUI::showHeader("WORKFLOW EXECUTION | " + name);
+
+                TerminalUI::runWithStyledOutput([&]() {
                     facade.reassignItemToParticipant(id, name, people[picked].id);
                 });
-                showResult("Work item reassigned.");
+
+                TerminalUI::showSuccess("Work item reassigned.");
+                TerminalUI::waitForContinue();
                 return;
             }
 
             std::string type = promptText("Issue type: ", true);
             std::string desc = promptText("Description: ", true);
             int severity = promptSeverity();
-            runWithStyledOutput([&]() {
+
+            TerminalUI::clearScreen();
+            TerminalUI::showHeader("WORKFLOW EXECUTION | " + name);
+
+            TerminalUI::runWithStyledOutput([&]() {
                 facade.reportIssue(id, name, type, desc, severity);
             });
-            showResult("Issue submitted to escalation.");
+
+            TerminalUI::showSuccess("Issue submitted to escalation.");
+            TerminalUI::waitForContinue();
             return;
         } catch (const std::exception& e) {
             TerminalUI::showError(e.what());
@@ -357,10 +315,16 @@ void WorkflowScreens::reportIssue(int id) {
         std::string type = promptText("Issue type: ", true);
         std::string description = promptText("Description: ", true);
         int severity = promptSeverity();
-        runWithStyledOutput([&]() {
+        TerminalUI::clearScreen();
+        TerminalUI::showHeader("WORKFLOW EXECUTION | " + items[choice]);
+
+        TerminalUI::runWithStyledOutput([&]() {
             facade.reportIssue(id, items[choice], type, description, severity);
         });
-        showResult("Issue submitted to escalation.");
+
+        TerminalUI::showSuccess("Issue submitted to escalation.");
+        TerminalUI::waitForContinue();
+        return;
     } catch (const std::exception& e) {
         TerminalUI::showError(e.what());
         TerminalUI::waitForContinue();
@@ -395,10 +359,19 @@ void WorkflowScreens::undoLastCommand() {
         return;
     }
 
+    TerminalUI::clearScreen();
+    TerminalUI::showHeader("WORKFLOW EXECUTION | UNDO");
+
     try {
-        facade.undoLast();
-        TerminalUI::showInfo("Undo requested. Review the workflow report for the resulting state.");
-    } catch (const std::exception& e) {
+        TerminalUI::runWithStyledOutput([&]() {
+            facade.undoLast();
+        });
+
+        TerminalUI::showInfo(
+            "Undo requested. Review the workflow report for the resulting state."
+        );
+    }
+    catch (const std::exception& e) {
         TerminalUI::showError(e.what());
     }
     TerminalUI::waitForContinue();
