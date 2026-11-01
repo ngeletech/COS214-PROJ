@@ -274,3 +274,24 @@ void TividyFacade::addListener(WorkflowListener* listener) {
     listeners.push_back(listener);
     engine->addDefaultListener(listener);
 }
+
+std::vector<TividyFacade::ParticipantInfo> TividyFacade::listParticipants() const {
+    std::vector<ParticipantInfo> result;
+    for (std::size_t i=0; i<participants.size(); ++i) {
+        ParticipantInfo info={participants[i]->getId(),participants[i]->getName(),participants[i]->getRole()};
+        result.push_back(info);
+    }
+    return result;
+}
+
+bool TividyFacade::isApprovalItem(int id, const std::string& name) const {
+    WorkElement* element=requireInstance(id).findElement(name);
+    if (element==nullptr) throw std::invalid_argument("Unknown work item: "+name);
+    return dynamic_cast<ApprovalTask*>(element)!=nullptr;
+}
+
+void TividyFacade::reassignItemToParticipant(int id, const std::string& name, int participantId) {
+    Participant* person=engine->findParticipant(participantId);
+    if (person==nullptr) throw std::invalid_argument("Unknown participant ID");
+    reassignItem(id,name,person);
+}

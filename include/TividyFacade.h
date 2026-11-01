@@ -213,6 +213,14 @@ public:
      *        The facade takes ownership and deletes it. Null is ignored.
      */
     void addListener(WorkflowListener* listener);
+    struct ParticipantInfo {
+        int id;
+        std::string name;
+        std::string role;
+    };
+    std::vector<ParticipantInfo> listParticipants() const;
+    bool isApprovalItem(int instanceId, const std::string& elementName) const;
+    void reassignItemToParticipant(int instanceId, const std::string& elementName, int participantId);
 };
 
 #endif

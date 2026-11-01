@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <functional>
 
 namespace TerminalUI {
 
@@ -27,6 +28,9 @@ namespace TerminalUI {
     int promptInt(const std::string& message);
     int selectOption(const std::string& prompt, const std::vector<std::string>& options, bool clear = true);
     void waitForContinue();
+
+    // formatting
+    void runWithStyledOutput(const std::function<void()>& action, int delayMs = 90);
 }
 
 #endif

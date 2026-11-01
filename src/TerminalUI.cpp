@@ -3,7 +3,12 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <functional>
 #include <stdexcept>
+#include <sstream>
+#include <thread>
+#include <chrono>
+#include <exception>
 
 #ifdef _WIN32
     #include <conio.h>
@@ -13,8 +18,10 @@
 #endif
 
 namespace TerminalUI {
+    
 
     namespace {
+      
         // Terminal colour codes.
         const std::string RESET = "\033[0m";
         const std::string TEAL = "\033[38;2;54;199;176m";
@@ -24,6 +31,56 @@ namespace TerminalUI {
         const std::string AMBER = "\033[38;2;242;183;91m";
         const std::string RED = "\033[38;2;239;114;122m";
         const std::string GREEN = "\033[38;2;66;201;138m";
+
+        std::string messageColor(const std::string& label) {
+            if (label == "[Task]") {
+                return BLUE;
+            }
+
+            if (label == "[ScriptTask]") {
+                return TEAL;
+            }
+
+            if (label == "[ApprovalTask]") {
+                return AMBER;
+            }
+
+            if (label == "[ServiceTask]") {
+                return GREEN;
+            }
+
+            if (label == "[SUCCESS]") {
+                return GREEN;
+            }
+
+            if (label == "[ERROR]") {
+                return RED;
+            }
+
+            return GREY;
+        }
+
+        void printEngineMessage(const std::string& message) {
+            if (message.empty()) {
+                return;
+            }
+
+            std::size_t end = message.find(']');
+
+            if (message[0] == '[' && end != std::string::npos) {
+                std::string label = message.substr(0, end + 1);
+                std::string description = message.substr(end + 1);
+
+                std::cout << messageColor(label) << label
+                        << RESET << WHITE << description
+                        << RESET << "\n";
+            }
+            else {
+                std::cout << GREY << message << RESET << "\n";
+            }
+
+            std::cout.flush();
+        }
         #ifdef _WIN32
                 int readKey() {
                     int key = _getch();
@@ -91,6 +148,42 @@ namespace TerminalUI {
         #endif
     }
 
+    void runWithStyledOutput(const std::function<void()>& action, int delayMs) {
+        if (delayMs < 0) {
+            delayMs = 0;
+        }
+
+        std::ostringstream captured;
+        std::streambuf* original = std::cout.rdbuf(captured.rdbuf());
+
+        std::exception_ptr error;
+
+        try {
+            action();
+        }
+        catch (...) {
+            error = std::current_exception();
+        }
+
+        std::cout.rdbuf(original);
+
+        std::istringstream messages(captured.str());
+        std::string line;
+
+        while (std::getline(messages, line)) {
+            printEngineMessage(line);
+
+            if (!line.empty() && delayMs > 0) {
+                std::this_thread::sleep_for(
+                    std::chrono::milliseconds(delayMs)
+                );
+            }
+        }
+
+        if (error) {
+            std::rethrow_exception(error);
+        }
+    }
     /**
      * @brief Enables ANSI colour support in the terminal.
      *
