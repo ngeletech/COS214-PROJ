@@ -8,3 +8,4 @@ build-clang/
 build.log
 build-asan/
 files.txt
+buid/

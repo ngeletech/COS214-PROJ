@@ -1,1 +1,0 @@
-/usr/bin/c++  -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/tividy_app.dir/src/main.cpp.o CMakeFiles/tividy_app.dir/src/TUI.cpp.o CMakeFiles/tividy_app.dir/src/TerminalUI.cpp.o CMakeFiles/tividy_app.dir/src/Scenarios.cpp.o -o tividy_app  libtividy_engine.a

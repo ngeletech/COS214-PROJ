@@ -18,8 +18,6 @@
 #endif
 
 namespace TerminalUI {
-    
-
     namespace {
       
         // Terminal colour codes.
