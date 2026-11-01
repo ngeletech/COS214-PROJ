@@ -150,7 +150,7 @@ add_executable(tividy_app
     src/TUI.cpp
     src/TerminalUI.cpp
     src/Scenarios.cpp
-    # Add src/WorkflowScreens.cpp once Person 2 creates it
+    src/WorkflowScreens.cpp
 )
 
 target_link_libraries(tividy_app tividy_engine)

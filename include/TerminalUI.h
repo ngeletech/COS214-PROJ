@@ -1,7 +1,9 @@
 #ifndef TERMINALUI_H
 #define TERMINALUI_H
 
+#include <iostream>
 #include <string>
+#include <vector>
 
 namespace TerminalUI {
 
@@ -23,6 +25,7 @@ namespace TerminalUI {
 
     // User input
     int promptInt(const std::string& message);
+    int selectOption(const std::string& prompt, const std::vector<std::string>& options, bool clear = true);
     void waitForContinue();
 }
 

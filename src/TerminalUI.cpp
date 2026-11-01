@@ -1,9 +1,15 @@
 #include "TerminalUI.h"
 
 #include <iostream>
+#include <string>
+#include <vector>
+#include <stdexcept>
 
 #ifdef _WIN32
-#include <windows.h>
+    #include <conio.h>
+#else
+    #include <termios.h>
+    #include <unistd.h>
 #endif
 
 namespace TerminalUI {
@@ -18,6 +24,71 @@ namespace TerminalUI {
         const std::string AMBER = "\033[38;2;242;183;91m";
         const std::string RED = "\033[38;2;239;114;122m";
         const std::string GREEN = "\033[38;2;66;201;138m";
+        #ifdef _WIN32
+                int readKey() {
+                    int key = _getch();
+                    if (key == 0 || key == 224) {
+                        int arrow = _getch();
+                        if (arrow == 72) return 1; // Up
+                        if (arrow == 80) return 2; // Down
+                    }
+                    if (key == 13) return 3; // Enter
+                    return 0;
+                }
+        #else
+                class RawMode {
+                private:
+                    termios original;
+                    bool enabled;
+                public:
+                    RawMode() : enabled(false) {
+                        if (tcgetattr(STDIN_FILENO, &original) != 0) {
+                            throw std::runtime_error("Cannot read terminal settings.");
+                        }
+                        termios raw = original;
+                        raw.c_lflag &= ~(ICANON | ECHO);
+
+                        if (tcsetattr(STDIN_FILENO, TCSANOW, &raw) != 0) {
+                            throw std::runtime_error("Cannot enable raw terminal mode.");
+                        }
+                        enabled = true;
+                    }
+
+                    ~RawMode() {
+                        if (enabled) {
+                            tcsetattr(STDIN_FILENO, TCSANOW, &original);
+                        }
+                    }
+                };
+
+                int readKey() {
+                    unsigned char key;
+
+                    if (read(STDIN_FILENO, &key, 1) != 1)
+                        return 0;
+
+                    if (key == '\n' || key == '\r')
+                        return 3;
+
+                    if (key == 27) {
+                        unsigned char sequence[2];
+
+                        if (read(STDIN_FILENO, &sequence[0], 1) != 1)
+                            return 0;
+
+                        if (read(STDIN_FILENO, &sequence[1], 1) != 1)
+                            return 0;
+
+                        if (sequence[0] == '[') {
+                            if (sequence[1] == 'A') return 1;
+                            if (sequence[1] == 'B') return 2;
+                        }
+                    }
+
+                    return 0;
+                }
+
+        #endif
     }
 
     /**
@@ -50,6 +121,65 @@ namespace TerminalUI {
         std::cout << "\033[2J\033[H";
         std::cout.flush();
     }
+    int selectOption(const std::string& prompt, const std::vector<std::string>& options, bool clear) {
+        if (options.empty()) {
+            throw std::invalid_argument("Selection options cannot be empty.");
+        }
+
+        #ifndef _WIN32
+            RawMode rawMode;
+        #endif
+
+        int selected = 0;
+        bool firstDraw = true;
+
+        const std::size_t menuLines = options.size() + 4;
+
+        while (true) {
+            if (clear) {
+                clearScreen();
+            }
+            else if (!firstDraw) {
+                // Move the cursor back to the start of the menu.
+                std::cout << "\033[" << menuLines << "A";
+            }
+            if (clear) {
+                showHeader(prompt);
+            }
+            else {
+                std::cout << TEAL << prompt << RESET << "\n\n";
+            }
+            for (std::size_t i = 0; i < options.size(); ++i) {
+                // Clear this line before redrawing it.
+                std::cout << "\033[2K";
+                if (static_cast<int>(i) == selected) {
+                    std::cout << GREEN << "  > " << (i + 1) << ". " << options[i] << RESET << "\n";
+                }
+                else {
+                    std::cout << GREY << "    " << (i + 1) << ". " << options[i] << RESET << "\n";
+                }
+            }
+
+            std::cout << "\n\033[2K" << GREY << "Use UP/DOWN arrows to navigate, ENTER to select." << RESET << "\n";
+
+            std::cout.flush();
+
+            firstDraw = false;
+
+            int key = readKey();
+
+            if (key == 1) {
+                selected = (selected - 1 + static_cast<int>(options.size())) % static_cast<int>(options.size());
+            }
+            else if (key == 2) {
+                selected = (selected + 1) % static_cast<int>(options.size());
+            }
+            else if (key == 3) {
+                return selected;
+            }
+        }
+    }
+
 
     /**
      * @brief Displays the TIVIDY application header.

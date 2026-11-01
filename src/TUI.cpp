@@ -1,5 +1,6 @@
 #include "TUI.h"
 #include "TerminalUI.h"
+#include "WorkflowScreens.h"
 
 #include <iostream>
 #include <string>
@@ -22,10 +23,9 @@ void TUI::run() {
     bool running = true;
 
     while (running) {
-        TerminalUI::clearScreen();
-        showMainMenu();
+        std::vector<std::string> options = {"Start Workflow", "Active Workflows", "Exit"};
 
-        int choice = TerminalUI::promptInt("Select an option: ");
+        int choice = TerminalUI::selectOption("MAIN MENU", options) + 1;
 
         switch (choice) {
             case 1:
@@ -80,28 +80,16 @@ void TUI::showStartWorkflow() {
         return;
     }
 
-    std::cout << "Available workflows:\n\n";
+    std::vector<std::string> options = definitions;
+    options.push_back("Back to Main Menu");
 
-    for (std::size_t i = 0; i < definitions.size(); ++i) {
-        TerminalUI::showMenuOption(static_cast<int>(i + 1), definitions[i]);
-    }
+    int choice = TerminalUI::selectOption("SELECT A WORKFLOW", options);
 
-    TerminalUI::showMenuOption(0, "Back to Main Menu");
-    TerminalUI::showDivider();
-
-    int choice = TerminalUI::promptInt("Select a workflow: ");
-
-    if (choice == 0) {
+    if (choice == static_cast<int>(definitions.size())) {
         return;
     }
 
-    if (choice < 1 || choice > static_cast<int>(definitions.size())) {
-        TerminalUI::showError("Invalid workflow selection.");
-        TerminalUI::waitForContinue();
-        return;
-    }
-
-    const std::string& selectedWorkflow = definitions[choice - 1];
+    const std::string& selectedWorkflow = definitions[choice];
 
     WorkData initialData;
 
@@ -112,10 +100,19 @@ void TUI::showStartWorkflow() {
         std::string region;
         std::string coupon;
 
-        std::cout << "Enter customer region: ";
-        std::getline(std::cin, region);
+        while (true) {
+            std::cout << "Enter customer region: ";
+            std::getline(std::cin, region);
 
-        std::cout << "Enter coupon code: ";
+            if (!region.empty() &&
+                region.find_first_not_of(" \t\n\r") != std::string::npos) {
+                break;
+            }
+
+            TerminalUI::showError("Customer region cannot be empty.");
+        }
+
+        std::cout << "Enter coupon code " << "\033[38;2;160;165;181m" << "(optional)" << "\033[0m" << ": ";
         std::getline(std::cin, coupon);
 
         initialData.addData("CustomerRegion", region);
@@ -125,11 +122,26 @@ void TUI::showStartWorkflow() {
         std::string location;
         std::string package;
 
-        std::cout << "Enter GPS location: ";
-        std::getline(std::cin, location);
+        while (true) {
+            std::cout << "Enter GPS location: ";
+            std::getline(std::cin, location);
 
-        std::cout << "Enter package type: ";
-        std::getline(std::cin, package);
+            if (!location.empty() &&
+                location.find_first_not_of(" \t\n\r") != std::string::npos) {
+                break;
+            }
+
+            TerminalUI::showError("GPS location cannot be empty.");
+        }
+
+        std::vector<std::string> packages = {"Basic - 20 Mbps", "Standard - 50 Mbps", "Premium - 100 Mbps", "Ultra - 200 Mbps"};
+
+        int choice = TerminalUI::selectOption(
+            "Select a fiber package:",
+            packages
+        );
+
+        package = packages[choice];
 
         initialData.addData("GPSLocation", location);
         initialData.addData("PackageType", package);
@@ -174,64 +186,35 @@ void TUI::showActiveWorkflows() {
         return;
     }
 
+    std::vector<std::string> options;
+
     for (std::size_t i = 0; i < activeInstances.size(); ++i) {
         int instanceId = activeInstances[i];
 
         try {
-            std::cout << "\n";
-            TerminalUI::showMenuOption(
-                static_cast<int>(i + 1),
-                "Instance " + std::to_string(instanceId)
-                + " | " + facade.trackStatus(instanceId)
-            );
+            options.push_back("Instance " + std::to_string(instanceId)+ " | " + facade.trackStatus(instanceId));
         }
         catch (const std::exception& error) {
-            TerminalUI::showError(error.what());
+            options.push_back("Instance " + std::to_string(instanceId)+ " | Status unavailable");
         }
     }
 
-    TerminalUI::showMenuOption(0, "Back to Main Menu");
-    TerminalUI::showDivider();
+    options.push_back("Back to Main Menu");
 
-    int choice = TerminalUI::promptInt("Select a workflow: ");
+    int choice = TerminalUI::selectOption("ACTIVE WORKFLOWS", options);
 
-    if (choice == 0) {
+    if (choice == static_cast<int>(activeInstances.size())) {
         return;
     }
-
-    if (choice < 1 || choice > static_cast<int>(activeInstances.size())) {
-        TerminalUI::showError("Invalid workflow selection.");
-        TerminalUI::waitForContinue();
-        return;
-    }
-
-    showWorkflowOverview(activeInstances[choice - 1]);
+    showWorkflowOverview(activeInstances[choice]);
 }
 
 /**
  * @brief Displays the overview and current report for a workflow instance.
  * @param instanceId ID of the selected workflow instance.
  */
+
 void TUI::showWorkflowOverview(int instanceId) {
-    TerminalUI::clearScreen();
-    TerminalUI::showHeader(
-        "WORKFLOW OVERVIEW | INSTANCE "
-        + std::to_string(instanceId)
-    );
-
-    try {
-        std::cout << "Current Status: "
-                  << facade.trackStatus(instanceId) << "\n\n";
-
-        TerminalUI::showDivider();
-
-        std::cout << facade.generateReport(instanceId) << "\n";
-
-        TerminalUI::showDivider();
-    }
-    catch (const std::exception& error) {
-        TerminalUI::showError(error.what());
-    }
-
-    TerminalUI::waitForContinue();
+    WorkflowScreens screens(facade);
+    screens.showOverview(instanceId);
 }
