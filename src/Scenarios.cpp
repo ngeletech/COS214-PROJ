@@ -54,6 +54,7 @@ void setupTelecomScenario(TividyFacade& facade) {
     //Define WorkItem Specifications for Fiber Provisioning
     std::vector<WorkItemSpec> specs = {
         {"ApprovalTask", "CreditCheck", ""},
+        {"UserTask", "ScheduleInstallation", ""},
         {"UserTask", "InstallFiberLine", ""},
         {"ScriptTask", "ConfigureRouter", "LineStatus, ACTIVE"},
         {"ServiceTask", "ActivateAccountAPI", ""}

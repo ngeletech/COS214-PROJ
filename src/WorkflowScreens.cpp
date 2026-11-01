@@ -10,13 +10,103 @@
 #include <chrono>
 #include <thread>
 #include <functional>
-#include <exception>
+#include <stdexcept>
 
 namespace {
     const std::string RESET = "\033[0m", TEAL = "\033[38;2;54;199;176m";
     const std::string WHITE = "\033[38;2;241;242;246m", GREY = "\033[38;2;160;165;181m";
     const std::string BLUE = "\033[38;2;112;167;245m", AMBER = "\033[38;2;242;183;91m";
     const std::string GREEN = "\033[38;2;66;201;138m", RED = "\033[38;2;239;114;122m";
+
+    struct ProgressItem {
+        std::string name;
+        std::string status;
+        std::string assignee;
+    };
+
+    // Convert internal task names into audience-friendly names.
+    std::string friendlyTaskName(const std::string& name) {
+
+        if (name == "PrepMealStep") return "Meal Preparation";
+        if (name == "UpdateOrderStatus") return "Update Order Status";
+        if (name == "ManagerSignoff") return "Manager Approval";
+        if (name == "CourierDeliveryAPI") return "Courier Delivery";
+
+        if (name == "CreditCheck") return "Credit Check";
+        if (name == "InstallFiberLine") return "Install Fibre Line";
+        if (name == "ConfigureRouter") return "Configure Router";
+        if (name == "ActivateAccountAPI") return "Activate Customer Account";
+
+        return name;
+    }
+
+    std::vector<ProgressItem> getProgressItems(const std::string& report) {
+        std::vector<ProgressItem> items;
+        std::istringstream stream(report);
+        std::string line;
+        bool readingWorkItems = false;
+
+        while (std::getline(stream, line)) {
+            // Remove leading whitespace from report lines.
+            std::size_t first = line.find_first_not_of(" \t\r\n");
+
+            if (first == std::string::npos) {
+                continue;
+            }
+
+            line = line.substr(first);
+
+            // Remove trailing whitespace, including Windows line endings.
+            std::size_t last = line.find_last_not_of(" \t\r\n");
+
+            if (last != std::string::npos) {
+                line = line.substr(0, last + 1);
+            }
+
+            if (line == "Work items:") {
+                readingWorkItems = true;
+                continue;
+            }
+
+            if (line == "History:") {
+                break;
+            }
+
+            if (!readingWorkItems || line.empty()) {
+                continue;
+            }
+
+            std::size_t colon = line.find(": ");
+            if (colon == std::string::npos) {
+                continue;
+            }
+
+            ProgressItem item;
+            item.name = line.substr(0, colon);
+
+            std::string details = line.substr(colon + 2);
+
+            std::size_t openBracket = details.find(" (");
+            if (openBracket != std::string::npos) {
+                item.status = details.substr(0, openBracket);
+
+                std::size_t closeBracket = details.find(')', openBracket);
+                if (closeBracket != std::string::npos) {
+                    item.assignee = details.substr(
+                        openBracket + 2,
+                        closeBracket - openBracket - 2
+                    );
+                }
+            } else {
+                item.status = details;
+                item.assignee = "Unassigned";
+            }
+
+            items.push_back(item);
+        }
+
+        return items;
+    }
 
     std::string statusColor(const std::string& status) {
         if (status == "Running" || status == "Completed" || status == "completed") {
@@ -34,36 +124,88 @@ namespace {
         return GREY;
     }
 
-    void printFormattedReport(const std::string& report) {
-        std::istringstream stream(report);
-        std::string line, section;
+    void displayProgressTracker(const std::string& report) {
+    std::vector<ProgressItem> items = getProgressItems(report);
 
-        while (std::getline(stream, line)) {
-            if (line == "Data:" || line == "Work items:" || line == "History:") {
-                section = line;
-                std::cout << "\n" << TEAL << "\033[1m" << line << RESET << "\n";
-            } else if (line.find("===") == 0) {
-                std::cout << TEAL << line << RESET << "\n";
-            } else if (line.find("State: ") == 0) {
-                std::string state = line.substr(7);
-                std::cout << GREY << "State: " << statusColor(state) << state << RESET << "\n";
-            } else if (section == "Data:" && line.find(" = ") != std::string::npos) {
-                std::size_t pos = line.find(" = ");
-                std::string value = line.substr(pos + 3);
-                std::cout << GREY << line.substr(0, pos) << " = " << (value.empty() ? AMBER : WHITE) << (value.empty() ? "Not provided" : value) << RESET << "\n";
-            } else if (section == "Work items:" && line.find(": ") != std::string::npos) {
-                std::size_t pos = line.find(": ");
-                std::string details = line.substr(pos + 2);
-                std::size_t space = details.find(' ');
-                std::string state = details.substr(0, space);
-                std::cout << WHITE << line.substr(0, pos + 2) << statusColor(state) << state << GREY << (space == std::string::npos ? "" : details.substr(space)) << RESET << "\n";
-            } else if (section == "History:" && !line.empty()) {
-                std::cout << GREY << line << RESET << "\n";
-            } else {
-                std::cout << line << "\n";
-            }
+    std::cout << "\n" << TEAL << "\033[1m";
+    std::cout << "WORKFLOW PROGRESS";
+    std::cout << RESET << "\n";
+
+    if (items.empty()) {
+        TerminalUI::showInfo("No workflow tasks found.");
+        return;
+    }
+
+    int completed = 0;
+    std::string currentTask = "No active task";
+    std::string currentAssignee = "Unassigned";
+
+    for (std::size_t i = 0; i < items.size(); ++i) {
+        if (items[i].status == "completed") {
+            ++completed;
+        }
+
+        if (currentTask == "No active task" &&
+            (items[i].status == "started" ||
+            items[i].status == "assigned" ||
+            items[i].status == "available")) {
+            currentTask = friendlyTaskName(items[i].name);
+            currentAssignee = items[i].assignee.empty() ? "Unassigned" : items[i].assignee;
         }
     }
+
+    std::cout << BLUE << "Current task: " << WHITE
+              << currentTask << RESET << "\n";
+
+    std::cout << BLUE << "Current assignee: " << WHITE
+              << currentAssignee << RESET << "\n";
+
+    std::cout << GREY << "Progress: " << RESET
+              << GREEN << completed << RESET
+              << " / " << items.size()
+              << " tasks completed\n\n";
+
+    for (std::size_t i = 0; i < items.size(); ++i) {
+        const ProgressItem& item = items[i];
+
+        std::string marker = "[ ]";
+        std::string displayStatus = item.status;
+
+        if (item.status == "completed") {
+            marker = "[✓]";
+            displayStatus = "Completed";
+        } else if (item.status == "started") {
+            marker = "[>]";
+            displayStatus = "In Progress";
+        } else if (item.status == "assigned") {
+            marker = "[A]";
+            displayStatus = "Assigned";
+        } else if (item.status == "available") {
+            marker = "[ ]";
+            displayStatus = "Ready";
+        } else if (item.status == "created") {
+            marker = "[~]";
+            displayStatus = "Created";
+        } else if (item.status == "rejected") {
+            marker = "[!]";
+            displayStatus = "Rejected";
+        } else if (item.status == "cancelled") {
+            marker = "[!]";
+            displayStatus = "Cancelled";
+        }
+
+        std::cout << statusColor(item.status) << marker << RESET
+                  << " " << WHITE << friendlyTaskName(item.name) << RESET
+                  << "  " << statusColor(item.status)
+                  << displayStatus << RESET << "\n";
+
+        std::cout << GREY << "    Assignee: "
+                  << (item.assignee.empty() ? "Unassigned" : item.assignee)
+                  << RESET << "\n";
+    }
+
+    std::cout << "\n";
+}
 
     std::string promptText(const std::string& prompt, bool required) {
         while (true) {
@@ -95,6 +237,43 @@ namespace {
 
     void showResult(const std::string& message) {
         TerminalUI::showSuccess(message);
+        TerminalUI::waitForContinue();
+    }
+    void displayEscalationResult(
+        const std::string& taskName,
+        const std::string& issueType,
+        const std::string& description,
+        int severity
+    ) {
+        TerminalUI::clearScreen();
+        TerminalUI::showHeader("ESCALATION RESULT");
+
+        std::cout << "\n";
+        std::cout << TEAL << "ISSUE DETAILS\n" << RESET;
+
+        std::cout << WHITE << "Work item: " << RESET
+                << friendlyTaskName(taskName) << "\n";
+
+        std::cout << WHITE << "Issue: " << RESET
+                << issueType << "\n";
+
+        std::cout << WHITE << "Description: " << RESET
+                << description << "\n";
+
+        std::cout << WHITE << "Severity: " << RESET
+                << severity << " / 10\n";
+
+        std::cout << "\n";
+        std::cout << TEAL << "ESCALATION STATUS\n" << RESET;
+        std::cout << GREEN << "[✓] Issue submitted successfully\n" << RESET;
+
+        std::cout << WHITE << "Outcome: " << RESET
+                << AMBER << "Submitted for escalation" << RESET << "\n";
+
+        std::cout << GREY
+                << "\nThe issue has been forwarded to the escalation process."
+                << RESET << "\n";
+
         TerminalUI::waitForContinue();
     }
     std::string getMessageColor(const std::string& label) {
@@ -181,10 +360,12 @@ void WorkflowScreens::showOverview(int id) {
 
         try {
             std::string status = facade.trackStatus(id);
-            std::cout << GREY << "Current Status: " << statusColor(status) << status << RESET << "\n\n";
-            TerminalUI::showDivider();
-            printFormattedReport(facade.generateReport(id));
-            TerminalUI::showDivider();
+            std::cout << "\n";
+            std::cout << TEAL << "WORKFLOW STATUS: " << statusColor(status) << status << RESET << "\n";
+            std::cout << GREY << "----------------------------------------" << RESET << "\n";
+            std::string report = facade.generateReport(id);
+            displayProgressTracker(report);
+            std::cout << GREY << "----------------------------------------" << RESET << "\n";
         } catch (const std::exception& e) {
             TerminalUI::showError(e.what());
             TerminalUI::waitForContinue();
@@ -234,14 +415,16 @@ void WorkflowScreens::showAvailableWork(int id) {
                 TerminalUI::waitForContinue();
                 return;
             }
-
-            std::vector<std::string> choices = items;
+            std::vector<std::string> choices;
+            for (std::size_t i = 0; i < items.size(); ++i) {
+                choices.push_back(friendlyTaskName(items[i]));
+            }
             choices.push_back("Back");
             int choice = TerminalUI::selectOption("SELECT WORK ITEM", choices, false);
-
             if (choice == static_cast<int>(items.size())) {
                 return;
             }
+            // Pass the original task name to the workflow engine.
             interactWithItem(id, items[choice]);
         } catch (const std::exception& e) {
             TerminalUI::showError(e.what());
@@ -254,7 +437,7 @@ void WorkflowScreens::showAvailableWork(int id) {
 void WorkflowScreens::interactWithItem(int id, const std::string& name) {
     while (true) {
         TerminalUI::clearScreen();
-        TerminalUI::showHeader("WORK ITEM | " + name);
+        TerminalUI::showHeader("WORK ITEM | " + friendlyTaskName(name));
         bool approval = false;
 
         try {
@@ -330,7 +513,19 @@ void WorkflowScreens::interactWithItem(int id, const std::string& name) {
             runWithStyledOutput([&]() {
                 facade.reportIssue(id, name, type, desc, severity);
             });
-            showResult("Issue submitted to escalation.");
+
+            std::string state = facade.trackStatus(id);
+
+            if (state == "Failed") {
+                std::cout << RED << "Workflow Failed" << RESET << "\n";
+                std::cout << "The issue could not be resolved or the retry limit was reached.\n";
+            }
+            else {
+                std::cout << GREEN << "Issue Handled" << RESET << "\n";
+                std::cout << "Workflow Continued\n";
+            }
+
+            TerminalUI::waitForContinue();
             return;
         } catch (const std::exception& e) {
             TerminalUI::showError(e.what());
@@ -348,8 +543,12 @@ void WorkflowScreens::reportIssue(int id) {
             return;
         }
 
-        items.push_back("Back");
-        int choice = TerminalUI::selectOption("SELECT WORK ITEM FOR ISSUE", items);
+        std::vector<std::string> choices;
+        for (std::size_t i = 0; i < items.size(); ++i) {
+            choices.push_back(friendlyTaskName(items[i]));
+        }
+        choices.push_back("Back");
+        int choice = TerminalUI::selectOption("SELECT WORK ITEM FOR ISSUE", choices);
         if (choice == static_cast<int>(items.size()) - 1) {
             return;
         }
@@ -360,7 +559,16 @@ void WorkflowScreens::reportIssue(int id) {
         runWithStyledOutput([&]() {
             facade.reportIssue(id, items[choice], type, description, severity);
         });
-        showResult("Issue submitted to escalation.");
+        std::string state = facade.trackStatus(id);
+        if (state == "Failed") {
+            std::cout << RED << "Workflow Failed" << RESET << "\n";
+            std::cout << "The issue could not be resolved or the retry limit was reached.\n";
+        }
+        else {
+            std::cout << GREEN << "Issue Handled" << RESET << "\n";
+            std::cout << "Workflow Continued\n";
+        }
+        TerminalUI::waitForContinue();
     } catch (const std::exception& e) {
         TerminalUI::showError(e.what());
         TerminalUI::waitForContinue();
