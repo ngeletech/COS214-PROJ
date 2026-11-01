@@ -89,9 +89,3 @@ void Task::notifyListeners(){
     }
 }
 
-void Task::reportIssue(Issue issue) {
-    WorkflowInstance* inst = getInstance();
-    if (inst != nullptr && inst->getEngine() != nullptr) {
-        inst->getEngine()->handleIssue(issue, *inst);
-    }
-}

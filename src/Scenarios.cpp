@@ -49,7 +49,7 @@ void setupTelecomScenario(TividyFacade& facade) {
     chain->setNext(new SupervisorHandler(nullptr, 5));
 
     //Define Strategy
-    AssignmentStrategy* strategy = new AttributeMatchingStrategy("department", "Engineering");
+    AssignmentStrategy* strategy = new RoleMatchingStrategy("CreditOfficer");
 
     //Define WorkItem Specifications for Fiber Provisioning
     std::vector<WorkItemSpec> specs = {
