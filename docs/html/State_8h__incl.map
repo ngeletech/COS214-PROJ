@@ -1,0 +1,17 @@
+<map id="include/State.h" name="include/State.h">
+<area shape="rect" id="Node000001" title="State pattern for the workflow instance lifecycle." alt="" coords="135,5,254,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="200,152,259,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,30,226,138,221,139,195,32"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="129,79,191,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="191,32,174,67,169,65,187,30"/>
+<area shape="rect" id="Node000004" href="$WorkData_8h.html" title=" " alt="" coords="5,79,104,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="173,33,91,75,88,70,171,28"/>
+<area shape="rect" id="Node000006" href="$WorkflowEvent_8h.html" title=" " alt="" coords="267,79,397,104"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="218,28,299,70,296,75,216,33"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="84,102,189,144,187,149,82,106"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="29,152,80,177"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="57,104,57,138,52,138,52,104"/>
+<area shape="poly" id="edge8_Node000006_Node000002" title=" " alt="" coords="317,106,259,146,256,142,314,102"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="292,152,372,177"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="335,104,335,138,329,138,329,104"/>
+</map>

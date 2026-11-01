@@ -1,0 +1,10 @@
+<map id="ParallelGroup" name="ParallelGroup">
+<area shape="rect" id="Node000001" title="Items can run at the same time." alt="" coords="5,168,115,193"/>
+<area shape="rect" id="Node000002" href="$classWorkGroup.html" title="Composite: a group of work elements." alt="" coords="79,80,174,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,118,99,131,71,169,66,166,95,128,106,114"/>
+<area shape="rect" id="Node000003" href="$classWorkElement.html" title="Component: a task or a group of tasks." alt="" coords="139,168,248,193"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="122,119,121,131,125,143,137,156,154,166,151,170,134,160,120,145,116,132,116,119"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="185,156,173,131,146,108,149,104,177,128,190,153"/>
+<area shape="rect" id="Node000004" href="$classWorkIterable.html" title=" " alt="" coords="15,5,238,31"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="129,45,129,80,124,80,124,45"/>
+</map>

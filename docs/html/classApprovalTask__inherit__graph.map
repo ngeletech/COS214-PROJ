@@ -1,0 +1,7 @@
+<map id="ApprovalTask" name="ApprovalTask">
+<area shape="rect" id="Node000001" title="Concrete task managing decision&#45;based approval workflows." alt="" coords="5,152,115,177"/>
+<area shape="rect" id="Node000002" href="$classTask.html" title="Leaf: a single task. execute() is the Template Method." alt="" coords="35,79,85,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="63,118,63,152,57,152,57,118"/>
+<area shape="rect" id="Node000003" href="$classWorkElement.html" title="Component: a task or a group of tasks." alt="" coords="5,5,115,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="63,44,63,79,57,79,57,44"/>
+</map>

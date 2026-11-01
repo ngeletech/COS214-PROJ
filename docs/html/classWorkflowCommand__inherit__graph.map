@@ -1,0 +1,11 @@
+<map id="WorkflowCommand" name="WorkflowCommand">
+<area shape="rect" id="Node000001" title="Abstract base class for workflow commands." alt="" coords="326,5,475,31"/>
+<area shape="rect" id="Node000002" href="$classCancelInstanceCommand.html" title="Command for cancelling an existing workflow instance." alt="" coords="5,79,193,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="340,36,149,81,148,76,339,31"/>
+<area shape="rect" id="Node000003" href="$classChangeDataCommand.html" title="Command for modifying workflow instance data." alt="" coords="217,79,387,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="376,41,320,81,317,76,372,36"/>
+<area shape="rect" id="Node000004" href="$classReassignItemCommand.html" title="Command for reassigning a workflow item to another participant." alt="" coords="411,79,590,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="429,36,486,76,483,81,426,41"/>
+<area shape="rect" id="Node000005" href="$classStartInstanceCommand.html" title="Command for starting a new workflow instance." alt="" coords="615,79,789,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="463,31,654,76,653,81,462,36"/>
+</map>

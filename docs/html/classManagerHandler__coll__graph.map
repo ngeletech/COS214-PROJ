@@ -1,0 +1,8 @@
+<map id="ManagerHandler" name="ManagerHandler">
+<area shape="rect" id="Node000001" title="Final escalation handler." alt="" coords="10,168,141,193"/>
+<area shape="rect" id="Node000002" href="$classEscalationHandler.html" title="Abstract base class implementing the Chain of Responsibility pattern." alt="" coords="5,93,145,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="78,133,78,168,73,168,73,133"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="160,98,172,106,164,113,146,115,145,110,162,108,167,106,158,103"/>
+<area shape="rect" id="Node000003" href="$classParticipant.html" title=" " alt="" coords="30,5,121,31"/>
+<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="78,45,78,93,73,93,73,45"/>
+</map>

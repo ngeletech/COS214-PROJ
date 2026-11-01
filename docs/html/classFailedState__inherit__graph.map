@@ -1,0 +1,5 @@
+<map id="FailedState" name="FailedState">
+<area shape="rect" id="Node000001" title="ConcreteState. Ended with an error. Terminal: every action is refused." alt="" coords="13,79,108,104"/>
+<area shape="rect" id="Node000002" href="$classInstanceState.html" title="Abstract State. Declares every lifecycle action." alt="" coords="5,5,116,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="63,44,63,79,58,79,58,44"/>
+</map>

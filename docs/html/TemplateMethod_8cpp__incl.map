@@ -1,0 +1,31 @@
+<map id="src/TemplateMethod.cpp" name="src/TemplateMethod.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="265,5,446,31"/>
+<area shape="rect" id="Node000002" href="$TemplateMethod_8h.html" title=" " alt="" coords="88,79,295,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="330,33,232,76,230,71,328,28"/>
+<area shape="rect" id="Node000007" href="$State_8h.html" title="State pattern for the workflow instance lifecycle." alt="" coords="290,152,421,177"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="358,31,358,138,353,138,353,31"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="529,299,609,324"/>
+<area shape="poly" id="edge18_Node000001_Node000011" title=" " alt="" coords="381,29,430,56,491,99,523,125,552,155,578,188,598,224,602,241,600,258,588,288,583,286,595,256,597,241,593,226,573,191,548,159,519,129,488,103,427,61,378,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="213,299,272,324"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="197,104,239,284,234,286,192,105"/>
+<area shape="rect" id="Node000004" href="$composite_8h.html" title=" " alt="" coords="31,152,134,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="175,106,113,147,110,142,173,102"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="96,176,175,249,220,288,216,292,171,253,93,180"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="31,299,94,324"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="61,180,33,199,11,226,9,243,14,259,38,288,34,291,9,261,3,243,7,224,29,195,57,175"/>
+<area shape="rect" id="Node000006" href="$Iterator_8h.html" title=" " alt="" coords="22,225,103,251"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="82,178,72,213,67,211,76,177"/>
+<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="92,248,201,291,199,296,90,253"/>
+<area shape="poly" id="edge8_Node000006_Node000005" title=" " alt="" coords="65,251,65,285,60,285,60,251"/>
+<area shape="poly" id="edge10_Node000007_Node000003" title=" " alt="" coords="348,179,262,290,258,286,344,176"/>
+<area shape="poly" id="edge11_Node000007_Node000005" title=" " alt="" coords="333,180,99,295,97,290,331,175"/>
+<area shape="rect" id="Node000008" href="$WorkData_8h.html" title=" " alt="" coords="330,225,429,251"/>
+<area shape="poly" id="edge12_Node000007_Node000008" title=" " alt="" coords="362,177,374,211,369,213,357,179"/>
+<area shape="rect" id="Node000010" href="$WorkflowEvent_8h.html" title=" " alt="" coords="453,225,584,251"/>
+<area shape="poly" id="edge15_Node000007_Node000010" title=" " alt="" coords="383,175,480,217,478,222,381,180"/>
+<area shape="poly" id="edge13_Node000008_Node000003" title=" " alt="" coords="359,253,278,295,276,290,356,248"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="354,299,405,324"/>
+<area shape="poly" id="edge14_Node000008_Node000009" title=" " alt="" coords="382,251,382,285,377,285,377,251"/>
+<area shape="poly" id="edge17_Node000010_Node000003" title=" " alt="" coords="475,253,286,302,285,296,473,248"/>
+<area shape="poly" id="edge16_Node000010_Node000011" title=" " alt="" coords="529,249,555,286,551,289,524,253"/>
+</map>

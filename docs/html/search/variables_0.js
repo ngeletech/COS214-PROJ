@@ -1,0 +1,5 @@
+var searchData=
+[
+  ['abort_5fafter_0',['abort_after',['../structdoctest_1_1ContextOptions.html#a8ba5bfec2229bc2da9ab917f4bdee5e7',1,'doctest::ContextOptions']]],
+  ['assignee_1',['assignee',['../classTask.html#a775f42be9541bd0a521aac6cd6428e1c',1,'Task']]]
+];

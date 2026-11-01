@@ -1,0 +1,13 @@
+
+services:
+  # Service 1: Run the unit tests (used for CI or local testing)
+  tests:
+    build: .
+    command: ctest --test-dir build --output-on-failure
+
+  # Service 2: Run the interactive TUI 
+  tui:
+    build: .
+    command: ./build/tividy_app
+    stdin_open: true   # Keeps STDIN open so the container can read keyboard input
+    tty: true          # Allocates a pseudo-TTY so ANSI colors and raw mode work
