@@ -187,7 +187,7 @@ class LegacySystemApi {
         /**
          * @brief A submission counter
          */
-        static int counter;
+        int counter;
 
         /**
          * @brief Maps codes to lookup counts
@@ -195,6 +195,8 @@ class LegacySystemApi {
         std::map<std::string, int> lookups;
 
     public:
+
+        LegacySystemApi() : counter(0) {}
         /**
          * @brief Submits a fixed-width record to the legacy system
          * @param record The encoded data

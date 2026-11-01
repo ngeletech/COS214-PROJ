@@ -33,6 +33,7 @@ bool WorkElementDecorator::isAvailable() const {
 }
 
 WorkData WorkElementDecorator::getPayload() const {
+    if(!wrapped) return WorkData();
     return wrapped->getPayload();
 }
 
@@ -64,4 +65,29 @@ void WorkElementDecorator::setInstance(WorkflowInstance* instance) {
 void WorkElementDecorator::assignTo(Participant* participant) {
     if(!wrapped) return;
     wrapped->assignTo(participant);
+}
+
+void WorkElementDecorator::setParent(WorkGroup* parent) {
+    WorkElement::setParent(parent); 
+    if (wrapped )wrapped->setParent(parent);
+}
+
+WorkGroup* WorkElementDecorator::asGroup() {
+    if(!wrapped) return nullptr; 
+    return wrapped->asGroup();
+}
+
+Participant* WorkElementDecorator::getAssignee() const {
+    if(!wrapped) return nullptr; 
+    return wrapped->getAssignee();
+}
+
+bool WorkElementDecorator::requiresAssignee() const {
+    if(!wrapped) return false;
+    return wrapped->requiresAssignee(); 
+}
+
+int WorkElementDecorator::getPriority() const {
+    if(!wrapped) return 0;
+    return wrapped->getPriority();
 }
