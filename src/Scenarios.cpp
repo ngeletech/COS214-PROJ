@@ -76,11 +76,16 @@ void setupTelecomScenario(TividyFacade& facade) {
     AssignmentStrategy* strategy = new AttributeMatchingStrategy("department", "Engineering");
 
     //Define WorkItem Specifications
-    std::vector<WorkItemSpec> specs = {
-        {"ApprovalTask", "CreditCheck", ""},
-        {"UserTask", "InstallFiberLine", ""},
-        {"ScriptTask", "ConfigureRouter", "LineStatus, ACTIVE"},
-        {"ServiceTask", "ActivateAccountAPI", ""}
+       std::vector<WorkItemSpec> specs = {
+        {"ScriptTask", "ValidateCouponCode", "CouponStatus, VALIDATED"},
+        {"UserTask", "PrepareMeal", ""},
+        {"ScriptTask", "MarkOrderInProgress", "OrderStatus, IN_PROGRESS"},
+        {"UserTask", "PackageMeal", ""},
+        {"ApprovalTask", "ApproveMealForDispatch", ""},
+        {"ServiceTask", "DispatchToCourier", ""},
+        {"ScriptTask", "MarkOrderInTransit", "OrderStatus, IN_TRANSIT"},
+        {"UserTask", "ConfirmDeliveryToCustomer", ""},
+        {"ScriptTask", "MarkOrderDelivered", "OrderStatus, DELIVERED"}
     };
 
     //Register Workflow Definition via Facade
@@ -149,7 +154,7 @@ void runFoodCateringDemo(TividyFacade& facade) {
 
         //Simulate Kitchen Shortage (Issue Reporting & Chain of Responsibility)
         std::cout << "\n[Step 6]: Simulating ingredient shortage (Reporting Issue)...\n";
-        facade.reportIssue(id, "PrepMealStep", "Out of Stock", "Fresh Salmon unavailable", 4);
+        facade.reportIssue(id, "PrepareMeal", "Out of Stock", "Fresh Salmon unavailable", 4);
 
         //Generate Comprehensive Instance Audit Report
         std::cout << "\n=======================================================\n";
