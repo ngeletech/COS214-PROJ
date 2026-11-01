@@ -40,10 +40,15 @@ void setupFoodCateringScenario(TividyFacade& facade) {
 
     //Define WorkItem Specifications (Composite + Factory Method)
        std::vector<WorkItemSpec> specs = {
-        {"ScriptTask", "ValidateCouponCode", "CouponStatus, VALIDATED"},
+        {"UserTask", "ReviewOrderDetails", ""},
+        {"UserTask", "CheckAllegerns", ""},
+        {"UserTask", "PrepareIngredients", ""},
+        {"UserTask", "PreheatCookingEquipment", ""},
         {"UserTask", "PrepareMeal", ""},
         {"ScriptTask", "MarkOrderInProgress", "OrderStatus, IN_PROGRESS"},
+        {"ScriptTask", "QualityCheck", "OrderStatus, IN_PROGRESS"},
         {"UserTask", "PackageMeal", ""},
+        {"ApprovalTask", "ApproveMealForDispatch", ""},
         {"ApprovalTask", "ApproveMealForDispatch", ""},
         {"ServiceTask", "DispatchToCourier", ""},
         {"ScriptTask", "MarkOrderInTransit", "OrderStatus, IN_TRANSIT"},
