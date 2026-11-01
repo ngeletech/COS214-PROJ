@@ -1,0 +1,26 @@
+var classWorkflowInstance =
+[
+    [ "WorkflowInstance", "classWorkflowInstance.html#ad80a35529c2f8dfb59b8092d05ad55e6", null ],
+    [ "~WorkflowInstance", "classWorkflowInstance.html#a0de870c6014863557b6c6ab1a0a656dd", null ],
+    [ "cancel", "classWorkflowInstance.html#a9a4b6380c98ee68a9c070fe20b9c6b77", null ],
+    [ "cancelOutstandingWork", "classWorkflowInstance.html#a8cc051fa090630396593cb1df61ddb3c", null ],
+    [ "complete", "classWorkflowInstance.html#a330c7c9b3a13adb79533b1bf3563d22f", null ],
+    [ "fail", "classWorkflowInstance.html#a2dda2ff1d96a4a76266b5b06c5c66d8b", null ],
+    [ "findElement", "classWorkflowInstance.html#a5f8bc5b885fb3148637e7c7e670e21da", null ],
+    [ "getData", "classWorkflowInstance.html#ab93835437cff5be431e19995429ad494", null ],
+    [ "getDefinition", "classWorkflowInstance.html#a62cded1cc6f9021870e2fd5d661c3948", null ],
+    [ "getEngine", "classWorkflowInstance.html#a6e8f60e6762151cf478b91327e8d9700", null ],
+    [ "getId", "classWorkflowInstance.html#a3f70651b17e5fff8408776489247a561", null ],
+    [ "getRoot", "classWorkflowInstance.html#ad1fa040f7085b0a7fdc21640ccdebc5f", null ],
+    [ "getStateName", "classWorkflowInstance.html#a98c640021d0e2c51e0187ef5605c6d66", null ],
+    [ "publish", "classWorkflowInstance.html#a5ad37af97329537b8d757ad3aa470d2e", null ],
+    [ "restore", "classWorkflowInstance.html#a2bafaf36e7642ccd850c008a84f6a413", null ],
+    [ "resume", "classWorkflowInstance.html#af477382c0ed18ba6c3e466d9e2ea57c8", null ],
+    [ "saveSnapshot", "classWorkflowInstance.html#aec90654830d5745765cced795119843b", null ],
+    [ "setData", "classWorkflowInstance.html#a527d806019f95c8b662179600ef77e39", null ],
+    [ "setRoot", "classWorkflowInstance.html#a8e7c60df75502a6d10198e0dc4568878", null ],
+    [ "setState", "classWorkflowInstance.html#a2ebbd4ba155a91c1f602b9a2234bd17b", null ],
+    [ "start", "classWorkflowInstance.html#a02bc18c089fee46a354a1005c2de6707", null ],
+    [ "subscribe", "classWorkflowInstance.html#a76a4fd7f85dc12681ba61ec2abbfda52", null ],
+    [ "suspend", "classWorkflowInstance.html#ae4ec32ff3804a8f0489157d7b44e445d", null ]
+];

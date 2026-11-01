@@ -1,0 +1,7 @@
+<map id="CancelInstanceCommand" name="CancelInstanceCommand">
+<area shape="rect" id="Node000001" title="Command for cancelling an existing workflow instance." alt="" coords="5,168,193,193"/>
+<area shape="rect" id="Node000002" href="$classWorkflowCommand.html" title="Abstract base class for workflow commands." alt="" coords="25,93,174,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,133,102,168,97,168,97,133"/>
+<area shape="rect" id="Node000003" href="$classWorkflowInstance.html" title="Context. One running copy of a workflow." alt="" coords="31,5,168,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="102,45,102,93,97,93,97,45"/>
+</map>

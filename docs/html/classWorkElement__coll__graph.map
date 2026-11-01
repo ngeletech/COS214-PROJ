@@ -1,0 +1,8 @@
+<map id="WorkElement" name="WorkElement">
+<area shape="rect" id="Node000001" title="Component: a task or a group of tasks." alt="" coords="5,5,115,31"/>
+<area shape="rect" id="Node000002" href="$classWorkGroup.html" title="Composite: a group of work elements." alt="" coords="57,93,151,119"/>
+<area shape="poly" id="edge2_Node000002_Node000001" title=" " alt="" coords="70,43,81,68,96,91,92,94,76,71,65,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="89,82,64,32,68,30,94,80"/>
+<area shape="rect" id="Node000003" href="$classWorkIterable.html" title=" " alt="" coords="139,5,362,31"/>
+<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="220,40,125,95,123,91,218,35"/>
+</map>
