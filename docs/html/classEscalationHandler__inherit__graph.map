@@ -1,0 +1,9 @@
+<map id="EscalationHandler" name="EscalationHandler">
+<area shape="rect" id="Node000001" title="Abstract base class implementing the Chain of Responsibility pattern." alt="" coords="155,5,295,31"/>
+<area shape="rect" id="Node000002" href="$classFrontlineHandler.html" title="First&#45;level support handler." alt="" coords="5,79,136,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="189,39,97,81,95,76,187,34"/>
+<area shape="rect" id="Node000003" href="$classManagerHandler.html" title="Final escalation handler." alt="" coords="160,79,291,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="228,44,228,79,223,79,223,44"/>
+<area shape="rect" id="Node000004" href="$classSupervisorHandler.html" title="Second&#45;level escalation handler." alt="" coords="315,79,458,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="265,34,361,76,359,81,263,39"/>
+</map>

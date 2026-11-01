@@ -1,0 +1,29 @@
+<map id="WorkElement" name="WorkElement">
+<area shape="rect" id="Node000001" title="Component: a task or a group of tasks." alt="" coords="5,301,115,327"/>
+<area shape="rect" id="Node000002" href="$classTask.html" title="Leaf: a single task. execute() is the Template Method." alt="" coords="224,129,275,155"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,290,232,153,236,157,87,294"/>
+<area shape="rect" id="Node000008" href="$classWorkElementDecorator.html" title="Base Decorator: forwards all requests to the wrapped WorkElement." alt="" coords="163,301,336,327"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="128,311,162,311,162,317,128,317"/>
+<area shape="rect" id="Node000012" href="$classWorkGroup.html" title="Composite: a group of work elements." alt="" coords="202,400,297,425"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="99,331,225,397,222,402,96,336"/>
+<area shape="rect" id="Node000003" href="$classApprovalTask.html" title="Concrete task managing decision&#45;based approval workflows." alt="" coords="398,5,507,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="273,118,322,79,383,40,408,28,411,33,385,44,325,83,277,122"/>
+<area shape="rect" id="Node000004" href="$classScriptTask.html" title="Concrete task executing scripted operations and data mutations." alt="" coords="409,55,497,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="286,125,383,89,414,78,416,83,385,94,288,130"/>
+<area shape="rect" id="Node000005" href="$classServiceTask.html" title="Concrete task executing automated system operations via external connectors." alt="" coords="403,104,502,129"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="288,135,403,120,404,125,289,140"/>
+<area shape="rect" id="Node000006" href="$classTestTask.html" title=" " alt="" coords="414,153,491,179"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="288,144,414,159,413,164,288,149"/>
+<area shape="rect" id="Node000007" href="$classUserTask.html" title="Concrete task requiring human participant interaction." alt="" coords="412,203,493,228"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="288,153,418,200,416,205,287,158"/>
+<area shape="rect" id="Node000009" href="$classAuditedDecorator.html" title="Prints audit messages before and adter executing or completing the wrapped element." alt="" coords="385,252,521,277"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="315,296,399,275,400,280,316,301"/>
+<area shape="rect" id="Node000010" href="$classPayloadDecorator.html" title="Adds a key&#45;value pair to the payload returned by the wrapped element." alt="" coords="384,301,521,327"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="350,311,384,311,384,317,350,317"/>
+<area shape="rect" id="Node000011" href="$classPriorityDecorator.html" title="Assigns the wrapped element a priority." alt="" coords="386,351,519,376"/>
+<area shape="poly" id="edge10_Node000008_Node000011" title=" " alt="" coords="316,327,400,348,399,353,315,332"/>
+<area shape="rect" id="Node000013" href="$classParallelGroup.html" title="Items can run at the same time." alt="" coords="398,400,507,425"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="310,410,398,410,398,415,310,415"/>
+<area shape="rect" id="Node000014" href="$classSequentialGroup.html" title="Items run one after another." alt="" coords="387,449,518,475"/>
+<area shape="poly" id="edge13_Node000012_Node000014" title=" " alt="" coords="310,425,400,447,399,452,309,430"/>
+</map>
