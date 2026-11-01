@@ -39,11 +39,16 @@ void setupFoodCateringScenario(TividyFacade& facade) {
     AssignmentStrategy* strategy = new RoleMatchingStrategy("Kitchen");
 
     //Define WorkItem Specifications (Composite + Factory Method)
-    std::vector<WorkItemSpec> specs = {
-        {"UserTask", "PrepMealStep", ""},
-        {"ScriptTask", "UpdateOrderStatus", "OrderStatus, IN_PROGRESS"},
-        {"ApprovalTask", "ManagerSignoff", ""},
-        {"ServiceTask", "CourierDeliveryAPI", ""}
+       std::vector<WorkItemSpec> specs = {
+        {"ScriptTask", "ValidateCouponCode", "CouponStatus, VALIDATED"},
+        {"UserTask", "PrepareMeal", ""},
+        {"ScriptTask", "MarkOrderInProgress", "OrderStatus, IN_PROGRESS"},
+        {"UserTask", "PackageMeal", ""},
+        {"ApprovalTask", "ApproveMealForDispatch", ""},
+        {"ServiceTask", "DispatchToCourier", ""},
+        {"ScriptTask", "MarkOrderInTransit", "OrderStatus, IN_TRANSIT"},
+        {"UserTask", "ConfirmDeliveryToCustomer", ""},
+        {"ScriptTask", "MarkOrderDelivered", "OrderStatus, DELIVERED"}
     };
 
     //Register Workflow Definition via Facade (Builder Pattern)
@@ -149,7 +154,7 @@ void runFoodCateringDemo(TividyFacade& facade) {
 
         //Simulate Kitchen Shortage (Issue Reporting & Chain of Responsibility)
         std::cout << "\n[Step 6]: Simulating ingredient shortage (Reporting Issue)...\n";
-        facade.reportIssue(id, "PrepMealStep", "Out of Stock", "Fresh Salmon unavailable", 4);
+        facade.reportIssue(id, "PrepareMeal", "Out of Stock", "Fresh Salmon unavailable", 4);
 
         //Generate Comprehensive Instance Audit Report
         std::cout << "\n=======================================================\n";
