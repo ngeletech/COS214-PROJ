@@ -7,3 +7,4 @@ build.log
 build-clang/
 build.log
 build-asan/
+files.txt

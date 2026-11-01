@@ -1,0 +1,6 @@
+/Users/masterp/Desktop/Computer Science/Second Year (2026)/COS 214/Practicals/COS214-PROJ/buid/CMakeFiles/tividy_engine.dir
+/Users/masterp/Desktop/Computer Science/Second Year (2026)/COS 214/Practicals/COS214-PROJ/buid/CMakeFiles/unit_tests.dir
+/Users/masterp/Desktop/Computer Science/Second Year (2026)/COS 214/Practicals/COS214-PROJ/buid/CMakeFiles/tividy_app.dir
+/Users/masterp/Desktop/Computer Science/Second Year (2026)/COS 214/Practicals/COS214-PROJ/buid/CMakeFiles/test.dir
+/Users/masterp/Desktop/Computer Science/Second Year (2026)/COS 214/Practicals/COS214-PROJ/buid/CMakeFiles/edit_cache.dir
+/Users/masterp/Desktop/Computer Science/Second Year (2026)/COS 214/Practicals/COS214-PROJ/buid/CMakeFiles/rebuild_cache.dir
