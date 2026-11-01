@@ -3,6 +3,8 @@
 #include "../include/Chain-Of-Responsibility.h"
 #include "../include/Participant.h"
 #include <iostream>
+#include <sstream>
+#include <string>
 
 void setupFoodCateringScenario(TividyFacade& facade) {
     //Register Participants
@@ -67,11 +69,44 @@ void setupTelecomScenario(TividyFacade& facade) {
 
 void runFoodCateringDemo(TividyFacade& facade) {
     std::cout << "\nRunning Industry 1: Food Catering Demo " << std::endl;
+
     WorkData initialData;
-    initialData.addData("CustomerRegion", "Gauteng");
-    initialData.addData("CouponCode", "SAVE20");
+
+    std::string region = "Gauteng";
+    std::string coupon = "SAVE20";
+
+    initialData.addData("CustomerRegion", region);
+    initialData.addData("CouponCode", coupon);
+
+    // Demo pricing information
+    double mealPrice = 150.0;
+    double discount = 0.0;
+
+    if (coupon == "SAVE20") {
+        discount = mealPrice * 0.20;
+    }
+
+    double finalTotal = mealPrice - discount;
+
+    std::ostringstream price;
+
+    price << "R" << static_cast<int>(mealPrice);
+    initialData.addData("MealPrice", price.str());
+
+    price.str("");
+    price.clear();
+
+    price << "R" << static_cast<int>(discount);
+    initialData.addData("Discount", price.str());
+
+    price.str("");
+    price.clear();
+
+    price << "R" << static_cast<int>(finalTotal);
+    initialData.addData("FinalTotal", price.str());
 
     int instanceId = facade.startWorkflow("MealOrderDelivery", initialData);
+
     std::cout << "Order Instance Started. ID: " << instanceId << std::endl;
     std::cout << "Current Status: " << facade.trackStatus(instanceId) << std::endl;
 }
