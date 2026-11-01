@@ -39,11 +39,16 @@ void setupFoodCateringScenario(TividyFacade& facade) {
     AssignmentStrategy* strategy = new RoleMatchingStrategy("Kitchen");
 
     //Define WorkItem Specifications (Composite + Factory Method)
-    std::vector<WorkItemSpec> specs = {
-        {"UserTask", "PrepMealStep", ""},
-        {"ScriptTask", "UpdateOrderStatus", "OrderStatus, IN_PROGRESS"},
-        {"ApprovalTask", "ManagerSignoff", ""},
-        {"ServiceTask", "CourierDeliveryAPI", ""}
+       std::vector<WorkItemSpec> specs = {
+        {"ScriptTask", "ValidateCouponCode", "CouponStatus, VALIDATED"},
+        {"UserTask", "PrepareMeal", ""},
+        {"ScriptTask", "MarkOrderInProgress", "OrderStatus, IN_PROGRESS"},
+        {"UserTask", "PackageMeal", ""},
+        {"ApprovalTask", "ApproveMealForDispatch", ""},
+        {"ServiceTask", "DispatchToCourier", ""},
+        {"ScriptTask", "MarkOrderInTransit", "OrderStatus, IN_TRANSIT"},
+        {"UserTask", "ConfirmDeliveryToCustomer", ""},
+        {"ScriptTask", "MarkOrderDelivered", "OrderStatus, DELIVERED"}
     };
 
     //Register Workflow Definition via Facade (Builder Pattern)
@@ -76,16 +81,11 @@ void setupTelecomScenario(TividyFacade& facade) {
     AssignmentStrategy* strategy = new AttributeMatchingStrategy("department", "Engineering");
 
     //Define WorkItem Specifications
-       std::vector<WorkItemSpec> specs = {
-        {"ScriptTask", "ValidateCouponCode", "CouponStatus, VALIDATED"},
-        {"UserTask", "PrepareMeal", ""},
-        {"ScriptTask", "MarkOrderInProgress", "OrderStatus, IN_PROGRESS"},
-        {"UserTask", "PackageMeal", ""},
-        {"ApprovalTask", "ApproveMealForDispatch", ""},
-        {"ServiceTask", "DispatchToCourier", ""},
-        {"ScriptTask", "MarkOrderInTransit", "OrderStatus, IN_TRANSIT"},
-        {"UserTask", "ConfirmDeliveryToCustomer", ""},
-        {"ScriptTask", "MarkOrderDelivered", "OrderStatus, DELIVERED"}
+    std::vector<WorkItemSpec> specs = {
+        {"ApprovalTask", "CreditCheck", ""},
+        {"UserTask", "InstallFiberLine", ""},
+        {"ScriptTask", "ConfigureRouter", "LineStatus, ACTIVE"},
+        {"ServiceTask", "ActivateAccountAPI", ""}
     };
 
     //Register Workflow Definition via Facade
