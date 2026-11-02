@@ -1,0 +1,9 @@
+<map id="SequentialGroup" name="SequentialGroup">
+<area shape="rect" id="Node000001" title="Items run one after another." alt="" coords="89,152,220,177"/>
+<area shape="rect" id="Node000002" href="$classWorkGroup.html" title="Composite: a group of work elements." alt="" coords="107,79,202,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="157,118,157,152,152,152,152,118"/>
+<area shape="rect" id="Node000003" href="$classWorkElement.html" title="Component: a task or a group of tasks." alt="" coords="5,5,115,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="88,37,141,76,138,81,85,41"/>
+<area shape="rect" id="Node000004" href="$classWorkIterable.html" title=" " alt="" coords="139,5,362,31"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="226,41,172,81,169,76,223,37"/>
+</map>

@@ -1,0 +1,15 @@
+<map id="src/MessagingAdapter.cpp" name="src/MessagingAdapter.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,197,31"/>
+<area shape="rect" id="Node000002" href="$Adapter_8h.html" title=" " alt="" coords="28,79,175,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,31,104,65,99,65,99,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="21,225,80,251"/>
+<area shape="poly" id="edge8_Node000001_Node000003" title=" " alt="" coords="74,33,43,52,29,65,18,80,12,97,10,114,13,150,25,184,39,213,34,215,20,186,8,151,4,114,7,95,14,77,25,61,40,48,71,29"/>
+<area shape="rect" id="Node000005" href="$WorkData_8h.html" title=" " alt="" coords="139,152,237,177"/>
+<area shape="poly" id="edge7_Node000001_Node000005" title=" " alt="" coords="131,28,163,48,177,61,189,78,197,108,196,138,191,138,192,109,184,80,173,65,160,52,128,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="100,105,62,213,57,212,95,104"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="133,225,184,251"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="107,104,129,176,147,212,142,215,124,178,101,105"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="117,102,165,141,162,145,114,106"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="167,180,86,221,84,217,165,175"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="186,179,171,214,166,212,181,177"/>
+</map>

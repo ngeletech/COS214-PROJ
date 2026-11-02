@@ -1,0 +1,17 @@
+# Ignore local build artifacts
+build/
+docs/
+
+# Ignore git history (huge and unnecessary for the container)
+.git/
+
+# Ignore editor/OS junk
+.vscode/
+.idea/
+*.o
+*.a
+.DS_Store
+
+# Ignore the Dockerfile itself 
+Dockerfile
+docker-compose.yml

@@ -1,0 +1,9 @@
+<map id="AssignmentStrategy" name="AssignmentStrategy">
+<area shape="rect" id="Node000001" title="Abstract strategy interface for selecting a participant to perform a work item." alt="" coords="227,5,381,31"/>
+<area shape="rect" id="Node000002" href="$classAttributeMatchingStrategy.html" title="Selects a participant by matching one of their attributes." alt="" coords="5,79,200,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="259,38,136,81,135,76,258,33"/>
+<area shape="rect" id="Node000003" href="$classLeastLoadedStrategy.html" title="Selects the candidate with the lowest current workload." alt="" coords="225,79,383,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="307,44,307,79,301,79,301,44"/>
+<area shape="rect" id="Node000004" href="$classRoleMatchingStrategy.html" title="Selects a participant whose role matches a required role." alt="" coords="407,79,574,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="347,33,461,76,459,81,346,38"/>
+</map>

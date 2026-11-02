@@ -1,0 +1,15 @@
+<map id="src/LegacySystemAdapter.cpp" name="src/LegacySystemAdapter.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,223,31"/>
+<area shape="rect" id="Node000002" href="$Adapter_8h.html" title=" " alt="" coords="41,79,187,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,31,117,65,111,65,111,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="34,225,93,251"/>
+<area shape="poly" id="edge8_Node000001_Node000003" title=" " alt="" coords="86,33,55,52,42,65,31,80,25,97,22,114,26,150,38,184,51,213,47,215,33,186,21,151,17,114,20,95,26,77,38,61,52,48,84,29"/>
+<area shape="rect" id="Node000005" href="$WorkData_8h.html" title=" " alt="" coords="151,152,250,177"/>
+<area shape="poly" id="edge7_Node000001_Node000005" title=" " alt="" coords="144,28,175,48,190,61,202,78,210,108,209,138,203,138,205,109,197,80,186,65,172,52,141,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="112,105,74,213,69,212,107,104"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="146,225,197,251"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="119,104,142,176,160,212,155,215,137,178,114,105"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="130,102,178,141,174,145,126,106"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="180,180,99,221,97,217,177,175"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="198,179,184,214,179,212,193,177"/>
+</map>

@@ -1,0 +1,15 @@
+<map id="Task" name="Task">
+<area shape="rect" id="Node000001" title="Leaf: a single task. execute() is the Template Method." alt="" coords="275,79,325,104"/>
+<area shape="rect" id="Node000003" href="$classApprovalTask.html" title="Concrete task managing decision&#45;based approval workflows." alt="" coords="5,152,115,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="262,107,99,155,98,149,261,101"/>
+<area shape="rect" id="Node000004" href="$classScriptTask.html" title="Concrete task executing scripted operations and data mutations." alt="" coords="139,152,227,177"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="271,113,203,154,200,149,268,109"/>
+<area shape="rect" id="Node000005" href="$classServiceTask.html" title="Concrete task executing automated system operations via external connectors." alt="" coords="251,152,349,177"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="303,118,303,152,297,152,297,118"/>
+<area shape="rect" id="Node000006" href="$classTestTask.html" title=" " alt="" coords="373,152,451,177"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="331,109,395,150,392,154,328,114"/>
+<area shape="rect" id="Node000007" href="$classUserTask.html" title="Concrete task requiring human participant interaction." alt="" coords="475,152,557,177"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="339,103,482,149,480,154,338,108"/>
+<area shape="rect" id="Node000002" href="$classWorkElement.html" title="Component: a task or a group of tasks." alt="" coords="245,5,355,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="303,44,303,79,297,79,297,44"/>
+</map>

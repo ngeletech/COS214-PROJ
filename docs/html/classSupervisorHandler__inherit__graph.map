@@ -1,0 +1,5 @@
+<map id="SupervisorHandler" name="SupervisorHandler">
+<area shape="rect" id="Node000001" title="Second&#45;level escalation handler." alt="" coords="5,79,148,104"/>
+<area shape="rect" id="Node000002" href="$classEscalationHandler.html" title="Abstract base class implementing the Chain of Responsibility pattern." alt="" coords="7,5,147,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,44,79,79,74,79,74,44"/>
+</map>

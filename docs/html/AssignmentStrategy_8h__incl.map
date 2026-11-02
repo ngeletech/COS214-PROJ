@@ -1,0 +1,24 @@
+<map id="include/AssignmentStrategy.h" name="include/AssignmentStrategy.h">
+<area shape="rect" id="Node000001" title="Declares the Strategy pattern used to select participants for work assignment." alt="" coords="123,5,337,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,225,68,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,32,78,50,59,63,43,80,28,112,23,148,26,182,32,212,27,213,21,183,18,147,23,110,38,77,56,59,76,45,121,27"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="294,152,345,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="249,29,273,50,296,77,310,108,318,138,313,139,305,110,292,80,270,53,245,33"/>
+<area shape="rect" id="Node000004" href="$WorkData_8h.html" title=" " alt="" coords="357,79,455,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="259,28,365,71,363,76,257,33"/>
+<area shape="rect" id="Node000006" href="$composite_8h.html" title=" " alt="" coords="52,79,155,104"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="211,33,137,74,135,69,208,28"/>
+<area shape="rect" id="Node000008" href="$Participant_8h.html" title=" " alt="" coords="179,79,281,104"/>
+<area shape="poly" id="edge12_Node000001_Node000008" title=" " alt="" coords="233,31,233,65,227,65,227,31"/>
+<area shape="poly" id="edge5_Node000004_Node000003" title=" " alt="" coords="394,106,346,145,342,141,390,102"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="190,225,249,251"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="404,105,388,141,375,161,358,179,336,196,311,210,263,228,261,223,309,205,333,191,355,175,371,158,383,138,400,103"/>
+<area shape="poly" id="edge8_Node000006_Node000002" title=" " alt="" coords="96,106,66,153,45,213,40,211,61,151,92,103"/>
+<area shape="poly" id="edge7_Node000006_Node000005" title=" " alt="" coords="120,102,145,123,171,150,193,182,210,212,205,214,188,184,167,154,141,127,117,106"/>
+<area shape="rect" id="Node000007" href="$Iterator_8h.html" title=" " alt="" coords="75,152,156,177"/>
+<area shape="poly" id="edge9_Node000006_Node000007" title=" " alt="" coords="108,104,114,138,108,139,103,105"/>
+<area shape="poly" id="edge11_Node000007_Node000002" title=" " alt="" coords="104,179,61,218,58,214,101,175"/>
+<area shape="poly" id="edge10_Node000007_Node000005" title=" " alt="" coords="134,175,192,215,189,219,131,180"/>
+<area shape="poly" id="edge13_Node000008_Node000003" title=" " alt="" coords="246,102,296,141,292,145,243,106"/>
+<area shape="poly" id="edge14_Node000008_Node000005" title=" " alt="" coords="232,105,224,212,219,211,226,104"/>
+</map>

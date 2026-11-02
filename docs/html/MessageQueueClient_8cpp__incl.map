@@ -1,0 +1,14 @@
+<map id="src/MessageQueueClient.cpp" name="src/MessageQueueClient.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="36,5,247,31"/>
+<area shape="rect" id="Node000002" href="$Adapter_8h.html" title=" " alt="" coords="13,79,160,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,33,106,69,102,66,130,29"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="131,225,189,251"/>
+<area shape="poly" id="edge7_Node000001_Node000003" title=" " alt="" coords="152,30,164,51,175,78,180,114,179,151,169,212,164,212,174,151,174,115,169,79,160,54,147,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="101,103,119,124,137,151,150,182,158,211,153,212,145,183,132,153,115,127,96,106"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,225,56,251"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="64,106,37,126,24,138,14,153,10,168,11,183,20,212,15,214,6,184,5,167,10,151,20,135,33,122,61,102"/>
+<area shape="rect" id="Node000005" href="$WorkData_8h.html" title=" " alt="" coords="24,152,123,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="87,105,81,139,75,138,82,104"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="89,175,137,214,134,219,86,179"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="69,179,47,215,42,212,64,176"/>
+</map>

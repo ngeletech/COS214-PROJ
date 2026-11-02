@@ -1,0 +1,5 @@
+<map id="WorkflowCommand" name="WorkflowCommand">
+<area shape="rect" id="Node000001" title="Abstract base class for workflow commands." alt="" coords="5,93,155,119"/>
+<area shape="rect" id="Node000002" href="$classWorkflowInstance.html" title="Context. One running copy of a workflow." alt="" coords="11,5,149,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="83,45,83,93,77,93,77,45"/>
+</map>

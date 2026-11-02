@@ -1,0 +1,14 @@
+<map id="src/WorkGroup.cpp" name="src/WorkGroup.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="76,5,220,31"/>
+<area shape="rect" id="Node000002" href="$composite_8h.html" title=" " alt="" coords="5,79,171,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,33,109,70,104,66,136,29"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="132,225,191,251"/>
+<area shape="poly" id="edge7_Node000001_Node000003" title=" " alt="" coords="159,29,174,51,185,78,190,114,188,151,173,213,168,211,183,150,185,115,180,79,169,53,155,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="102,103,120,124,138,151,151,182,159,211,154,212,146,183,134,153,116,127,98,106"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="9,225,71,251"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="73,106,50,126,32,153,28,183,33,212,28,213,22,183,27,151,46,123,69,102"/>
+<area shape="rect" id="Node000005" href="$Iterator_8h.html" title=" " alt="" coords="42,152,123,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="90,105,87,139,82,138,84,104"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="97,175,140,214,137,218,94,179"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="78,179,56,215,52,212,73,176"/>
+</map>

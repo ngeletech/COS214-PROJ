@@ -1,0 +1,7 @@
+<map id="SuspendedState" name="SuspendedState">
+<area shape="rect" id="Node000001" title="ConcreteState. The instance is paused." alt="" coords="11,168,137,193"/>
+<area shape="rect" id="Node000002" href="$classInstanceState.html" title="Abstract State. Declares every lifecycle action." alt="" coords="19,93,129,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,133,77,168,71,168,71,133"/>
+<area shape="rect" id="Node000003" href="$classWorkflowInstance.html" title="Context. One running copy of a workflow." alt="" coords="5,5,143,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="77,45,77,93,71,93,71,45"/>
+</map>

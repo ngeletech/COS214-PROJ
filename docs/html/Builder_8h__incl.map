@@ -1,0 +1,34 @@
+<map id="include/Builder.h" name="include/Builder.h">
+<area shape="rect" id="Node000001" title="Unified header for the Builder design pattern components." alt="" coords="335,5,466,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="241,299,299,324"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="418,29,440,50,459,77,471,104,476,127,476,151,467,178,455,202,439,223,399,257,354,282,313,299,311,295,352,278,396,253,435,219,451,199,462,176,470,150,471,128,465,106,454,80,436,53,415,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,299,68,324"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="335,22,257,29,213,37,169,50,125,66,85,89,50,118,22,153,10,186,10,222,18,257,28,285,23,287,13,258,5,223,5,186,17,151,46,114,82,85,123,62,167,44,212,32,256,24,335,16"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="357,79,444,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="403,31,403,65,398,65,398,31"/>
+<area shape="rect" id="Node000005" href="$AssignmentStrategy_8h.html" title="Declares the Strategy pattern used to select participants for work assignment." alt="" coords="153,79,317,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="375,33,276,76,274,71,373,28"/>
+<area shape="rect" id="Node000011" href="$Chain-Of-Responsibility_8h.html" title=" " alt="" coords="528,79,713,104"/>
+<area shape="poly" id="edge19_Node000001_Node000011" title=" " alt="" coords="437,28,573,72,572,77,435,33"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="154,98,122,104,90,115,62,131,39,154,24,185,21,221,24,256,31,285,26,286,19,257,15,221,19,184,34,150,59,127,88,110,120,99,153,92"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="307,225,358,251"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="250,102,271,124,294,150,312,182,326,212,321,214,307,184,289,154,268,127,246,106"/>
+<area shape="rect" id="Node000007" href="$WorkData_8h.html" title=" " alt="" coords="354,152,453,177"/>
+<area shape="poly" id="edge7_Node000005_Node000007" title=" " alt="" coords="263,102,364,144,362,149,261,106"/>
+<area shape="rect" id="Node000008" href="$composite_8h.html" title=" " alt="" coords="49,152,152,177"/>
+<area shape="poly" id="edge10_Node000005_Node000008" title=" " alt="" coords="215,106,136,148,134,143,212,102"/>
+<area shape="rect" id="Node000010" href="$Participant_8h.html" title=" " alt="" coords="176,152,279,177"/>
+<area shape="poly" id="edge16_Node000005_Node000010" title=" " alt="" coords="237,105,233,139,227,138,231,104"/>
+<area shape="poly" id="edge8_Node000007_Node000002" title=" " alt="" coords="404,178,394,213,385,234,372,252,344,277,313,295,311,291,341,273,368,249,380,231,389,212,399,177"/>
+<area shape="poly" id="edge9_Node000007_Node000006" title=" " alt="" coords="394,180,356,218,352,214,390,176"/>
+<area shape="poly" id="edge11_Node000008_Node000002" title=" " alt="" coords="123,175,158,196,194,223,227,255,254,286,250,289,223,259,191,227,155,201,120,180"/>
+<area shape="poly" id="edge12_Node000008_Node000003" title=" " alt="" coords="98,179,50,287,45,285,93,177"/>
+<area shape="rect" id="Node000009" href="$Iterator_8h.html" title=" " alt="" coords="100,225,181,251"/>
+<area shape="poly" id="edge13_Node000008_Node000009" title=" " alt="" coords="110,176,130,212,125,215,105,179"/>
+<area shape="poly" id="edge14_Node000009_Node000002" title=" " alt="" coords="163,248,238,289,235,294,160,253"/>
+<area shape="poly" id="edge15_Node000009_Node000003" title=" " alt="" coords="125,253,67,293,64,288,122,248"/>
+<area shape="poly" id="edge18_Node000010_Node000002" title=" " alt="" coords="233,177,265,285,260,286,228,179"/>
+<area shape="poly" id="edge17_Node000010_Node000006" title=" " alt="" coords="246,175,306,215,303,220,243,180"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="581,152,661,177"/>
+<area shape="poly" id="edge20_Node000011_Node000012" title=" " alt="" coords="623,104,623,138,618,138,618,104"/>
+</map>

@@ -1,0 +1,21 @@
+<map id="tests/test_observer.cpp" name="tests/test_observer.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="91,5,264,31"/>
+<area shape="rect" id="Node000002" href="$doctest_8h.html" title=" " alt="" coords="5,79,88,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,33,81,74,79,70,155,28"/>
+<area shape="rect" id="Node000004" href="$Observer_8h.html" title=" " alt="" coords="267,79,359,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="200,28,280,70,278,75,198,33"/>
+<area shape="rect" id="Node000009" href="$WorkflowEvent_8h.html" title=" " alt="" coords="112,79,243,104"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="180,31,180,65,175,65,175,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="10,152,83,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="49,104,49,138,44,138,44,104"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="211,152,291,177"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="305,106,272,143,268,140,301,103"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="128,152,187,177"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="289,106,196,149,194,144,287,102"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="390,152,453,177"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="332,102,394,142,391,147,329,106"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="315,152,365,177"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="320,103,333,138,328,140,315,105"/>
+<area shape="poly" id="edge9_Node000009_Node000005" title=" " alt="" coords="191,102,231,140,227,144,188,106"/>
+<area shape="poly" id="edge10_Node000009_Node000006" title=" " alt="" coords="177,105,167,140,162,138,171,104"/>
+</map>

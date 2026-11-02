@@ -1,0 +1,13 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classWorkflowListener.html" title="Abstract observer interface for workflow event notifications." alt="" coords="5,104,140,129"/>
+<area shape="rect" id="Node000001" href="$classAuditLogger.html" title="Records workflow events for auditing purposes." alt="" coords="213,5,313,31"/>
+<area shape="poly" id="edge51_Node000000_Node000001" title=" " alt="" coords="100,93,140,66,187,40,215,28,217,33,189,44,143,70,103,98"/>
+<area shape="rect" id="Node000002" href="$classDashboardListener.html" title="Maintains a dashboard view of workflow status." alt="" coords="191,55,335,80"/>
+<area shape="poly" id="edge52_Node000000_Node000002" title=" " alt="" coords="135,98,212,78,213,83,136,103"/>
+<area shape="rect" id="Node000003" href="$classMockListener.html" title=" " alt="" coords="208,104,317,129"/>
+<area shape="poly" id="edge53_Node000000_Node000003" title=" " alt="" coords="154,114,208,114,208,119,154,119"/>
+<area shape="rect" id="Node000004" href="$classNextItemActivator.html" title="Activates the next workflow item when required." alt="" coords="191,153,334,179"/>
+<area shape="poly" id="edge54_Node000000_Node000004" title=" " alt="" coords="136,130,213,151,212,156,135,135"/>
+<area shape="rect" id="Node000005" href="$classNotificationListener.html" title="Sends notifications when selected workflow events occur." alt="" coords="188,203,337,228"/>
+<area shape="poly" id="edge55_Node000000_Node000005" title=" " alt="" coords="104,135,143,162,189,188,220,200,218,205,187,192,141,166,101,140"/>
+</map>
