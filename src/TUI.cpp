@@ -5,6 +5,9 @@
 #include <iostream>
 #include <string>
 #include <exception>
+#include <algorithm>
+#include <memory>
+#include "AssignmentStrategy.h"
 
  /**
   * @brief Constructs the TUI using the existing workflow Facade.
@@ -23,7 +26,7 @@ void TUI::run() {
     bool running = true;
 
     while (running) {
-        std::vector<std::string> options = {"Start Workflow", "Active Workflows", "Exit"};
+        std::vector<std::string> options = {"Start Workflow", "Create Workflow", "Active Workflows", "Exit"};
 
         int choice = TerminalUI::selectOption("MAIN MENU", options) + 1;
 
@@ -31,12 +34,16 @@ void TUI::run() {
             case 1:
                 showStartWorkflow();
                 break;
-
+            
             case 2:
-                showActiveWorkflows();
+                showCreateWorkflow();
                 break;
 
             case 3:
+                showActiveWorkflows();
+                break;
+
+            case 4:
                 running = false;
                 break;
 
@@ -59,8 +66,9 @@ void TUI::showMainMenu() {
     TerminalUI::showHeader("MAIN MENU");
 
     TerminalUI::showMenuOption(1, "Start Workflow");
-    TerminalUI::showMenuOption(2, "Active Workflows");
-    TerminalUI::showMenuOption(3, "Exit");
+    TerminalUI::showMenuOption(2, "Create Workflow");
+    TerminalUI::showMenuOption(3, "Active Workflows");
+    TerminalUI::showMenuOption(4, "Exit");
 
     TerminalUI::showDivider();
 }
@@ -147,13 +155,15 @@ void TUI::showStartWorkflow() {
         initialData.addData("PackageType", package);
     }
     else {
-        TerminalUI::showError("No input configuration exists for this workflow.");
-        TerminalUI::waitForContinue();
-        return;
+        TerminalUI::showInfo("Custom workflow: starting without predefined input fields.");
     }
 
     try {
-        int instanceId = facade.startWorkflow(selectedWorkflow, initialData);
+        int instanceId = -1;
+
+        TerminalUI::runWithStyledOutput([&]() {
+            instanceId = facade.startWorkflow(selectedWorkflow, initialData);
+        });
 
         activeInstances.push_back(instanceId);
 
@@ -217,4 +227,201 @@ void TUI::showActiveWorkflows() {
 void TUI::showWorkflowOverview(int instanceId) {
     WorkflowScreens screens(facade);
     screens.showOverview(instanceId);
+}
+
+
+/**
+ * @brief Builds a new sequential workflow definition through the TUI.
+ * The engine owns the strategy after a successful defineWorkflow call.
+ */
+void TUI::showCreateWorkflow() {
+    TerminalUI::clearScreen();
+    TerminalUI::showHeader("CREATE WORKFLOW");
+
+    std::string name;
+
+    while (true) {
+        std::cout << "Workflow name: ";
+
+        if (!std::getline(std::cin, name)) {
+            return;
+        }
+
+        if (name.find_first_not_of(" \t\r\n") == std::string::npos) {
+            TerminalUI::showError("Workflow name cannot be empty.");
+            continue;
+        }
+
+        std::vector<std::string> existing = facade.listDefinitions();
+
+        if (std::find(existing.begin(), existing.end(), name) != existing.end()) {
+            TerminalUI::showError("A workflow with that name already exists.");
+            continue;
+        }
+
+        break;
+    }
+
+    std::vector<WorkItemSpec> specs;
+
+    const std::vector<std::string> types = {
+        "UserTask - manual task",
+        "ApprovalTask - approve/reject",
+        "ScriptTask - set workflow data",
+        "ServiceTask - simulated service",
+        "Finish and review",
+        "Cancel"
+    };
+
+    while (true) {
+        TerminalUI::clearScreen();
+        TerminalUI::showHeader("DESIGN WORKFLOW | " + name);
+
+        for (std::size_t i = 0; i < specs.size(); ++i) {
+            std::cout << (i + 1) << ". " << specs[i].name
+                      << " [" << specs[i].type << "]\n";
+        }
+
+        std::cout << "\n";
+
+        int selected = TerminalUI::selectOption(
+            "ADD A WORK ITEM",
+            types,
+            false
+        );
+
+        if (selected == 5) {
+            return;
+        }
+
+        if (selected == 4) {
+            if (specs.empty()) {
+                TerminalUI::showError("Add at least one work item first.");
+                TerminalUI::waitForContinue();
+                continue;
+            }
+
+            break;
+        }
+
+        WorkItemSpec spec;
+
+        if (selected == 0) {
+            spec.type = "UserTask";
+        }
+        else if (selected == 1) {
+            spec.type = "ApprovalTask";
+        }
+        else if (selected == 2) {
+            spec.type = "ScriptTask";
+        }
+        else {
+            spec.type = "ServiceTask";
+        }
+
+        TerminalUI::clearScreen();
+        TerminalUI::showHeader("CONFIGURE " + spec.type);
+
+        while (true) {
+            std::cout << "Work item name: ";
+
+            if (!std::getline(std::cin, spec.name)) {
+                return;
+            }
+
+            if (spec.name.find_first_not_of(" \t\r\n") == std::string::npos) {
+                TerminalUI::showError("Work item name cannot be empty.");
+                continue;
+            }
+
+            bool duplicate = false;
+
+            for (std::size_t i = 0; i < specs.size(); ++i) {
+                if (specs[i].name == spec.name) {
+                    duplicate = true;
+                    break;
+                }
+            }
+
+            if (duplicate) {
+                TerminalUI::showError("Work item names must be unique.");
+                continue;
+            }
+
+            break;
+        }
+
+        if (spec.type == "ScriptTask") {
+            std::string key;
+            std::string value;
+
+            while (true) {
+                std::cout << "Data key: ";
+
+                if (!std::getline(std::cin, key)) {
+                    return;
+                }
+
+                if (key.find_first_not_of(" \t\r\n") != std::string::npos &&
+                    key.find(',') == std::string::npos) {
+                    break;
+                }
+
+                TerminalUI::showError(
+                    "Use a non-empty key without commas."
+                );
+            }
+
+            std::cout << "Data value: ";
+
+            if (!std::getline(std::cin, value)) {
+                return;
+            }
+
+            spec.config = key + "," + value;
+        }
+
+        specs.push_back(spec);
+
+        TerminalUI::showSuccess(
+            "Added " + spec.name + " (" + spec.type + ")."
+        );
+
+        TerminalUI::waitForContinue();
+    }
+
+    TerminalUI::clearScreen();
+    TerminalUI::showHeader("REVIEW WORKFLOW | " + name);
+
+    for (std::size_t i = 0; i < specs.size(); ++i) {
+        std::cout << (i + 1) << ". " << specs[i].name << " (" << specs[i].type << ")";
+
+        if (!specs[i].config.empty()) {
+            std::cout << " | " << specs[i].config;
+        }
+
+        std::cout << "\n";
+    }
+
+    std::cout << "\nTasks will execute sequentially. Existing participants are used.\n" << "Custom definitions last only until the application exits.\n\n";
+
+    const std::vector<std::string> confirm = {"Create Workflow", "Cancel"};
+
+    if (TerminalUI::selectOption("CONFIRM", confirm, false) != 0) {
+        return;
+    }
+
+    try {
+        std::unique_ptr<AssignmentStrategy> strategy(new LeastLoadedStrategy());
+
+        facade.defineWorkflow(name, specs, strategy.get(), nullptr);
+
+        strategy.release();
+
+        TerminalUI::showSuccess("Created '" + name + "'. Find it under Start Workflow.");
+    }
+    catch (const std::exception& error) {
+        TerminalUI::showError(error.what());
+    }
+    TerminalUI::waitForContinue();
 }

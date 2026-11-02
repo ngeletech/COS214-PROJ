@@ -9,6 +9,8 @@
 #include "../include/Participant.h"
 #include "../include/Observer.h"
 #include <iostream>
+#include <sstream>
+#include <string>
 #include <vector>
 
 void setupFoodCateringScenario(TividyFacade& facade) {
@@ -88,6 +90,7 @@ void setupTelecomScenario(TividyFacade& facade) {
     //Define WorkItem Specifications
     std::vector<WorkItemSpec> specs = {
         {"ApprovalTask", "CreditCheck", ""},
+        {"UserTask", "ScheduleInstallation", ""},
         {"UserTask", "InstallFiberLine", ""},
         {"ScriptTask", "ConfigureRouter", "LineStatus, ACTIVE"},
         {"ServiceTask", "ActivateAccountAPI", ""}

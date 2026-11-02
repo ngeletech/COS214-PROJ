@@ -63,6 +63,9 @@ namespace TerminalUI {
             if (message.empty()) {
                 return;
             }
+            if (message.find("is not ready to execute") != std::string::npos) {
+                return;
+            }
 
             std::size_t end = message.find(']');
 
@@ -70,9 +73,7 @@ namespace TerminalUI {
                 std::string label = message.substr(0, end + 1);
                 std::string description = message.substr(end + 1);
 
-                std::cout << messageColor(label) << label
-                        << RESET << WHITE << description
-                        << RESET << "\n";
+                std::cout << messageColor(label) << label << RESET << WHITE << description << RESET << "\n";
             }
             else {
                 std::cout << GREY << message << RESET << "\n";
@@ -331,8 +332,7 @@ namespace TerminalUI {
      * @param label The description of the option.
      */
     void showMenuOption(int number, const std::string& label) {
-        std::cout << GREY << "  " << number << ". " << RESET
-                  << WHITE << label << RESET << "\n";
+        std::cout << GREY << "  " << number << ". " << RESET << WHITE << label << RESET << "\n";
     }
 
     /**
@@ -362,10 +362,7 @@ namespace TerminalUI {
      * @brief Waits for the user to press ENTER before continuing.
      */
     void waitForContinue() {
-        std::cout << "\n" << GREY
-                  << "Press ENTER to continue..."
-                  << RESET;
-
+        std::cout << "\n" << GREY << "Press ENTER to continue..."<< RESET;
         std::cin.get();
     }
 
