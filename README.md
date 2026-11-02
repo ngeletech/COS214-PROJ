@@ -155,24 +155,10 @@ The full justification, participant mapping and UML for each pattern are in the 
 | What | Where |
 |---|---|
 | Final report (PDF) | [`report/`](report/) |
-| UML diagrams (exports and Visual Paradigm project) | [`docs/`](docs/) |
+| UML diagrams (exports and Visual Paradigm project) | [`docs/diagrams`](docs/diagrams) |
 | Class diagram | [`docs/UML.pdf`](docs/UML.pdf) |
-| Source code documentation (Doxygen) | generate with `doxygen Doxyfile`, then open `docs/doxygen/html/index.html` |
+| Source code documentation (Doxygen) | generate with `doxygen Doxyfile`, then open `docs/html/index.html` or `wslview docs/html/index.html` |
 
-Doxygen needs `sudo apt install -y doxygen graphviz`.
-
-## Repository layout
-
-```
-include/            public headers, one group per pattern
-src/                implementation, including main.cpp, the terminal screens and Scenarios.cpp
-tests/              doctest unit and integration tests
-docs/               UML exports, research and design history
-report/             final report (PDF)
-Dockerfile, docker-compose.yml
-CMakeLists.txt
-.github/workflows/  CI pipeline
-```
 
 ## Team and workflow
 
