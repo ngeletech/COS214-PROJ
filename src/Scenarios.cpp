@@ -51,7 +51,6 @@ void setupFoodCateringScenario(TividyFacade& facade) {
         {"ScriptTask", "QualityCheck", "OrderStatus, IN_PROGRESS"},
         {"UserTask", "PackageMeal", ""},
         {"ApprovalTask", "ApproveMealForDispatch", ""},
-        {"ApprovalTask", "ApproveMealForDispatch", ""},
         {"ServiceTask", "DispatchToCourier", ""},
         {"ScriptTask", "MarkOrderInTransit", "OrderStatus, IN_TRANSIT"},
         {"UserTask", "ConfirmDeliveryToCustomer", ""},
