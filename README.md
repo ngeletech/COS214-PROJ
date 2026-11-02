@@ -62,7 +62,6 @@ docker compose build
 docker compose run --rm tui        # starts the interactive application
 docker compose run --rm tests      # runs the unit tests
 ```
-Use `run`, not `up`, so the terminal is interactive and the arrow keys work. The first build takes a couple of minutes.
 
 ---
 
@@ -73,7 +72,8 @@ Navigate with the **UP / DOWN arrow keys** and press **ENTER** to select.
 ```
 MAIN MENU
   1. Start Workflow        pick MealOrderDelivery or FiberProvisioning, enter its input data
-  2. Active Workflows      list every instance and open one
+  2. Create Workflow
+  3. Active Workflows      list every instance and open one
   3. Exit
 
 INSTANCE OVERVIEW           state, data, every work item with its status and assignee, history
@@ -180,3 +180,4 @@ Ngeletshedzo Mutwanamba (team leader), Amira Ajanaku, Nare Maela, Nontokozo Made
 
 Work is done on branches named after the pattern or feature, merged into `dev` through reviewed pull requests, with `dev` merged into `main` when stable. CI must pass before a pull request is merged.
 
+Thanks for checking out our project.
